@@ -1,0 +1,58 @@
+// =============
+// Global colors
+// =============
+
+$black-dark: #000; // 0%
+$black: #222; // 13%
+$black-light: #333; // 20%
+
+$gray-darker: #454545; // 27%
+
+$gray-dark: #595959; // 35%
+$gray: #929292; // 57%
+$gray-light: hsl(0,0,65);
+$gray-lighter: #ddd;
+$gray-lightest: #e6e6e6; // 90%
+$gray-icon: #666;
+$gray-subtext: #888;
+
+$outline-gray: #dadada;
+
+$white: #fff;
+
+$red: rgb(236, 0, 0);
+$green: rgb(75, 200, 0);
+$green-dark: rgb(55, 170, 0);
+$yellow: rgb(255, 251, 205);
+$blue: rgb(44, 193, 230);
+
+.red-text { color: $red; &:hover {color: $red; } }
+.green-text { color: $green; &:hover {color: $green; } }
+.green-dark-text { color: $green-dark; &:hover {color: $green-dark; } }
+.yellow-text { color: $yellow; &:hover {color: $yellow; } }
+.blue-text { color: $blue; &:hover {color: $blue; } }
+.red-bg { background-color: $red; }
+.green-bg { background-color: $green; }
+.green-dark-bg { background-color: $green-dark; }
+.yellow-bg { background-color: $yellow; }
+.blue-bg { background-color: $blue; }
+
+$text-color: $black;
+$bg-color: #f5f5f5;
+
+$link-color: rgb(0,134,227);
+$highlight-color: yellow;
+$main-background: whitesmoke;
+$main-background-hover: #eee;
+
+$colors: #20ade2 #cc70eb #e2a500 #4bcd70 #f6d1ff #99ebff;
+
+@mixin pill-color($n: 1) {
+	$color: nth($colors, $n);
+	color: $color;
+}
+
+@mixin background-color($n: 1) {
+	$color: nth($colors, $n);
+	background-color: $color;
+}

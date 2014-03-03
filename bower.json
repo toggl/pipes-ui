@@ -1,0 +1,38 @@
+{
+  "name": "toggl-pipes-ui",
+  "version": "0.0.1",
+  "main": "public/app.js",
+  "dependencies": {
+    "jquery": "~2.0.3",
+    "lodash": "~2.4.1",
+    "backbone": "~1.1.2",
+    "foundation": "~5.1.1",
+    "font-awesome": "~4.0.3"
+  },
+  "devDependencies": {},
+  "overrides": {
+    "modernizr": {
+      "main": "modernizr.js"
+    },
+    "jquery-placeholder": {
+      "main": "jquery-placeholder.js"
+    },
+    "font-awesome": {
+      "main": [
+        "css/font-awesome.css",
+        "fonts/FontAwesome.otf",
+        "fonts/fontawesome-webfont.eot",
+        "fonts/fontawesome-webfont.svg",
+        "fonts/fontawesome-webfont.ttf",
+        "fonts/fontawesome-webfont.woff"
+      ]
+    },
+    "foundation": {
+      "main": [
+        "js/foundation.js",
+        "scss/foundation.scss"
+      ],
+      "_comment": "We want to configure foundation and compile manually: use scss instead of css"
+    }
+  }
+}

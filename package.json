@@ -1,0 +1,36 @@
+{
+  "name": "toggl-pipes-ui",
+  "description": "UI for the toggl-pipes integrations handling project",
+  "author": "Toggl",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "~3.5.2",
+    "gulp-compass": "~1.1.3",
+    "gulp-coffee": "~1.4.1",
+    "gulp-ngmin": "~0.1.2",
+    "gulp-concat": "~2.1.7",
+    "gulp-watch": "~0.5.0",
+    "gulp-clean": "~0.2.4",
+    "gulp-bower-files": "~0.1.11",
+    "gulp-uglify": "~0.2.1",
+    "gulp-print": "~1.0.3",
+    "gulp-util": "~2.2.14",
+    "gulp-template-compile": "~0.1.0",
+    "gulp-filter": "~0.3.0",
+    "gulp-flatten": "0.0.2",
+    "gulp-livereload": "~1.2.0",
+    "node-static": "~0.7.3",
+    "event-stream": "~3.1.0",
+    "gulp-sass": "~0.7.1",
+    "gulp-insert": "~0.2.0",
+    "gulp-notify": "~1.0.0-beta",
+    "html-entities": "~1.0.10",
+    "node-notifier": "~1.2.1",
+    "gulp-preprocess": "~1.0.1"
+  }
+}

@@ -1,0 +1,22 @@
+// ======================================
+// Default styles for plain html elements
+// ======================================
+
+@import 'compass/css3';
+
+@import 'globals';
+@import 'colors';
+
+body {
+  background: #f5f5f5;
+}
+
+b, strong{
+  font-weight: $semibold;
+}
+a {
+  color: $text-color;
+  &:hover {
+    color: $text-color;
+  }
+}

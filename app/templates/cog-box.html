@@ -1,0 +1,20 @@
+<div class="button dropdown on-hover <%= clazz || "" %>" <% if(id) { %>id="<%= id %>"<% } %>>
+  <span class="title"><i class="fa fa-cog"></i></span>
+  <ul>
+    <% _.each(groups, function(group) { %>
+      <% if (group.title) { %>
+        <li class="title"><%= group.title %></li>
+      <% } %>
+      <% _.each(group.items, function(item) { %>
+        <% if(item.skipped) return; %>
+        <% if (item.divider) { %>
+          <li class="divider"></li>
+        <% } else { %>
+          <li class="<%= item.active ? 'active' : '' %>">
+            <button class="<%= item.disabled ? 'disabled' : '' %>" data-name='<%= item.name %>' data-value='<%= item.value %>'><%= item.title %></button>
+          </li>
+        <% } %>
+      <%  }) %>
+    <% }) %>
+  </ul>
+</div>

@@ -1,0 +1,175 @@
+// =============================
+// Reusable components & widgets
+// =============================
+
+@import 'compass/css3';
+@import 'globals';
+
+.large-container {
+  padding: 40px;
+  &.dark {
+    background-color: rgb(233,233,233);
+    @include box-shadow(0px 2px 6px 0px rgb(214,214,214) inset !important);
+  }
+  &.light {
+    background: $white;
+    @include subtle-shadow;
+  }
+  &.light-grey {
+    background: #f5f5f5;
+    @include subtle-shadow;
+  }
+  h1 {
+    margin-bottom: 20px;
+  }
+}
+
+.pill-box {
+  padding: 0;
+  cursor: default;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 12px 4px;
+  background: $gray-lightest;
+  font-size: 11px;
+  color: $gray-dark;
+  @include border-radius(2px);
+  @include box-shadow(0 1px 1px hsla(0, 0, 50, 0.3));
+  &.left {
+    display: block;
+    float: left;
+  }
+  &.right {
+    display: block;
+    float: right;
+  }
+  span{
+    font-weight: $semibold;
+    padding: ($base / 3.6 - 1) ($base / 1.5 + 2);
+    display: inline-block;
+  }
+  &.green {
+    background-color: $green;
+    color: white;
+  }
+}
+
+.button, a.button {
+  font-weight: $semibold !important;
+  font-size: $base * 1.2;
+  &:hover {
+    color: $text-color;
+  }
+  &.green {
+    color: $white;
+    text-decoration: none;
+    &:hover, &:focus {
+      color: $white;
+    }
+  }
+  .fa {
+    margin-right: 11px;
+    margin-left: -6px;
+  }
+}
+
+/* Foundation dropdowns (cog box) */
+
+.button.dropdown {
+  height: 43px;
+  line-height: 43px;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 1.5rem;
+  background: none;
+  border: 1px solid transparent;
+  &::before {
+    border-top-color: #929292;
+  }
+  .title {
+    line-height: 41px;
+    height: 41px;
+    display: inline-block;
+    &.fa {
+      font-size: 21px;
+      color: $gray-icon;
+      opacity: .8;
+      width: auto;
+      height: auto;
+      margin: 0;
+    }
+  }
+  &:hover {
+    border-color: #dadada;
+    @include background-image(linear-gradient(#f5f5f5, #eee));
+    .title {
+      opacity: 1;
+    }
+  }
+  &.open {
+    border-color: #dadada;
+    @include background-image(linear-gradient(#f5f5f5, #eee));
+    @include box-shadow(rgba(128,128,128,.2) 0 1px 3px inset);
+  }
+}
+.f-dropdown {
+  border: none;
+  padding: 6px 0;
+  margin-top: -1px;
+  @include box-shadow(rgba(128,128,128,.5) 0 1px 3px);
+  border: 1px solid #dadada;
+  &::before, &::after { /* lose the tip */
+    border: none;
+  }
+  li {
+    white-space: nowrap;
+    min-height: 1.5rem;
+    line-height: 1.5rem;
+    button, a {
+      font-size: $base-font-size * 1.1;
+      padding: $base / 4 $base * 4 $base / 4 $base * 2.5;
+      color: #222;
+    }
+    &.active {
+      button, a {
+        padding: $base / 4 $base * 4 $base / 4 10px;
+        font-weight: $semibold;
+      }
+    }
+    &.divider {
+      min-height: 0;
+      padding: 0;
+      height: 1px;
+      margin: 4px 0;
+      background: #ededed;
+    }
+  }
+  .subsection-header {
+    text-align: left;
+    padding: 5px 0 0 7px;
+    font-size: 12px;
+    color: rgb(94, 94, 94);
+    &:hover {
+      background: none;
+      color: rgb(94, 94, 94);
+      cursor: default;
+    }
+  }
+}
+/* Overrides for white bg */
+.large-container.light {
+  .button.dropdown {
+    &:hover {
+      border-color: #eee;
+      @include background-image(linear-gradient(#fdfdfd, #f3f3f3));
+    }
+    &.open {
+      border-color: #e5e5e5;
+      @include background-image(linear-gradient(#fdfdfd, #f3f3f3));
+      @include box-shadow(rgba(128,128,128,.2) 0 1px 3px inset);
+    }
+  }
+  .f-dropdown {
+    @include box-shadow(rgba(128,128,128,.5) 0 1px 4px);
+  }
+}

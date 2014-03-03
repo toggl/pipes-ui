@@ -1,0 +1,38 @@
+@import 'globals';
+
+$alert-padding: 16px;
+
+div.alert-box {
+  display: block;
+  padding: $alert-padding;
+  font-weight: $semibold;
+  font-size: 14px;
+  color: $text-color;
+  background-color: $yellow;
+  position: relative;
+  margin: 0 0 $base;
+  @include box-shadow(2px 2px 2px hsla(0,0,50,0.25));
+  &.success {
+    background-color: $green;
+    color: #fff;
+  }
+  &.alert {
+    background-color: $red;
+    color: #fff;
+  }
+
+  a.close, a.cancel {
+    color: #333;
+    position: absolute;
+    #{$default-opposite}: $alert-padding / 2;
+    /*top: 3px */
+    top: $alert-padding / 2;
+    font-size: 24px;
+    opacity: 0.2;
+    padding: 4px;
+    &:hover, &:focus {
+      text-decoration: none !important;
+      opacity: 0.8;
+    }
+  }
+}

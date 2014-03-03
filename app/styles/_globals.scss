@@ -1,0 +1,33 @@
+// ===============================================================
+// NB! This file is _prepended_ to all external scss dependencies
+//     so it should only contain configuration, variables and such
+//     No imports or compass stuff either!
+// ===============================================================
+
+// Custom global variables
+
+$light: 300;
+$normal: 400;
+$semibold: 600;
+$bold: 700;
+$base: 12px;
+
+// Foundation config
+
+$row-width: 100%;
+$column-gutter: 0;
+$total-columns: 24;
+$block-grid-elements: 24;
+$col-width: $row-width / $total-columns;
+$font-smoothing: antialiased;
+
+$text-direction: ltr;
+$default-float: left;
+$default-opposite: right;
+$body-font-family: 'Open Sans', Arial, sans-serif;
+$body-font-weight: $normal;
+$body-font-style: normal;
+$body-font-color: #000;
+$base-font-size: $base;
+$primary-color: rgb(75, 200, 0);
+$secondary-color: #ddd;

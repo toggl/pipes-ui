@@ -1,0 +1,42 @@
+// =====================
+// Small utility classes
+// =====================
+
+@import 'compass/css3';
+@import 'globals';
+
+@mixin subtle-shadow {
+  @include box-shadow(0 1px 3px rgba(128,128,128,0.2));
+}
+
+.space-after {
+  margin-bottom: $base * 1.2;
+}
+.small-text {
+  font-size: $base * 1.2;
+}
+.smaller-text {
+  font-size: $base;
+}
+.tiny-text{
+  font-size: $base * 0.9;
+}
+.bigger-text {
+  font-size: $base * 1.4;
+  font-weight: $semibold;
+}
+.light-text{
+  font-weight: $light;
+}
+.normal-text {
+  font-weight: $normal;
+}
+.semibold-text {
+  font-weight: $semibold;
+}
+.bold-text {
+  font-weight: $bold;
+}
+.underline {
+  text-decoration: underline;
+}
