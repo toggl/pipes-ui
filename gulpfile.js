@@ -104,6 +104,7 @@ gulp.task('build-scripts', function() {
   bowerFiles()
     .pipe(filter('**/*.js'))
     .pipe(filter('!underscore/**/*')) // TODO: Remove this hack (backbone dep not needed)
+    .pipe(filter('!jQuery/**/*')) // TODO: Remove this hack (iframe-resizer invalid dep - should be lowercase)
     .pipe(env == 'development' ? gutil.noop() : uglify())
     .pipe(concat('vendor.js'))
     .pipe(gulp.dest(paths.build + 'scripts/'));

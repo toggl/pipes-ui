@@ -7,7 +7,8 @@
     "lodash": "~2.4.1",
     "backbone": "~1.1.2",
     "font-awesome": "~4.0.3",
-    "foundation": "git://github.com/syko/foundation.git#master"
+    "foundation": "git://github.com/syko/foundation.git#master",
+    "iframe-resizer": "~1.4.4"
   },
   "devDependencies": {},
   "overrides": {
@@ -16,6 +17,9 @@
     },
     "jquery-placeholder": {
       "main": "jquery-placeholder.js"
+    },
+    "iframe-resizer": {
+      "main": "js/iframeResizer.contentWindow.min.js"
     },
     "font-awesome": {
       "main": [
