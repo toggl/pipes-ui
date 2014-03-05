@@ -1,19 +1,17 @@
-<div class="row integration">
-  <div class="small-24 columns large-container dark">
+<div class="small-24 columns large-container dark">
 
-    <h1 class="space-after container-title">
-      <% if(model.get('image')) { %>
-        <img src="<%- model.get('image') %>" alt="<%- model.get('name') %>" />
-      <% } else { %>
-        <%- model.get('name') %>
-      <% } %>
-      <% if(model.get('link')) { %>
-        <a href="<%- model.get('link') %>" class="underline blue-text more-info" target="_blank">More info</a>
-      <% } %>
-    </h1>
+  <h1 class="space-after container-title">
+    <% if(model.get('image')) { %>
+      <img src="<%- model.get('image') %>" alt="<%- model.get('name') %>" />
+    <% } else { %>
+      <%- model.get('name') %>
+    <% } %>
+    <% if(model.get('link')) { %>
+      <a href="<%- model.get('link') %>" class="underline blue-text more-info" target="_blank">More info</a>
+    <% } %>
+  </h1>
 
-    <div class="pipes-list">
-    </div>
-
+  <div class="pipes-list">
   </div>
+
 </div>

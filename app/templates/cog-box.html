@@ -1,20 +1,20 @@
-<div class="button dropdown on-hover <%= clazz || "" %>" <% if(id) { %>id="<%= id %>"<% } %>>
-  <span class="title"><i class="fa fa-cog"></i></span>
-  <ul>
-    <% _.each(groups, function(group) { %>
-      <% if (group.title) { %>
-        <li class="title"><%= group.title %></li>
+<a class="button dropdown" data-dropdown="<%= _id %>">
+  <i class="fa fa-cog title"></i>
+</a>
+<ul class="f-dropdown" id="<%= _id %>" data-dropdown-content>
+  <% _.each(groups, function(group) { %>
+    <% if (group.title) { %>
+      <li class="title"><%= group.title %></li>
+    <% } %>
+    <% _.each(group.items, function(item) { %>
+      <% if(item.skipped) return; %>
+      <% if (item.divider) { %>
+        <li class="divider"></li>
+      <% } else { %>
+        <li class="<%= item.active ? 'active' : '' %>">
+          <a href="#" class="<%= item.disabled ? 'disabled' : '' %>" data-name='<%= item.name %>'><%= item.label %></a>
+        </li>
       <% } %>
-      <% _.each(group.items, function(item) { %>
-        <% if(item.skipped) return; %>
-        <% if (item.divider) { %>
-          <li class="divider"></li>
-        <% } else { %>
-          <li class="<%= item.active ? 'active' : '' %>">
-            <button class="<%= item.disabled ? 'disabled' : '' %>" data-name='<%= item.name %>' data-value='<%= item.value %>'><%= item.title %></button>
-          </li>
-        <% } %>
-      <%  }) %>
-    <% }) %>
-  </ul>
-</div>
+    <%  }) %>
+  <% }) %>
+</ul>

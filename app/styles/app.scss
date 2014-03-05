@@ -22,7 +22,7 @@
 
 .integrations-list {
   .integration {
-    margin-top: 20px;
+    margin-bottom: 20px;
     .more-info {
       display: inline-block;
       vertical-align: middle;
@@ -69,6 +69,9 @@
           }
         }
       }
+    }
+    .button.sync {
+      margin-left: 20px;
     }
   }
 }

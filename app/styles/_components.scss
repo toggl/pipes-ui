@@ -129,6 +129,7 @@
       font-size: $base-font-size * 1.1;
       padding: $base / 4 $base * 4 $base / 4 $base * 2.5;
       color: #222;
+      background: none;
     }
     &.active {
       button, a {
