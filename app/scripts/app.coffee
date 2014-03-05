@@ -4,6 +4,19 @@
 #
 
 $(document).foundation()
+
+# Global custom checkboxes (structure: input.custom.checkbox + span.checkbox)
+
+$(document.body).on 'click', 'span.checkbox', (e) ->
+  $input = $(e.currentTarget).siblings('input:checkbox.custom.checkbox')
+  $input.prop 'checked', not $input.prop('checked')
+  $input.change()
+$(document.body).on 'change', 'input:checkbox.custom.checkbox', (e) ->
+  $(e.currentTarget).siblings('span.checkbox').toggleClass 'checked', $(e.currentTarget).is(':checked')
+$(document.body).on 'click', '.button.checkbox:not(.dropdown)', (e) ->
+  if e.currentTarget == e.target
+    $(e.currentTarget).children('span.checkbox').click()
+
 $ -> window.pipes.initialize()
 
 class PipesApp

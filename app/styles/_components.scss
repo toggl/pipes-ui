@@ -157,7 +157,7 @@
     }
   }
 }
-/* Overrides for white bg */
+// Overrides for white bg
 .large-container.light {
   .button.dropdown {
     &:hover {
@@ -172,5 +172,102 @@
   }
   .f-dropdown {
     @include box-shadow(rgba(128,128,128,.5) 0 1px 4px);
+  }
+}
+
+/* Data table */
+
+table.data-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: none;
+  td, th {
+    vertical-align: middle;
+  }
+  thead {
+    background: white;
+    @include background-image(linear-gradient(#fff, #fcfcfc));
+    tr {
+      border-bottom: 3px solid #e6e6e6;
+      th {
+        color: #929292;
+        font-size: 15px;
+        font-weight: 600;
+        padding: 17px 12px 17px 0;
+        vertical-align: middle;
+      }
+    }
+  }
+  tbody {
+    tr {
+      border-bottom: 1px solid #e6e6e6;
+      td {
+        white-space: nowrap;
+        padding: 10px 0 13px;
+        font-size: $base-font-size * 1.2;
+      }
+    }
+    tr:nth-child(even) {
+      background: #fcfcfc;
+    }
+  }
+  .col-checkbox {
+    width: 72px;
+    padding: 0;
+    .button.checkbox {
+      background: none;
+      margin: 0;
+    }
+  }
+}
+
+/* Custom checkbox */
+
+input.custom.checkbox {
+  display: none;
+}
+span.checkbox {
+  position: relative;
+  border: solid 1px #dddddd;
+  display: inline-block;
+  top: 2px;
+  width: 15px;
+  height: 15px;
+  background: white;
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 14px;
+    width: 14px;
+    top: 0;
+    left: 0;
+    @include box-shadow(rgba(128, 128, 128, 0.2) 0 1px 2px inset);
+  }
+  &.checked {
+    &::after {
+      content: "\f00c";
+      text-decoration: none;
+      display: inline-block;
+      cursor: default;
+      speak: none;
+      font-family: FontAwesome;
+      font-weight: normal;
+      font-style: normal;
+      -webkit-font-smoothing: antialiased;
+      width: auto;
+      height: auto;
+      line-height: normal;
+      vertical-align: baseline;
+      background-image: none;
+      background-position: 0% 0%;
+      background-repeat: repeat;
+      color: #4d4d4d;
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-size: 14px;
+    }
   }
 }

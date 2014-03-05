@@ -73,5 +73,21 @@
     .button.sync {
       margin-left: 20px;
     }
+    .manual-picker {
+      .filter {
+        margin-bottom: 10px;
+      }
+      .table-container {
+        max-height: 300px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 20px;
+        table {
+          margin: 0;
+        }
+      }
+    }
   }
 }
