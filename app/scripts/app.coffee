@@ -29,6 +29,8 @@ class PipesApp
   apiUrl: (url) ->
     "/pipes#{url}"
 
+  windowApi: null
+
   actions:
     index: ->
 
@@ -71,7 +73,48 @@ class PipesApp
     @router = new pipes.AppRouter()
     Backbone.history.start()
 
+    @windowApi = new pipes.WindowApi()
+    @windowApi.initialize()
+    @windowApi.on 'documentUrl', (documentUrl) ->
+      console.log('WOOOHOOO', 'documentUrl:', documentUrl)
+
 window.pipes = new PipesApp()
+
+class pipes.WindowApi
+  ###
+  Api for talking with the cross-origin parent frame (toggl.com)
+  or the current window through a unified API
+  ###
+  _.extend @prototype, Backbone.Events
+
+  initialized: false
+
+  initialize: ->
+    # Fetch document url from the top window and trigger a 'documentUrl'
+
+    if window.self == window.top
+      @initialized = true
+      setTimeout (=>@trigger 'documentUrl', window.location.href), 0
+    else
+
+      # Wait for initialization from parent before doing anything
+
+      $(window).on 'message', (e) =>
+        msg = e.originalEvent.data.split('.')
+        return if msg.length < 2 or msg[0] != 'TogglPipes'
+
+        msg = [msg[0]].concat _.flatten msg[1...].join('.').split(':') # ["TogglPipes", ...<:-separated strings>]
+
+        if msg[1] == 'initialize'
+          @initialized = true
+          e.originalEvent.source.postMessage("TogglPipes.getDocumentUrl", e.originalEvent.origin)
+
+        return if not @initialized
+
+        if msg[1] == 'notifyDocumentUrl'
+          documentUrl = msg[2...].join(':')
+          @trigger 'documentUrl', documentUrl
+
 
 class pipes.AppRouter extends Backbone.Router
   routes:
