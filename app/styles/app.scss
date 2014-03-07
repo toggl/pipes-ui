@@ -68,6 +68,12 @@
             background: $green;
           }
         }
+        &.in_progress {
+          color: $orange;
+          .dot {
+            background: $orange;
+          }
+        }
       }
     }
     .button.sync {

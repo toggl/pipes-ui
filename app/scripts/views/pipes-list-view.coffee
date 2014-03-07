@@ -1,2 +1,3 @@
 class pipes.views.PipesListView extends pipes.views.ListView
-  itemViewClass: -> pipes.views.PipeItemView
+  createItemView: (model) ->
+    new pipes.views.PipeItemView(model: model)

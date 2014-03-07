@@ -5,6 +5,13 @@
 @import 'compass/css3';
 @import 'globals';
 
+.button[disabled] {
+  background-color: $gray-light;
+  &:hover, &:focus {
+    background-color: $gray-light;
+  }
+}
+
 .large-container {
   padding: 40px;
   &.dark {
@@ -14,6 +21,9 @@
   &.light {
     background: $white;
     @include subtle-shadow;
+    input[type=text], input[type=text]:focus {
+      @include box-shadow(rgba(128, 128, 128, 0.4) 0 1px 3px);
+    }
   }
   &.light-grey {
     background: #f5f5f5;

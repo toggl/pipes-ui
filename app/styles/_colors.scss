@@ -25,16 +25,19 @@ $green: rgb(75, 200, 0);
 $green-dark: rgb(55, 170, 0);
 $yellow: rgb(255, 251, 205);
 $blue: rgb(44, 193, 230);
+$orange: rgb(196, 136, 10);
 
 .red-text { color: $red; &:hover {color: $red; } }
 .green-text { color: $green; &:hover {color: $green; } }
 .green-dark-text { color: $green-dark; &:hover {color: $green-dark; } }
 .yellow-text { color: $yellow; &:hover {color: $yellow; } }
+.orange-text { color: $orange; &:hover {color: $orange; } }
 .blue-text { color: $blue; &:hover {color: $blue; } }
 .red-bg { background-color: $red; }
 .green-bg { background-color: $green; }
 .green-dark-bg { background-color: $green-dark; }
 .yellow-bg { background-color: $yellow; }
+.orange-bg { background-color: $orange; }
 .blue-bg { background-color: $blue; }
 
 $text-color: $black;

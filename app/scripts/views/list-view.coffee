@@ -1,7 +1,7 @@
 class pipes.views.ListView extends Backbone.View
   # Abstract view for rendering a view for each model in the collection
 
-  itemViewClass: -> null
+  createItemView: (model) -> null
 
   initialize: ->
     @listenTo @collection, 'reset add remove', @render
@@ -9,7 +9,7 @@ class pipes.views.ListView extends Backbone.View
 
   refreshChildViews: ->
     # Add new views
-    @childViews[m.id or m.cid] = new (@itemViewClass())(model: m) \
+    @childViews[m.id or m.cid] = @createItemView(m) \
       for m in @collection.models \
       when m.id not of @childViews and m.cid not of @childViews
     # Destroy old views

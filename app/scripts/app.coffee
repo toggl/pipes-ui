@@ -23,6 +23,7 @@ class PipesApp
 
   models: {}
   views: {}
+  steps: {}
   router: null
 
   apiUrl: (url) ->
@@ -38,6 +39,7 @@ class PipesApp
           el: $('.integrations-list')
           collection: new pipes.models.IntegrationCollection([
             new pipes.models.Integration(
+              id: 'basecamp'
               name: 'Basecamp'
               image: 'images/logo-basecamp.png'
               link: '#'
@@ -58,6 +60,7 @@ class PipesApp
               ])
             )
           ])
+      pipes.integrationsListView.collection.models[0].get('pipes').integration = pipes.integrationsListView.collection.models[0]
       pipes.integrationsListView.render()
 
   initialize: ->
