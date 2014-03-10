@@ -1,33 +1,31 @@
-<div class="row pipe">
-  <div class="small-24 columns large-container light">
+<div class="small-24 columns large-container light">
 
-    <div class="left small-18 columns">
-      <p class="name bigger-text space-after">
-        <%- model.get('name') %>
-        <% if(model.get('automatic')) { %>
-          <span class="pill-box automatic green"><span>Automatic</span></span>
-        <% } %>
-      </p>
-      <p class="description">
-        <%- model.get('description') %>
-      </p>
+  <div class="left small-18 columns">
+    <p class="name bigger-text space-after">
+      <%- model.get('name') %>
+      <% if(model.get('automatic')) { %>
+        <span class="pill-box automatic green"><span>Automatic</span></span>
+      <% } %>
+    </p>
+    <p class="description">
+      <%- model.get('description') %>
+    </p>
+  </div>
+
+  <div class="right small-6 columns">
+    <button class="button green wide right sync"><i class="fa fa-refresh"></i><span class="button-label">Sync now</span></button>
+    <div class="cog-box right">
+    </div>
+  </div>
+
+  <div class="small-24 columns">
+
+    <div class="step-container">
     </div>
 
-    <div class="right small-6 columns">
-      <button class="button green wide right sync"><i class="fa fa-refresh"></i>Sync now</button>
-      <div class="cog-box right">
-      </div>
-    </div>
-
-    <div class="small-24 columns">
-
-      <div class="step-container">
-      </div>
-
-      <p class="meta">
-      </p>
-
-    </div>
+    <p class="meta">
+    </p>
 
   </div>
+
 </div>

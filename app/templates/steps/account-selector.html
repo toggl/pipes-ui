@@ -6,27 +6,15 @@
     </tr>
   </thead>
   <tbody>
-    <tr class="entry">
-      <td class="col-name">
-        <span class="ellipsis" title="SomeAccount">SomeAccount</span>
-      </td>
-      <td class="col-choose">
-        <button class="button choose-account">Select</button>
-      </td>
-    </tr>
-      <td class="col-name">
-        <span class="ellipsis" title="SomeAccount">SomeAccount</span>
-      </td>
-      <td class="col-choose">
-        <button class="button choose-account">Select</button>
-      </td>
-    </tr>
-      <td class="col-name">
-        <span class="ellipsis" title="SomeAccount">SomeAccount</span>
-      </td>
-      <td class="col-choose">
-        <button class="button choose-account">Select</button>
-      </td>
-    </tr>
+    <% for(var i = 0; i < accounts.length ; i++) { %>
+      <tr class="entry">
+        <td class="col-name">
+          <span class="ellipsis" title="<%- accounts[i].name %>"><%- accounts[i].name %></span>
+        </td>
+        <td class="col-choose">
+          <button class="button select-account" data-id="<%- accounts[i].id %>">Select</button>
+        </td>
+      </tr>
+    <% } %>
   </tbody>
 </table>

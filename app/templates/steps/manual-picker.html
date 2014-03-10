@@ -1,5 +1,4 @@
-
-<p class="title bigger-text">Select users to import</p>
+<p class="title bigger-text">Select objects to import</p>
 <div class="manual-picker">
   <div class="filter">
     <input type="text" name="filter" placeholder="Filter objects" />
@@ -14,110 +13,29 @@
               <span class="checkbox"></span>
             </div>
           </th>
-          <th class="col-fullname">Name</th>
-          <th class="col-email">Email</th>
+          <% for(var i = 0; i < columns.length ; i++) { %>
+            <th class="col-<%- columns[i].key %>"><%= columns[i].label %></th>
+          <% } %>
         </tr>
       </thead>
       <tbody>
-        <tr class="entry">
-          <td class="col-checkbox">
-            <div class="button checkbox">
-              <input type="checkbox" name="mark" class="custom checkbox" />
-              <span class="checkbox"></span>
-            </div>
-          </td>
-          <td class="col-fullname">
-            <span class="entry-fullname" title="Aa">Aa</span>
-          </td>
-          <td class="col-email">
-            <span class="entry-email" title="aa@aa.ee">aa@aa.ee</span>
-          </td>
-        </tr>
-        <tr class="entry">
-          <td class="col-checkbox">
-          <div class="button checkbox">
-            <input type="checkbox" name="mark" class="custom checkbox" />
-            <span class="checkbox"></span>
-          </div>
-          </td>
-          <td class="col-fullname">
-            <span class="entry-fullname" title="Aa">Aa</span>
-          </td>
-          <td class="col-email">
-            <span class="entry-email" title="aa@aa.ee">aa@aa.ee</span>
-          </td>
-        </tr>
-        <tr class="entry">
-          <td class="col-checkbox">
-          <div class="button checkbox">
-            <input type="checkbox" name="mark" class="custom checkbox" />
-            <span class="checkbox"></span>
-          </div>
-          </td>
-          <td class="col-fullname">
-            <span class="entry-fullname" title="Aa">Aa</span>
-          </td>
-          <td class="col-email">
-            <span class="entry-email" title="aa@aa.ee">aa@aa.ee</span>
-          </td>
-        </tr>
-        <tr class="entry">
-          <td class="col-checkbox">
-          <div class="button checkbox">
-            <input type="checkbox" name="mark" class="custom checkbox" />
-            <span class="checkbox"></span>
-          </div>
-          </td>
-          <td class="col-fullname">
-            <span class="entry-fullname" title="Aa">Aa</span>
-          </td>
-          <td class="col-email">
-            <span class="entry-email" title="aa@aa.ee">aa@aa.ee</span>
-          </td>
-        </tr>
-        <tr class="entry">
-          <td class="col-checkbox">
-          <div class="button checkbox">
-            <input type="checkbox" name="mark" class="custom checkbox" />
-            <span class="checkbox"></span>
-          </div>
-          </td>
-          <td class="col-fullname">
-            <span class="entry-fullname" title="Aa">Aa</span>
-          </td>
-          <td class="col-email">
-            <span class="entry-email" title="aa@aa.ee">aa@aa.ee</span>
-          </td>
-        </tr>
-        <tr class="entry">
-          <td class="col-checkbox">
-          <div class="button checkbox">
-            <input type="checkbox" name="mark" class="custom checkbox" />
-            <span class="checkbox"></span>
-          </div>
-          </td>
-          <td class="col-fullname">
-            <span class="entry-fullname" title="Aa">Aa</span>
-          </td>
-          <td class="col-email">
-            <span class="entry-email" title="aa@aa.ee">aa@aa.ee</span>
-          </td>
-        </tr>
-        <tr class="entry">
-          <td class="col-checkbox">
-          <div class="button checkbox">
-            <input type="checkbox" name="mark" class="custom checkbox" />
-            <span class="checkbox"></span>
-          </div>
-          </td>
-          <td class="col-fullname">
-            <span class="entry-fullname" title="Aa">Aa</span>
-          </td>
-          <td class="col-email">
-            <span class="entry-email" title="aa@aa.ee">aa@aa.ee</span>
-          </td>
-        </tr>
+        <% for(var i = 0; i < objects.length ; i++) { %>
+          <tr class="entry" data-id="<%- objects[i].id %>">
+            <td class="col-checkbox">
+              <div class="button checkbox">
+                <input type="checkbox" name="mark" class="custom checkbox" data-id="<%- objects[i].id %>" />
+                <span class="checkbox"></span>
+              </div>
+            </td>
+            <% for(var c = 0; c < columns.length ; c++) { %>
+              <td class="col-<%- columns[c].key %>">
+                <span class="ellipsis" title="<%- objects[i][columns[c].key] %>"><%- objects[i][columns[c].key] %></span>
+              </td>
+            <% } %>
+          </tr>
+        <% } %>
       </tbody>
     </table>
   </div>
+  <button class="button submit right">Sync</button>
 </div>
