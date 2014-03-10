@@ -18,12 +18,18 @@ $(document.body).on 'click', '.button.checkbox:not(.dropdown)', (e) ->
   if e.currentTarget == e.target
     $(e.currentTarget).children('span.checkbox').click()
 
+$(document).ajaxSend (e, xhr, options) ->
+  xhr.setRequestHeader 'Authorization', 'Basic ' + btoa(pipes.apiToken) + ':x' # TODO: cross-browser base64 encoding!
+
 class PipesApp
 
   models: {}
   views: {}
   steps: {}
   router: null
+
+  documentUrl: null
+  apiToken: null
 
   apiUrl: (url) ->
     "/pipes#{url}"
@@ -69,13 +75,21 @@ class PipesApp
     if window.self == window.top
       $('body').addClass 'no-frame'
 
-    @router = new pipes.AppRouter()
-    Backbone.history.start()
+    # Need to wait until apiToken & documentUrl before really doing anything
+    initializeApp = _.after 2, =>
+      @router = new pipes.AppRouter()
+      Backbone.history.start()
 
     @windowApi = new pipes.WindowApi()
     @windowApi.initialize()
-    @windowApi.on 'documentUrl', (documentUrl) ->
-      console.log('WOOOHOOO', 'documentUrl:', documentUrl)
+
+    @windowApi.on 'documentUrl', (@documentUrl) =>
+      console.log('WOOOHOOO', 'documentUrl:', @documentUrl)
+      initializeApp()
+
+    @windowApi.on 'apiToken', (@apiToken) =>
+      console.log('WOOOHOOO API', 'apiToken:', @apiToken)
+      initializeApp()
 
 window.pipes = new PipesApp()
 

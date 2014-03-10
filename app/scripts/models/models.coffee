@@ -10,3 +10,5 @@ class pipes.models.PipeCollection extends Backbone.Collection
   integration: null
   url: ->
     pipes.apiUrl("/integrations/#{@integration.id}/pipes")
+
+pipes.models.integrations = new pipes.models.IntegrationCollection()
