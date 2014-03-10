@@ -18,7 +18,8 @@ var gulp = require('gulp'),
     filter = require('gulp-filter'),
     gutil = require('gulp-util'),
     notifier = require('node-notifier'),
-    Entities = require('html-entities').XmlEntities;
+    Entities = require('html-entities').XmlEntities,
+    shell = require('gulp-shell');
 // var imagemin = require('gulp-imagemin'); // TODO
 
 // Custom notification function because gulp-notify doesn't work
@@ -55,12 +56,12 @@ var paths = {
   build: 'build/'
 };
 
-// try {
-//    var config = require('./config.json');
-// } catch(err) {
-//   config = {};
-//   gutil.log(gutil.colors.yellow('Warning: You need a config.json to be able to deploy'));
-// }
+try {
+   var localConfig = require('./local_config.json');
+} catch(err) {
+  localConfig = null;
+  gutil.log(gutil.colors.yellow('Warning: You need a config.json to be able to deploy'));
+}
 
 var vendorPreScss = ''; // String to prepend to all vendor scss files
 
@@ -181,6 +182,41 @@ gulp.task('serve', function(next) {
 gulp.task('clean', function() {
   gulp.src(paths.build, {read: false})
     .pipe(clean());
+});
+
+gulp.task('deploy', ['build'], function() {
+
+  if(!localConfig) {
+    gutil.log(gutil.colors.red("Error: You need a local_config.json to be able to deploy"));
+    return;
+  }
+  if(!localConfig.targets[env]) {
+    gutil.log(gutil.colors.red("Error: Please specify a deployment target that exists in local_config.json using -e"));
+    return;
+  }
+
+  targetConfig = localConfig.targets[env];
+
+  if(targetConfig.root[0] != '/') {
+    gutil.log(gutil.colors.red("Error: Please specify the remote root as an absolute path"));
+    return;
+  }
+
+  if(!targetConfig.root.match('\/$')) {
+    targetConfig.root += '/';
+  }
+
+  var sshConfig = {
+    host: targetConfig.host,
+    port: targetConfig.port || 22
+  }
+
+  gulp.src('')
+    .pipe(shell([
+      'ssh root@hubert "mkdir -p ' + targetConfig.root + '/current; cd ' + targetConfig.root + ';"',
+      'rsync --checksum --archive --compress --delete --safe-links build/ ' + (targetConfig.user ? targetConfig.user + '@' : '') + targetConfig.host + ':' + targetConfig.root + 'current/'
+    ]))
+
 });
 
 gulp.task('build', ['build-scripts', 'build-styles', 'build-assets', 'build-templates']);
