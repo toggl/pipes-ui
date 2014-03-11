@@ -4,13 +4,21 @@ class pipes.steps.Step
   view: null # PipeView
   sharedData: null # Data pool that is shared between the steps of a pipe
   default: false # Whether this is the default idle step for a pipe
+  skip: false
+  id: null # Required for steps that need to recover state after navigating away
 
   constructor: (options={}) ->
     @default = options.default or false
 
-  initialize: (@view, @sharedData) -> # Called by stepper
+  initialize: (@view, @sharedData, state = null) -> # Called by stepper
+    if state
+      @initializeState state
+
+  initializeState: (state) -> # Recover state, for steps that leave the page
 
   run: =>
+    console.log('run', @skip, @)
+    return @end() if @skip
     # Called by Stepper to start this step
     @onRun()
 
@@ -25,8 +33,8 @@ class pipes.steps.Step
 
   ajaxStart: (fn) ->
     @view.$el.addClass('spinning-container')
-    fn.call(@)
+    fn.call(@) if fn
 
   ajaxEnd: (fn) ->
     @view.$el.removeClass('spinning-container')
-    fn.call(@)
+    fn.call(@) if fn

@@ -1,9 +1,7 @@
 class pipes.steps.DataSubmitStep extends pipes.steps.Step
 
   url: ''
-
-  # Data tha will be posted is @sharedData[@key]
-  key: null
+  requestMap: null # Mapping 'query string param name': 'key in sharedData'
 
   # Callback to invoke when request has succeeded
   # Return false if you don't want the step to be automatically end()ed
@@ -11,15 +9,19 @@ class pipes.steps.DataSubmitStep extends pipes.steps.Step
 
   constructor: (options={}) ->
     super(options)
-    @key = options.key
+    @url = options.url
+    @requestMap = options.requestMap or {}
+
+  getRequestData: ->
+    _.mapValues @requestMap, (v, k) => @sharedData[v]
 
   onRun: ->
-    console.log('DataSubmitStep.run')
-    @ajaxStart -> setTimeout (=> @ajaxEnd @end), 500
-    setTimeout (=> @view.model.set(status: {type: 'success', message: "Woot done!"})), 2000
-    return
-    $.post @url,
-      data: @sharedData[@key]
-      success: (@data) =>
+    @ajaxStart -> $.ajax
+      type: 'post'
+      url: @url
+      data: JSON.stringify(@getRequestData())
+      contentType: 'application/json'
+      success: @ajaxEnd (@data) ->
         if @callback(@data, @) != false
           @end()
+

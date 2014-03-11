@@ -2,7 +2,7 @@ class pipes.WindowApi
   ###
   Api for talking with the cross-origin parent frame (toggl.com)
   or the current window through a unified API.
-  Toggl automatically posts 'initialize', upon which this immediately requests the document url and api token.
+  Toggl automatically posts 'initialize', upon which this immediately requests the document url wid, and api token.
   ###
   _.extend @prototype, Backbone.Events
 
@@ -28,13 +28,18 @@ class pipes.WindowApi
           @initialized = true
           e.originalEvent.source.postMessage("TogglPipes.getApiToken", e.originalEvent.origin)
           e.originalEvent.source.postMessage("TogglPipes.getDocumentUrl", e.originalEvent.origin)
+          e.originalEvent.source.postMessage("TogglPipes.getWid", e.originalEvent.origin)
 
         return if not @initialized
 
-        if msg[1] == 'notifyDocumentUrl'
-          documentUrl = msg[2...].join(':')
-          @trigger 'documentUrl', documentUrl
-        else if msg[1] == 'notifyApiToken'
-          apiToken = msg[2...].join(':')
-          @trigger 'apiToken', apiToken
+        switch msg[1]
+          when'notifyDocumentUrl'
+            documentUrl = msg[2...].join(':')
+            @trigger 'documentUrl', documentUrl
+          when 'notifyApiToken'
+            apiToken = msg[2...].join(':')
+            @trigger 'apiToken', apiToken
+          when 'notifyWid'
+            wid = +msg[2...] or null
+            @trigger 'wid', wid
 

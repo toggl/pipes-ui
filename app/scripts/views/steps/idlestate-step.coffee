@@ -11,13 +11,14 @@ class pipes.steps.IdleState extends pipes.steps.DataPollStep
 
   onRun: ->
     console.log('IdleState.onRun')
-    if @view.model.get('status').type == 'in_progress'
+    if @view.model.status() == 'in_progress'
       @startPolling()
 
-  dataCallback: (data, self) =>
+  callback: (response, self) =>
     # We can simply let the view update itself because this step doesn't draw any custom html
     # and since this is running, the view must be in this step (duh)
-    @view.model.set status: data.status
-    if data.status.type == 'in_progress'
+    @view.model.status response.status
+    if response.status == 'in_progress'
       @setNextPoll()
+    false
 

@@ -28,11 +28,33 @@ class PipesApp
   steps: {}
   router: null
 
+  # The following is a hack for oauth-type stuff. Step Ids are parsed from document url and if
+  # one is found, it is put here so that when a Stepper that contains this step is initialized,
+  # it uses this info to initialize itself into a non-default state. Oh the inhumanity!
+  pipeStates: {}
+
+  oauth:
+    parseState: (documentUrl) ->
+      state = documentUrl.match(/state=([^?&]+)/)?[1]
+      code = documentUrl.match(/code=([^?&]+)/)?[1]
+      return null if not state or not code
+      state = state.split(':') # [wid,] stepId
+      wid: +state[0], stepId: state[1], code: code
+    createState: (oAuthStep) ->
+      return (if pipes.wid then "#{pipes.wid}:" else "") + oAuthStep.id
+
   documentUrl: null
   apiToken: null
+  wid: null # Only required when run through toggl
 
   apiUrl: (url) ->
-    "/pipes#{url}"
+    "/api/v1#{url}"
+
+  redirect: (url) ->
+    if window.top != window.self
+      window.top.location = url
+    else
+      window.location.href= url
 
   windowApi: null
 
@@ -42,54 +64,66 @@ class PipesApp
       $('#content').html templates['index.html']()
 
       if not pipes.integrationsListView
+      #   pipes.integrationsListView = new pipes.views.IntegrationsListView
+      #     el: $('.integrations-list')
+      #     collection: new pipes.models.IntegrationCollection([
+      #       new pipes.models.Integration(
+      #         id: 'basecamp'
+      #         name: 'Basecamp'
+      #         image: 'images/logo-basecamp.png'
+      #         link: '#'
+      #         pipes: new pipes.models.PipeCollection([
+      #           new pipes.models.Pipe(
+      #             id: 'users'
+      #             name: 'Users'
+      #             description: 'Basecamp users will be imported to Toggl as users.'
+      #             status: {
+      #               type: 'success'
+      #               message: '5 users imported'
+      #             },
+      #             last_sync: {
+      #               date: 'Sep 1, 2013, 14:30'
+      #               log_url: '#'
+      #             }
+      #           )
+      #         ])
+      #       )
+      #     ])
+      # pipes.integrationsListView.collection.models[0].get('pipes').integration = pipes.integrationsListView.collection.models[0]
+        pipes.models.integrations.fetch()
         pipes.integrationsListView = new pipes.views.IntegrationsListView
           el: $('.integrations-list')
-          collection: new pipes.models.IntegrationCollection([
-            new pipes.models.Integration(
-              id: 'basecamp'
-              name: 'Basecamp'
-              image: 'images/logo-basecamp.png'
-              link: '#'
-              pipes: new pipes.models.PipeCollection([
-                new pipes.models.Pipe(
-                  id: 'users'
-                  name: 'Users'
-                  description: 'Basecamp users will be imported to Toggl as users.'
-                  status: {
-                    type: 'success'
-                    message: '5 users imported'
-                  },
-                  last_sync: {
-                    date: 'Sep 1, 2013, 14:30'
-                    log_url: '#'
-                  }
-                )
-              ])
-            )
-          ])
-      pipes.integrationsListView.collection.models[0].get('pipes').integration = pipes.integrationsListView.collection.models[0]
-      pipes.integrationsListView.render()
+          collection: pipes.models.integrations
 
   initialize: ->
 
     if window.self == window.top
       $('body').addClass 'no-frame'
 
-    # Need to wait until apiToken & documentUrl before really doing anything
-    initializeApp = _.after 2, =>
+    # Need to wait until apiToken & documentUrl & wid(optional) before really doing anything
+    initializeApp = _.after 3, =>
       @router = new pipes.AppRouter()
       Backbone.history.start()
 
     @windowApi = new pipes.WindowApi()
     @windowApi.initialize()
 
-    @windowApi.on 'documentUrl', (@documentUrl) =>
+    @windowApi.once 'documentUrl', (@documentUrl) =>
       console.log('WOOOHOOO', 'documentUrl:', @documentUrl)
+      # Try to parse oauth data from url
+      state = pipes.oauth.parseState documentUrl
+      if state
+        pipes.pipeStates[state.stepId] = state.code
       initializeApp()
 
-    @windowApi.on 'apiToken', (@apiToken) =>
+    @windowApi.once 'apiToken', (@apiToken) =>
       console.log('WOOOHOOO API', 'apiToken:', @apiToken)
       initializeApp()
+
+    @windowApi.once 'wid', (@wid) =>
+      console.log('WOOOHOOO WID', 'wid:', @wid)
+      initializeApp()
+
 
 window.pipes = new PipesApp()
 

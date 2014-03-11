@@ -44,6 +44,7 @@ var paths = {
     'app/scripts/app.coffee',
     'app/scripts/views/list-view.coffee',
     'app/scripts/views/steps/step.coffee',
+    'app/scripts/views/steps/datapoll-step.coffee',
     'app/scripts/**/*.coffee',
     '!app/scripts/vendor/**/*.coffee'
   ], // in specific order => app.js

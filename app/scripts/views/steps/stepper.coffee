@@ -8,8 +8,10 @@ class pipes.steps.Stepper
 
   constructor: ({@view, @steps}) ->
     @sharedData = {}
-    step.initialize @view, @sharedData for step in @steps
-    @startStep 0
+    step.initialize @view, @sharedData, pipes.pipeStates[step.id] for step in @steps
+    initialStep = _.findIndex @steps, (step) -> step.id of pipes.pipeStates
+    initialStep = 0 if initialStep == -1
+    @startStep initialStep
 
   startStep: (@currentI) ->
     console.log('startStep', '@currentI:', @currentI, @sharedData)

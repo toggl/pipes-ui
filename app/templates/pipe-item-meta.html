@@ -1,14 +1,18 @@
-Last import:
-<span class="last-sync"><%- model.get('last_sync').date %></span>
+  Last import:
+<% if(model.lastSync()) { %>
+  <span class="last-sync"><%- model.lastSync() %></span>
+<% } else { %>
+  <span class="last-sync never">never</span>
+<% } %>
 
-<span class="status <%- model.get('status').type %>">
+<span class="status <%- model.status() %>">
 
   <i class="dot"></i>
 
-  <%- model.get('status').message %>
+  <%- model.statusMessage() %>
 
-  <% if(model.get('last_sync').log_url) { %>
-    <a href="<%- model.get('last_sync').log_url %>" class="blue-text underline">View log for details</a>
+  <% if(model.logLink()) { %>
+    <a href="<%- model.logLink() %>" class="blue-text underline">View log for details</a>
   <% } %>
 
 </span>

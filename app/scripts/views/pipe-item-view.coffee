@@ -8,14 +8,17 @@ class pipes.views.PipeItemView extends Backbone.View
     'click .button.sync': 'startSync'
 
   initialize: ->
-    console.log('initialize', @model)
-    @listenTo @model, 'change:status', @refreshStatus
+    console.log('initialize', @model, @)
+    @listenTo @model, 'change:status change:message', @refreshStatus
     @cogView = new pipes.views.CogView
       el: @$('.cog-box')
       items: [
-        {name: 'destroy', label: "Destroy all relations", fn: ->}
+        {name: 'getup1', label: "Get up!", fn: ->}
+        {name: 'getup2', label: "Get on uppah!", fn: ->}
+        {name: 'getup3', label: "Get up!", fn: ->}
+        {name: 'getup4', label: "Get on uppah!", fn: ->}
         pipes.views.CogView.divider
-        {name: 'unauthorize', label: "Unauthorize", fn: ->}
+        {name: 'getdown', label: "Get down!", fn: ->}
       ]
     @metaView = new pipes.views.PipeItemMetaView
       el: @$('.meta')
@@ -27,7 +30,8 @@ class pipes.views.PipeItemView extends Backbone.View
     @refreshSyncButton()
 
   startSync: =>
-    @model.set status: _.extend({}, @model.get('status'), type: 'in_progress', message: "In progress")
+    @model.status 'in_progress'
+    @model.statusMessage 'In progress'
     @stepper.endCurrentStep() if @stepper.current.default
 
   render: =>
@@ -43,8 +47,8 @@ class pipes.views.PipeItemView extends Backbone.View
   refreshSyncButton: ->
     # Allow sync button only in default step if status = ok
     @$('.button.sync')
-      .attr 'disabled', not @stepper.current.default or @model.get('status').type != 'success'
-      .children('.button-label').text if @stepper.current.default and @model.get('status').type == 'success' then "Sync now" else "Syncing..."
+      .attr 'disabled', not @stepper.current.default or @model.status() != 'success'
+      .children('.button-label').text if @stepper.current.default and @model.status() == 'success' then "Sync now" else "Syncing..."
 
   refreshStatus: ->
     @metaView.render()
@@ -68,16 +72,32 @@ pipes.getStepper  = (integration, pipe, pipeView) ->
           return new pipes.steps.Stepper
             view: pipeView
             steps: [
-              new pipes.steps.IdleState(default: true)
-              new pipes.steps.OAuthStep()
-              new pipes.steps.AccountSelectorStep()
-              new pipes.steps.DataPollStep(url: '', key: 'users')
+              new pipes.steps.IdleState(
+                default: true
+                url: pipe.url()
+              )
+              new pipes.steps.OAuthStep(
+                integration: integration
+                pipe: pipe
+              )
+              new pipes.steps.AccountSelectorStep(
+                url: integration.accountsUrl()
+                outKey: 'accountId'
+              )
+              new pipes.steps.DataPollStep(
+                url: "#{pipe.url()}/users"
+                requestMap: {'account_id': 'accountId'} # Mapping 'query string param name': 'key in sharedData'
+                responseMap: {'users': 'users'} # Mapping 'key in sharedData': 'key in response data'
+              )
               new pipes.steps.ManualPickerStep(
-                inKey: 'users',
+                inKey: 'users'
                 outKey: 'selectedUsers'
                 columns: [{key: 'name', label: "Name"}, {key: 'email', label: "E-mail"}]
               )
-              new pipes.steps.DataSubmitStep(url: '', key: 'selectedUsers')
+              new pipes.steps.DataSubmitStep(
+                url: "#{pipe.url()}/users"
+                requestMap: {ids: 'selectedUsers'} # Mapping 'query string param name': 'key in sharedData'
+              )
             ]
         else
           throw "Integration #{integration.id} doesn't have logic for pipe #{pipe.id}"

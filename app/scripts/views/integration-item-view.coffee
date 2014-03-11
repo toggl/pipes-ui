@@ -8,6 +8,6 @@ class pipes.views.IntegrationItemView extends Backbone.View
 
   render: ->
     @$el.html @template model: @model
-    @pipesList = new (@pipesListViewClass())(collection: @model.get('pipes'), el: @$('.pipes-list')) if not @pipesList
+    @pipesList = new (@pipesListViewClass())(collection: @model.getPipes(), el: @$('.pipes-list')) if not @pipesList
     @pipesList.render()
     @
