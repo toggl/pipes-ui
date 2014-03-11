@@ -67,9 +67,6 @@
 .button, a.button {
   font-weight: $semibold !important;
   font-size: $base * 1.2;
-  &:hover {
-    color: $text-color;
-  }
   &.green {
     color: $white;
     text-decoration: none;
