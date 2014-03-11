@@ -1,4 +1,9 @@
 class pipes.steps.ManualPickerStep extends pipes.steps.Step
+  ###
+  Generic manual-picker-table step for.
+  Takes data from sharedData[@inKey]. Assumes each object has key 'id'.
+  Constructs an array of selected ids and stores it in sharedData[@outKey]
+  ###
   template: templates['steps/manual-picker.html']
   inKey: 'objects'
   outKey: 'selectedObjects'

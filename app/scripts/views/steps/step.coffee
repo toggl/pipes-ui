@@ -1,4 +1,8 @@
 class pipes.steps.Step
+  ###
+  Generic Step Abstract class.
+  Has access to the PipeView via @view
+  ###
   _.extend @prototype, Backbone.Events
 
   view: null # PipeView

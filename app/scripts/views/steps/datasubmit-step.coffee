@@ -1,4 +1,9 @@
 class pipes.steps.DataSubmitStep extends pipes.steps.Step
+  ###
+  Generic data posting step.
+  POSTs data to @url. Data is taken from sharedData via @requestMap ({'post param key': 'sharedData key'})
+  By default, doesn't do anything with response but end()s immediately.
+  ###
 
   url: ''
   requestMap: null # Mapping 'query string param name': 'key in sharedData'

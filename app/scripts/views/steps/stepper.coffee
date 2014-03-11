@@ -1,4 +1,8 @@
 class pipes.steps.Stepper
+  ###
+  Handles stepping sequences for PipeViews and also restores state if a known state string is found
+  in documentUrl (used by oauth).
+  ###
   _.extend @prototype, Backbone.Events
 
   steps: []

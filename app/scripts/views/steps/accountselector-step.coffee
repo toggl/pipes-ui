@@ -2,7 +2,7 @@ class pipes.steps.AccountSelectorStep extends pipes.steps.DataPollStep
   ###
   An all-in-one account selector step.
   Polls accounts from the given url, displayes them in a list and
-  stores the selected account's id in @sharedData.accountId
+  stores the selected account's id in @sharedData[@outKey]
   ###
 
   listTemplate: templates['steps/account-selector.html']

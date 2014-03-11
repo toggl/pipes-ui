@@ -1,6 +1,14 @@
 class pipes.steps.DataPollStep extends pipes.steps.Step
+  ###
+  Generic data polling step.
+  Polls data from @pollUrl after @pollDelay ms and by default end()s and stores data in sharedData if any data is received.
+  (override @callback to change this behavior)
+  Each request can take data from shardData via @requestMap ({'get param': 'sharedData key'})
+  Response is stored into sharedData through @responseMap ({'sharedData key': 'response json key'})
+  (use blank json key to store the whole response)
+  ###
 
-  pollDelay: 5000
+  pollDelay: 1000
   pollDelayIncrement: 0
   # TODO: add limit
 
