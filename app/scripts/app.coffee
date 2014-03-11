@@ -19,7 +19,7 @@ $(document.body).on 'click', '.button.checkbox:not(.dropdown)', (e) ->
     $(e.currentTarget).children('span.checkbox').click()
 
 $(document).ajaxSend (e, xhr, options) ->
-  xhr.setRequestHeader 'Authorization', 'Basic ' + btoa(pipes.apiToken) + ':x' # TODO: cross-browser base64 encoding!
+  xhr.setRequestHeader 'Authorization', 'Basic ' + btoa(pipes.apiToken + ':x') # TODO: cross-browser base64 encoding!
 
 class PipesApp
 
