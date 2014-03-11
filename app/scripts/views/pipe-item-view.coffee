@@ -72,18 +72,9 @@ pipes.getStepper  = (integration, pipe, pipeView) ->
           return new pipes.steps.Stepper
             view: pipeView
             steps: [
-              new pipes.steps.IdleState(
-                default: true
-                url: pipe.url()
-              )
-              new pipes.steps.OAuthStep(
-                integration: integration
-                pipe: pipe
-              )
-              new pipes.steps.AccountSelectorStep(
-                url: integration.accountsUrl()
-                outKey: 'accountId'
-              )
+              new pipes.steps.IdleState(default: true)
+              new pipes.steps.OAuthStep(pipe: pipe)
+              new pipes.steps.AccountSelectorStep(outKey: 'accountId')
               new pipes.steps.DataPollStep(
                 url: "#{pipe.url()}/users"
                 requestMap: {'account_id': 'accountId'} # Mapping 'query string param name': 'key in sharedData'

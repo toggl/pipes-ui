@@ -9,6 +9,10 @@ class pipes.steps.IdleState extends pipes.steps.DataPollStep
   pollDelay: 3000
   pollDelayIncrement: 3000
 
+  initialize: (options) ->
+    super(options)
+    @url = @view.model.url() unless @url
+
   onRun: ->
     console.log('IdleState.onRun')
     if @view.model.status() == 'in_progress'

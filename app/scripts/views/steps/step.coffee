@@ -10,7 +10,7 @@ class pipes.steps.Step
   constructor: (options={}) ->
     @default = options.default or false
 
-  initialize: (@view, @sharedData, state = null) -> # Called by stepper
+  initialize: ({@view, @sharedData, state}) -> # Called by stepper
     if state
       @initializeState state
 

@@ -8,7 +8,7 @@ class pipes.steps.Stepper
 
   constructor: ({@view, @steps}) ->
     @sharedData = {}
-    step.initialize @view, @sharedData, pipes.pipeStates[step.id] for step in @steps
+    step.initialize(view: @view, sharedData: @sharedData, state: pipes.pipeStates[step.id]) for step in @steps
     initialStep = _.findIndex @steps, (step) -> step.id of pipes.pipeStates
     initialStep = 0 if initialStep == -1
     @startStep initialStep
