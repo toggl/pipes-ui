@@ -21,7 +21,6 @@ class pipes.steps.Step
   initializeState: (state) -> # Recover state, for steps that leave the page
 
   run: =>
-    console.log('run', @skip, @)
     return @end() if @skip
     # Called by Stepper to start this step
     @onRun()

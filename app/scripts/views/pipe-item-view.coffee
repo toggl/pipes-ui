@@ -8,8 +8,8 @@ class pipes.views.PipeItemView extends Backbone.View
     'click .button.sync': 'startSync'
 
   initialize: ->
-    console.log('initialize', @model, @)
-    @listenTo @model, 'change:status change:message', @refreshStatus
+    console.log('PipeItemView =============', @model, @)
+    @listenTo @model, 'change:pipe_status change:configured change:authorized', @refreshStatus
     @cogView = new pipes.views.CogView
       el: @$('.cog-box')
       items: [
@@ -48,7 +48,7 @@ class pipes.views.PipeItemView extends Backbone.View
     # Allow sync button only in default step if status = ok
     @$('.button.sync')
       .attr 'disabled', not @stepper.current.default or @model.status() != 'success'
-      .children('.button-label').text if @stepper.current.default and @model.status() == 'success' then "Sync now" else "Syncing..."
+      .children('.button-label').text if @stepper.current.default and @model.status() == 'success' then "Sync now" else "In progress..."
 
   refreshStatus: ->
     @metaView.render()
@@ -75,9 +75,15 @@ pipes.getStepper  = (integration, pipe, pipeView) ->
               new pipes.steps.IdleState(default: true)
               new pipes.steps.OAuthStep(pipe: pipe)
               new pipes.steps.AccountSelectorStep(outKey: 'accountId')
+              new pipes.steps.DataSubmitStep(
+                url: "#{pipe.url()}/setup"
+                requestMap: {'account_id': 'accountId'}
+                callback: ->
+                  console.log('callback', pipeView)
+                  pipeView.model.set configured: true
+              )
               new pipes.steps.DataPollStep(
                 url: "#{pipe.url()}/users"
-                requestMap: {'account_id': 'accountId'} # Mapping 'query string param name': 'key in sharedData'
                 responseMap: {'users': 'users'} # Mapping 'key in sharedData': 'key in response data'
               )
               new pipes.steps.ManualPickerStep(
@@ -87,7 +93,7 @@ pipes.getStepper  = (integration, pipe, pipeView) ->
               )
               new pipes.steps.DataSubmitStep(
                 url: "#{pipe.url()}/users"
-                requestMap: {ids: 'selectedUsers'} # Mapping 'query string param name': 'key in sharedData'
+                requestMap: {'ids': 'selectedUsers'} # Mapping 'query string param name': 'key in sharedData'
               )
             ]
         else

@@ -16,6 +16,7 @@ class pipes.steps.DataSubmitStep extends pipes.steps.Step
     super(options)
     @url = options.url
     @requestMap = options.requestMap or {}
+    @callback = options.callback if options.callback
 
   getRequestData: ->
     _.mapValues @requestMap, (v, k) => @sharedData[v]

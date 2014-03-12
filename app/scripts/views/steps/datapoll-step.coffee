@@ -1,7 +1,7 @@
 class pipes.steps.DataPollStep extends pipes.steps.Step
   ###
   Generic data polling step.
-  Polls data from @pollUrl after @pollDelay ms and by default end()s and stores data in sharedData if any data is received.
+  Polls data from @url after @pollDelay ms and by default end()s and stores data in sharedData if any data is received.
   (override @callback to change this behavior)
   Each request can take data from shardData via @requestMap ({'get param': 'sharedData key'})
   Response is stored into sharedData through @responseMap ({'sharedData key': 'response json key'})
@@ -12,7 +12,7 @@ class pipes.steps.DataPollStep extends pipes.steps.Step
   pollDelayIncrement: 0
   # TODO: add limit
 
-  pollUrl: null
+  url: null
   pollTimeout: null
   pollCount: 0 # Used to increase poll interval (3s, 6s, 9s, ...)
 
@@ -30,7 +30,7 @@ class pipes.steps.DataPollStep extends pipes.steps.Step
     super(options)
     @requestMap = options.requestMap
     @responseMap = options.responseMap
-    @pollUrl = options.url
+    @url = options.url
 
   getRequestData: ->
     _.mapValues @requestMap, (v, k) => @sharedData[v]
@@ -45,10 +45,10 @@ class pipes.steps.DataPollStep extends pipes.steps.Step
     @pollCount = 0
     @endPolling()
     @ajaxStart()
-    @setNextPoll()
+    @poll()
 
   setNextPoll: ->
-    @pollTimeout = setTimeout @poll, @pollDelay + @pollCount * @pollDelayIncrement
+    @pollTimeout = setTimeout @poll, @pollDelay + (@pollCount - 1) * @pollDelayIncrement
 
   endPolling: ->
     @ajaxEnd()
@@ -56,12 +56,15 @@ class pipes.steps.DataPollStep extends pipes.steps.Step
 
   poll: =>
     @pollCount++
-    $.get @pollUrl, @getRequestData(), (@responseData) =>
-      if not @responseData
-        @setNextPoll()
-      else
-        if @callback(@responseData, @) != false
-          @end()
-
+    $.ajax
+      type: 'get'
+      url: @url
+      data: @getRequestData()
+      success: (@responseData) =>
+        if not @responseData
+          @setNextPoll()
+        else
+          if @callback(@responseData, @) != false
+            @end()
       error: =>
         @setNextPoll()
