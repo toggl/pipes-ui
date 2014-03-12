@@ -89,7 +89,7 @@ pipes.getStepper  = (integration, pipe, pipeView) ->
               new pipes.steps.ManualPickerStep(
                 inKey: 'users'
                 outKey: 'selectedUsers'
-                columns: [{key: 'name', label: "Name"}, {key: 'email', label: "E-mail"}]
+                columns: [{key: 'name', label: "Name", filter: true}, {key: 'email', label: "E-mail", filter: true}]
               )
               new pipes.steps.DataSubmitStep(
                 url: "#{pipe.url()}/users"
