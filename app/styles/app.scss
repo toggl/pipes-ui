@@ -31,12 +31,33 @@
       margin-left: 20px;
     }
     .pipe {
+      position: relative;
       margin-top: 10px;
+      overflow: hidden;
       .large-container {
         padding: 25px 30px;
       }
+      .loading {
+        display: none;
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: #FFF;
+        opacity: 0.6;
+        z-index: 1;
+        .fa-refresh {
+          position: absolute;
+          font-size: 116px;
+          top: 22px;
+          opacity: .1;
+          left: 34px;
+        }
+      }
+      &.loading>.loading {
+        display: block;
+      }
     }
     .meta {
+      clear: both;
       color: $gray;
       margin-bottom: 0px;
       .last-sync {
@@ -46,15 +67,6 @@
         margin-left: 10px;
         a {
           margin-left: 10px;
-        }
-        .dot {
-          display: inline-block;
-          vertical-align: middle;
-          height: 6px;
-          width: 6px;
-          padding: 0;
-          margin: 0 4px 2px;
-          @include border-radius(3px);
         }
         &.fail {
           color: $red;
@@ -68,16 +80,29 @@
             background: $green;
           }
         }
-        &.in_progress {
+        &.running {
           color: $orange;
           .dot {
             background: $orange;
           }
         }
       }
+      .authorized, .configured {
+        color: $green;
+        font-size: $base-font-size * 0.9;
+        margin-left: 15px;
+        opacity: .9;
+        .dot {
+          background: $green;
+        }
+      }
     }
     .button.sync {
       margin-left: 20px;
+      .fa {
+        font-size: 18px;
+        vertical-align: middle;
+      }
     }
     .manual-picker {
       .filter {
@@ -86,7 +111,7 @@
       .table-container {
         max-height: 300px;
         overflow-x: hidden;
-        overflow-y: scroll;
+        overflow-y: auto;
         border-top: 1px solid #eee;
         border-bottom: 1px solid #eee;
         margin-bottom: 20px;

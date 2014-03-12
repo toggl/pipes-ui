@@ -12,6 +12,16 @@
   }
 }
 
+.dot {
+  display: inline-block;
+  vertical-align: middle;
+  height: 6px;
+  width: 6px;
+  padding: 0;
+  margin: 0 4px 2px;
+  @include border-radius(3px);
+}
+
 .large-container {
   padding: 40px;
   &.dark {

@@ -35,9 +35,9 @@ class pipes.steps.Step
   onEnd: -> # Override me
 
   ajaxStart: (fn) ->
-    @view.$el.addClass('spinning-container')
+    @view.$el.addClass('spinning-container').addClass('loading')
     fn.call(@) if fn
 
   ajaxEnd: (fn) ->
-    @view.$el.removeClass('spinning-container')
+    @view.$el.removeClass('spinning-container').removeClass('loading')
     fn.call(@) if fn
