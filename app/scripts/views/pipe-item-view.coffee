@@ -30,7 +30,7 @@ class pipes.views.PipeItemView extends Backbone.View
     @refreshSyncButton()
 
   startSync: =>
-    @model.status 'in_progress'
+    @model.status 'running'
     @model.statusMessage 'In progress'
     @stepper.endCurrentStep() if @stepper.current.default
 

@@ -16,7 +16,7 @@ class pipes.steps.OAuthStep extends pipes.steps.Step
     @id = "#{options.pipe.collection.integration.id}.#{options.pipe.id}.oauth"
     @tokenUrl = integration.get('auth_url').replace('__STATE__', pipes.oauth.createState(@))
     @authorizeUrl = integration.authorizationsUrl()
-    @skip = !!options.integration.get('authorization')
+    @skip = !!integration.get('authorized')
 
   initializeState: (@code) ->
 
@@ -32,5 +32,5 @@ class pipes.steps.OAuthStep extends pipes.steps.Step
         data: JSON.stringify(code: @code)
         contentType: 'application/json'
         success: @ajaxEnd ->
-          @view.model.collection.integration.set authorization: true
+          @view.model.collection.integration.set authorized: true
           @end()

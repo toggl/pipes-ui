@@ -34,27 +34,27 @@ class pipes.models.Pipe extends Backbone.Model
 
   status: (v) ->
     if v
-      @set(status: v)
+      @set(pipe_status: _.extend {}, @get('pipe_status'), status: v)
     else
-      @get('status') or 'success'
+      @get('pipe_status')?.status or 'success'
 
   statusMessage: (v) ->
     if v
-      @set(message: v)
+      @set(pipe_status: _.extend {}, @get('pipe_status'), message: v)
     else
-      @get('message') or 'Ready'
+      @get('pipe_status')?.message or 'Ready'
 
   lastSync: (v) ->
     if v
-      @set(sync_date: v)
+      @set(pipe_status: _.extend {}, @get('pipe_status'), last_sync: v)
     else
-      @get('sync_date')
+      @get('pipe_status')?.last_sync or null
 
   logLink: (v) ->
     if v
-      @set(sync_loc: v)
+      @set(pipe_status: _.extend {}, @get('pipe_status'), sync_log: v)
     else
-      @get('sync_log')
+      @get('pipes_status')?.sync_log or null
 
 class pipes.models.PipeCollection extends Backbone.Collection
   model: pipes.models.Pipe
