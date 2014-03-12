@@ -6,8 +6,8 @@ class pipes.steps.IdleState extends pipes.steps.DataPollStep
   Also polls for status changes if status == inprogress.
   ###
 
-  pollDelay: 3000
-  pollDelayIncrement: 3000
+  pollDelay: 1000
+  pollDelayIncrement: 2000
 
   initialize: (options) ->
     super(options)

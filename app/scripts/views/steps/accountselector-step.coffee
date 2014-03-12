@@ -15,7 +15,7 @@ class pipes.steps.AccountSelectorStep extends pipes.steps.DataPollStep
   initialize: (options) ->
     super(options)
     @url = @view.model.collection.integration.accountsUrl()
-    @skip = !!view.model.get('configured')
+    @skip = !!@view.model.get('configured')
 
   callback: (response, step) ->
     if not response?.accounts?.length?
