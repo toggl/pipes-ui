@@ -14,7 +14,6 @@ class pipes.steps.IdleState extends pipes.steps.DataPollStep
     @url = @view.model.url() unless @url
 
   onRun: ->
-    console.log('IdleState.onRun')
     if @view.model.status() == 'running'
       @startPolling()
 

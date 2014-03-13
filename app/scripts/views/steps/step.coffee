@@ -41,3 +41,8 @@ class pipes.steps.Step
   ajaxEnd: (fn) ->
     @view.$el.removeClass('spinning-container').removeClass('loading')
     fn.call(@) if fn
+
+  getContainer: -> # Return the efficiently cached .step-container of the view
+    if not @_container or not $.contains(document.documentElement, @_container[0])
+      @_container = @view.$('.step-container')
+    @_container

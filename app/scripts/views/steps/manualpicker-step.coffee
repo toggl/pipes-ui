@@ -16,7 +16,7 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
     @columns = options.columns
 
   onRun: ->
-    container = @view.$('.step-container')
+    container = @getContainer()
     container.html @template
       columns: @columns
       objects: @sharedData[@inKey]
@@ -28,11 +28,11 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
     @refreshMainCheckbox()
 
   onEnd: ->
-    @view.$('.step-container').empty().off '.manual-picker'
+    @getContainer().empty().off '.manual-picker'
 
   clickMainCheckbox: (e, extra = {}) =>
     return if extra?.manualPickerIgnore
-    $tbody = @view.$('.step-container tbody')
+    $tbody = @getContainer().find('tbody')
     $unchecked = $tbody.find('input:checkbox:visible:not(:checked)')
     if $(e.currentTarget).prop 'checked'
       $unchecked.prop('checked', true).trigger 'change', [manualPickerIgnore: true]
@@ -47,20 +47,20 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
     @refreshMainCheckbox()
 
   refreshSubmitButton: ->
-    @view.$('.step-container .button.submit').attr 'disabled',
-      @view.$('.step-container tbody input:checkbox:visible:checked').length == 0
+    @getContainer().find('.button.submit').attr 'disabled',
+      @getContainer().find('tbody input:checkbox:visible:checked').length == 0
 
   refreshMainCheckbox: ->
-    @view.$('.step-container thead input:checkbox:visible').prop('checked',
-      @view.$('.step-container tbody input:checkbox:visible:not(:checked)').length == 0)
+    @getContainer().find('thead input:checkbox:visible').prop('checked',
+      @getContainer().find('tbody input:checkbox:visible:not(:checked)').length == 0)
       .trigger 'change', [manualPickerIgnore: true]
 
   filterObjects: =>
-    word = @view.$('.step-container input.filter').val().toLowerCase()
+    word = @getContainer().find('input.filter').val().toLowerCase()
     objects = @sharedData[@inKey]
     filteredColumns = (col.key for col in @columns when !!col.filter)
 
-    rows = @view.$('.step-container tbody>tr')
+    rows = @getContainer().find('tbody>tr')
     rows.filter(':visible').hide()
 
     rows = (id: $(row).data('id'), el: $(row) for row in rows)
@@ -75,7 +75,7 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
     row.el.show() for row in filteredRows
 
   clickSubmit: (e) =>
-    @submitItems(+$(el).data('id') for el in @view.$('.step-container tbody input:checked'))
+    @submitItems(+$(el).data('id') for el in @getContainer().find('tbody input:checked'))
 
   submitItems: (ids) ->
     @sharedData[@outKey] = ids
