@@ -48,7 +48,7 @@ class PipesApp
   wid: null # Only required when run through toggl
 
   apiUrl: (url) ->
-    "/api/v1#{url}"
+    "#{window.PIPES_API_HOST}/api/v1#{url}"
 
   redirect: (url) ->
     if window.top != window.self
@@ -64,32 +64,6 @@ class PipesApp
       $('#content').html templates['index.html']()
 
       if not pipes.integrationsListView
-      #   pipes.integrationsListView = new pipes.views.IntegrationsListView
-      #     el: $('.integrations-list')
-      #     collection: new pipes.models.IntegrationCollection([
-      #       new pipes.models.Integration(
-      #         id: 'basecamp'
-      #         name: 'Basecamp'
-      #         image: 'images/logo-basecamp.png'
-      #         link: '#'
-      #         pipes: new pipes.models.PipeCollection([
-      #           new pipes.models.Pipe(
-      #             id: 'users'
-      #             name: 'Users'
-      #             description: 'Basecamp users will be imported to Toggl as users.'
-      #             status: {
-      #               type: 'success'
-      #               message: '5 users imported'
-      #             },
-      #             last_sync: {
-      #               date: 'Sep 1, 2013, 14:30'
-      #               log_url: '#'
-      #             }
-      #           )
-      #         ])
-      #       )
-      #     ])
-      # pipes.integrationsListView.collection.models[0].get('pipes').integration = pipes.integrationsListView.collection.models[0]
         pipes.models.integrations.fetch()
         pipes.integrationsListView = new pipes.views.IntegrationsListView
           el: $('.integrations-list')

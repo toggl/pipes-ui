@@ -61,7 +61,7 @@ try {
    var localConfig = require('./local_config.json');
 } catch(err) {
   localConfig = null;
-  gutil.log(gutil.colors.yellow('Warning: You need a config.json to be able to deploy'));
+  gutil.log(gutil.colors.yellow('Warning: You need a local_config.json to be able to deploy or specify api host'));
 }
 
 var vendorPreScss = ''; // String to prepend to all vendor scss files
@@ -81,10 +81,11 @@ var env = gutil.env.e || 'development';
 // =====
 
 gulp.task('build-assets', function() {
-  // Copy files as-is (almost)
+  // Copy files as-is (+preprocess)
+  var apiHost = ((localConfig || {targets:{}}).targets[env] || {}).apiHost || '';
   // Project files
   gulp.src(paths.index)
-    .pipe(preprocess({context: {ENV: env}}))
+    .pipe(preprocess({context: {ENV: env, API_HOST: apiHost}}))
     .pipe(gulp.dest(paths.build));
   gulp.src(paths.images)
     .pipe(gulp.dest(paths.build + "images/"));
