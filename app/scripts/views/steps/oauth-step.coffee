@@ -31,6 +31,6 @@ class pipes.steps.OAuthStep extends pipes.steps.Step
         url: @authorizeUrl
         data: JSON.stringify(code: @code)
         contentType: 'application/json'
-        success: @ajaxEnd ->
+        success: => @ajaxEnd ->
           @view.model.collection.integration.set authorized: true
           @end()

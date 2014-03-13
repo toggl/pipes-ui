@@ -76,11 +76,11 @@ pipes.getStepper  = (integration, pipe, pipeView) ->
               new pipes.steps.OAuthStep(pipe: pipe)
               new pipes.steps.AccountSelectorStep(outKey: 'accountId')
               new pipes.steps.DataSubmitStep(
+                skip: pipe.get 'configured'
                 url: "#{pipe.url()}/setup"
                 requestMap: {'account_id': 'accountId'}
                 callback: ->
-                  console.log('callback', pipeView)
-                  pipeView.model.set configured: true
+                  pipe.set configured: true
               )
               new pipes.steps.DataPollStep(
                 url: "#{pipe.url()}/users"

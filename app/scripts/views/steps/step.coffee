@@ -13,6 +13,7 @@ class pipes.steps.Step
 
   constructor: (options={}) ->
     @default = options.default or false
+    @skip = !!options.skip
 
   initialize: ({@view, @sharedData, state}) -> # Called by stepper
     if state
