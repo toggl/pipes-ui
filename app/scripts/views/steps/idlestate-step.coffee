@@ -21,7 +21,7 @@ class pipes.steps.IdleState extends pipes.steps.DataPollStep
     # We can simply let the view update itself because this step doesn't draw any custom html
     # and since this is running, the view must be in this step (duh)
     @view.model.status response.status
-    if response.status == 'running'
+    if response.pipe_status.status == 'running'
       @setNextPoll()
     false
 

@@ -27,7 +27,7 @@ class pipes.steps.OAuthStep extends pipes.steps.Step
     else
       # Woot, 2nd step of oauth process, we have recovered state
       @ajaxStart -> $.ajax
-        type: 'post'
+        type: 'POST'
         url: @authorizeUrl
         data: JSON.stringify(code: @code)
         contentType: 'application/json'

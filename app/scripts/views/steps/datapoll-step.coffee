@@ -57,7 +57,7 @@ class pipes.steps.DataPollStep extends pipes.steps.Step
   poll: =>
     @pollCount++
     $.ajax
-      type: 'get'
+      type: 'GET'
       url: @url
       data: @getRequestData()
       success: (@responseData) =>

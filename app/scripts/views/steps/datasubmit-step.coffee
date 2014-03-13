@@ -23,7 +23,7 @@ class pipes.steps.DataSubmitStep extends pipes.steps.Step
 
   onRun: ->
     @ajaxStart -> $.ajax
-      type: 'post'
+      type: 'POST'
       url: @url
       data: JSON.stringify(@getRequestData())
       contentType: 'application/json'
