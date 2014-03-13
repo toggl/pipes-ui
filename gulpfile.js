@@ -19,7 +19,8 @@ var gulp = require('gulp'),
     gutil = require('gulp-util'),
     notifier = require('node-notifier'),
     Entities = require('html-entities').XmlEntities,
-    shell = require('gulp-shell');
+    shell = require('gulp-shell'),
+    bump = require('gulp-bump');
 // var imagemin = require('gulp-imagemin'); // TODO
 
 // Custom notification function because gulp-notify doesn't work
@@ -220,6 +221,17 @@ gulp.task('deploy', ['build'], function() {
     ]))
 
 });
+
+var bumpVersion = function(type) {
+  type = type || 'patch';
+  gulp.src(['./bower.json', './package.json'])
+    .pipe(bump({type: type}))
+    .pipe(gulp.dest('./'))
+}
+gulp.task('bump', function() { bumpVersion('patch'); });
+gulp.task('bump:patch', function() { bumpVersion('patch'); });
+gulp.task('bump:minor', function() { bumpVersion('minor'); });
+gulp.task('bump:major', function() { bumpVersion('major'); });
 
 gulp.task('build', ['build-scripts', 'build-styles', 'build-assets', 'build-templates']);
 gulp.task('default', ['build', 'watch', 'livereload', 'serve']);
