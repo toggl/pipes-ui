@@ -8,7 +8,8 @@
     "backbone": "~1.1.2",
     "font-awesome": "~4.0.3",
     "foundation": "git://github.com/syko/foundation.git#master",
-    "iframe-resizer": "~1.4.4"
+    "iframe-resizer": "~1.4.4",
+    "momentjs": "~2.5.1"
   },
   "devDependencies": {},
   "overrides": {
