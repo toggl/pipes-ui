@@ -33,11 +33,11 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
   clickMainCheckbox: (e, extra = {}) =>
     return if extra?.manualPickerIgnore
     $tbody = @getContainer().find('tbody')
-    $unchecked = $tbody.find('input:checkbox:visible:not(:checked)')
+    $unchecked = $tbody.find('tr:visible input:checkbox:not(:checked)')
     if $(e.currentTarget).prop 'checked'
       $unchecked.prop('checked', true).trigger 'change', [manualPickerIgnore: true]
     else
-      $tbody.find('input:checkbox:visible').prop('checked', false).trigger 'change', [manualPickerIgnore: true]
+      $tbody.find('tr:visible input:checkbox').prop('checked', false).trigger 'change', [manualPickerIgnore: true]
     @refreshSubmitButton()
     @refreshMainCheckbox()
 
@@ -48,11 +48,11 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
 
   refreshSubmitButton: ->
     @getContainer().find('.button.submit').attr 'disabled',
-      @getContainer().find('tbody input:checkbox:visible:checked').length == 0
+      @getContainer().find('tbody tr:visible input:checkbox:checked').length == 0
 
   refreshMainCheckbox: ->
-    @getContainer().find('thead input:checkbox:visible').prop('checked',
-      @getContainer().find('tbody input:checkbox:visible:not(:checked)').length == 0)
+    @getContainer().find('thead input:checkbox').prop('checked',
+      @getContainer().find('tbody tr:visible input:checkbox:not(:checked)').length == 0)
       .trigger 'change', [manualPickerIgnore: true]
 
   filterObjects: =>
