@@ -9,11 +9,11 @@ class pipes.WindowApi
   initialized: false
 
   initialize: ->
-    # Fetch document url from the top window and trigger a 'documentUrl'
+    # Fetch document url from the top window and trigger all url-related events
 
     if window.self == window.top
       @initialized = true
-      setTimeout (=>@trigger 'documentUrl', window.location.href), 0
+      setTimeout (=>@trigger 'oAuthQuery', window.location.search), 0
     else
 
       # Wait for initialization from parent before doing anything
@@ -27,15 +27,15 @@ class pipes.WindowApi
         if msg[1] == 'initialize'
           @initialized = true
           e.originalEvent.source.postMessage("TogglPipes.getApiToken", e.originalEvent.origin)
-          e.originalEvent.source.postMessage("TogglPipes.getDocumentUrl", e.originalEvent.origin)
+          e.originalEvent.source.postMessage("TogglPipes.getOAuthQuery", e.originalEvent.origin)
           e.originalEvent.source.postMessage("TogglPipes.getWid", e.originalEvent.origin)
 
         return if not @initialized
 
         switch msg[1]
-          when'notifyDocumentUrl'
-            documentUrl = msg[2...].join(':')
-            @trigger 'documentUrl', documentUrl
+          when'notifyOAuthQuery'
+            oAuthQuery = msg[2...].join(':')
+            @trigger 'oAuthQuery', oAuthQuery
           when 'notifyApiToken'
             apiToken = msg[2...].join(':')
             @trigger 'apiToken', apiToken

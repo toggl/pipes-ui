@@ -34,16 +34,16 @@ class PipesApp
   pipeStates: {}
 
   oauth:
-    parseState: (documentUrl) ->
-      state = documentUrl.match(/state=([^?&]+)/)?[1]
-      code = documentUrl.match(/code=([^?&]+)/)?[1]
+    parseState: (oAuthQuery) ->
+      return null if not oAuthQuery
+      state = oAuthQuery.match(/state=([^?&]+)/)?[1]
+      code = oAuthQuery.match(/code=([^?&]+)/)?[1]
       return null if not state or not code
       state = state.split(':') # [wid,] stepId
       wid: +state[0], stepId: state[1], code: code
     createState: (oAuthStep) ->
       return (if pipes.wid then "#{pipes.wid}:" else "") + oAuthStep.id
 
-  documentUrl: null
   apiToken: null
   wid: null # Only required when run through toggl
 
@@ -74,7 +74,7 @@ class PipesApp
     if window.self == window.top
       $('body').addClass 'no-frame'
 
-    # Need to wait until apiToken & documentUrl & wid(optional) before really doing anything
+    # Need to wait until apiToken & oAuthQuery & wid(optional) before really doing anything
     initializeApp = _.after 3, =>
       @router = new pipes.AppRouter()
       Backbone.history.start()
@@ -82,12 +82,12 @@ class PipesApp
     @windowApi = new pipes.WindowApi()
     @windowApi.initialize()
 
-    @windowApi.once 'documentUrl', (@documentUrl) =>
-      console.log('WOOOHOOO', 'documentUrl:', @documentUrl)
-      # Try to parse oauth data from url
-      state = pipes.oauth.parseState documentUrl
+    @windowApi.once 'oAuthQuery', (@oAuthQuery) =>
+      console.log('WOOOHOOO', 'oAuthQuery:', @oAuthQuery)
+      # Try to parse oauth data from oauth query params
+      state = @oauth.parseState oAuthQuery
       if state
-        pipes.pipeStates[state.stepId] = state.code
+        @pipeStates[state.stepId] = state.code
       initializeApp()
 
     @windowApi.once 'apiToken', (@apiToken) =>
