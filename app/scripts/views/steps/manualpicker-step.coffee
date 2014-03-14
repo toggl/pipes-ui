@@ -64,7 +64,6 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
     rows.filter(':visible').hide()
 
     rows = (id: $(row).data('id'), el: $(row) for row in rows)
-    console.log('filter', rows, word, filteredColumns)
 
     filteredIds = _.pluck(_.filter(objects, (obj) ->
       true in ( ('' + obj[col]).toLowerCase().indexOf(word) != -1 or not word for col in filteredColumns)

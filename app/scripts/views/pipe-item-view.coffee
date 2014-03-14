@@ -8,7 +8,6 @@ class pipes.views.PipeItemView extends Backbone.View
     'click .button.sync': 'startSync'
 
   initialize: ->
-    console.log('PipeItemView =============', @model, @)
     @listenTo @model, 'change:pipe_status change:configured change:authorized', @refreshStatus
     @cogView = new pipes.views.CogView
       el: @$('.cog-box')
@@ -64,7 +63,6 @@ class pipes.views.PipeItemMetaView extends Backbone.View
 
 
 pipes.getStepper  = (integration, pipe, pipeView) ->
-  console.log('pipes.getStepper', 'integration:', integration, 'pipe:', pipe, 'pipeView:', pipeView)
   switch integration.id
     when 'basecamp'
       switch pipe.id
@@ -74,7 +72,10 @@ pipes.getStepper  = (integration, pipe, pipeView) ->
             steps: [
               new pipes.steps.IdleState(default: true)
               new pipes.steps.OAuthStep(pipe: pipe)
-              new pipes.steps.AccountSelectorStep(outKey: 'accountId')
+              new pipes.steps.AccountSelectorStep(
+                skip: pipe.get 'configured'
+                outKey: 'accountId'
+              )
               new pipes.steps.DataSubmitStep(
                 skip: pipe.get 'configured'
                 url: "#{pipe.url()}/setup"

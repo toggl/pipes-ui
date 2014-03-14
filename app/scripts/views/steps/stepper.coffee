@@ -18,7 +18,7 @@ class pipes.steps.Stepper
     @startStep initialStep
 
   startStep: (@currentI) ->
-    console.log('startStep', '@currentI:', @currentI, @steps[@currentI], @sharedData)
+    console.log('startStep', 'i:', @currentI, 'step:', @steps[@currentI], 'data:', @sharedData)
     @current = @steps[@currentI]
     @current.once 'end', => @startStep (@currentI+1) % @steps.length
     @current.run()
