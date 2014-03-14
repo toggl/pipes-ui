@@ -24,14 +24,19 @@ class pipes.views.PipeItemView extends Backbone.View
       model: @model
     @stepper = pipes.getStepper(@model.collection.integration, @model, @)
     @stepper.on 'step', @stepChanged
+    @setRunning() if not @stepper.current.default
 
   stepChanged: (step, i, steps) =>
     @refreshSyncButton()
 
   startSync: =>
+    if @stepper.current.default
+      @setRunning()
+      @stepper.endCurrentStep()
+
+  setRunning: ->
     @model.status 'running'
     @model.statusMessage 'In progress'
-    @stepper.endCurrentStep() if @stepper.current.default
 
   render: =>
     @$el.html @template model: @model
