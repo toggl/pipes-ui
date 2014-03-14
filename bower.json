@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "main": "public/app.js",
   "dependencies": {
-    "jquery": "~2.0.3",
+    "jquery": ">=2.0.3",
     "lodash": "~2.4.1",
     "backbone": "~1.1.2",
     "font-awesome": "~4.0.3",
-    "foundation": "git://github.com/syko/foundation.git#master",
     "iframe-resizer": "~1.4.4",
-    "momentjs": "~2.5.1"
+    "momentjs": "~2.5.1",
+    "foundation": "git://github.com/syko/foundation.git#master"
   },
   "devDependencies": {},
   "overrides": {
