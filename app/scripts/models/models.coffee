@@ -46,15 +46,21 @@ class pipes.models.Pipe extends Backbone.Model
 
   lastSync: (v) ->
     if v
-      @set(pipe_status: _.extend {}, @get('pipe_status'), last_sync: v)
+      @set(pipe_status: _.extend {}, @get('pipe_status'), sync_date: v)
     else
-      @get('pipe_status')?.last_sync or null
+      str = @get('pipe_status')?.sync_date
+      return null if not str
+      moment(str)
 
   logLink: (v) ->
     if v
       @set(pipe_status: _.extend {}, @get('pipe_status'), sync_log: v)
     else
       @get('pipes_status')?.sync_log or null
+
+  lastSyncHuman: ->
+    d = @lastSync()
+    if d then d.calendar() else null
 
 class pipes.models.PipeCollection extends Backbone.Collection
   model: pipes.models.Pipe

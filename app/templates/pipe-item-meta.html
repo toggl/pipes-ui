@@ -1,6 +1,6 @@
   Last import:
 <% if(model.lastSync()) { %>
-  <span class="last-sync"><%- model.lastSync() %></span>
+  <span class="last-sync"><%- model.lastSyncHuman() %></span>
 <% } else { %>
   <span class="last-sync never">never</span>
 <% } %>
