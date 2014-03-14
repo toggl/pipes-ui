@@ -7,6 +7,7 @@ class pipes.steps.DataSubmitStep extends pipes.steps.Step
 
   url: ''
   requestMap: null # Mapping 'query string param name': 'key in sharedData'
+  forceFirst: false
 
   # Callback to invoke when request has succeeded
   # Return false if you don't want the step to be automatically end()ed

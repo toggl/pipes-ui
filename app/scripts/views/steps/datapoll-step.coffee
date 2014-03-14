@@ -18,6 +18,7 @@ class pipes.steps.DataPollStep extends pipes.steps.Step
 
   requestMap: null # Mapping 'query string param name': 'key in sharedData'
   responseMap: null
+  forceFirst: true # send force=true on first request (default behavior to trigger fetching on the backend)
 
   # Callback to invoke when data has been received
   # Return false if you don't want the step to be automatically end()ed
@@ -31,9 +32,12 @@ class pipes.steps.DataPollStep extends pipes.steps.Step
     @requestMap = options.requestMap
     @responseMap = options.responseMap
     @url = options.url
+    @forceFirst = options.forceFirst if 'forceFirst' in options
 
   getRequestData: ->
-    _.mapValues @requestMap, (v, k) => @sharedData[v]
+    data =_.mapValues @requestMap, (v, k) => @sharedData[v]
+    data.force = true if @forceFirst and @pollCount == 1
+    data
 
   onRun: ->
     @startPolling()

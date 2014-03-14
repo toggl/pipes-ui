@@ -8,6 +8,7 @@ class pipes.steps.IdleState extends pipes.steps.DataPollStep
 
   pollDelay: 500
   pollDelayIncrement: 500
+  forceFirst: false
 
   initialize: (options) ->
     super(options)
