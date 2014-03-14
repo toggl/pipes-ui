@@ -33,6 +33,8 @@
     "node-notifier": "~1.2.1",
     "gulp-preprocess": "~1.0.1",
     "gulp-shell": "~0.2.4",
-    "gulp-bump": "~0.1.6"
+    "gulp-bump": "~0.1.6",
+    "gulp-tap": "~0.1.1",
+    "gulp-git": "~0.3.5"
   }
 }

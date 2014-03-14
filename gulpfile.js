@@ -20,7 +20,9 @@ var gulp = require('gulp'),
     notifier = require('node-notifier'),
     Entities = require('html-entities').XmlEntities,
     shell = require('gulp-shell'),
-    bump = require('gulp-bump');
+    bump = require('gulp-bump')
+    git = require('gulp-git'),
+    tap = require('gulp-tap');
 // var imagemin = require('gulp-imagemin'); // TODO
 
 // Custom notification function because gulp-notify doesn't work
@@ -223,11 +225,24 @@ gulp.task('deploy', ['build'], function() {
 });
 
 var bumpVersion = function(type) {
+
   type = type || 'patch';
+  var version = '';
+
   gulp.src(['./bower.json', './package.json'])
     .pipe(bump({type: type}))
     .pipe(gulp.dest('./'))
+    .pipe(tap(function(file, t) {
+      version = JSON.parse(file.contents.toString()).version;
+    }))
+    .pipe(git.add())
+    .on('end', function() {
+      gulp.src('')
+        .pipe(git.commit("Version " + version));
+    });
+
 }
+
 gulp.task('bump', function() { bumpVersion('patch'); });
 gulp.task('bump:patch', function() { bumpVersion('patch'); });
 gulp.task('bump:minor', function() { bumpVersion('minor'); });
