@@ -22,6 +22,7 @@ class pipes.steps.AccountSelectorStep extends pipes.steps.DataPollStep
       # TODO
     if response.accounts.length > 1
       @displayList response.accounts
+      return false # Don't auto-end()
     else
       @selectAccount response.accounts[0].id
 

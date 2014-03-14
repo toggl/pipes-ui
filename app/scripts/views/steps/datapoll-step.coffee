@@ -64,6 +64,7 @@ class pipes.steps.DataPollStep extends pipes.steps.Step
         if not @responseData
           @setNextPoll()
         else
+          @endPolling()
           if @callback(@responseData, @) != false
             @end()
       error: =>

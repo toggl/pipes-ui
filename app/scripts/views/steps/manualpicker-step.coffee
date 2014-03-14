@@ -23,7 +23,7 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
     container.on 'change.manual-picker', 'thead input:checkbox', @clickMainCheckbox
     container.on 'change.manual-picker', 'tbody input:checkbox', @clickCheckbox
     container.on 'click.manual-picker', '.button.submit', @clickSubmit
-    container.on 'keyup.manual-picker', 'input.filter', _.throttle(@filterObjects, 400, leading: false)
+    container.on 'keyup.manual-picker', 'input.filter', _.throttle(@filterObjects, 200, leading: false)
     @refreshSubmitButton()
     @refreshMainCheckbox()
 
