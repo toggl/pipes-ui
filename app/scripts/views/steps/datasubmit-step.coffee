@@ -27,7 +27,8 @@ class pipes.steps.DataSubmitStep extends pipes.steps.Step
       url: @url
       data: JSON.stringify(@getRequestData())
       contentType: 'application/json'
-      success: (@data) => @ajaxEnd ->
+      success: (@data) =>
         if @callback(@data, @) != false
+          @ajaxEnd()
           @end()
 

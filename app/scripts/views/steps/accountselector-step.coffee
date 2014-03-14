@@ -20,6 +20,7 @@ class pipes.steps.AccountSelectorStep extends pipes.steps.DataPollStep
     if not response?.accounts?.length?
       throw 'OMG'
       # TODO
+    @ajaxEnd()
     if response.accounts.length > 1
       @displayList response.accounts
       return false # Don't auto-end()
