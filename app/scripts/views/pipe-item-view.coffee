@@ -6,6 +6,7 @@ class pipes.views.PipeItemView extends Backbone.View
 
   events:
     'click .button.sync': 'startSync'
+    'click .log': 'clickLog'
 
   initialize: ->
     @listenTo @model, 'change:pipe_status change:configured change:authorized', @refreshStatus
@@ -57,6 +58,9 @@ class pipes.views.PipeItemView extends Backbone.View
   refreshStatus: ->
     @metaView.render()
     @refreshSyncButton()
+
+  clickLog: (e) ->
+    e.preventDefault()
 
 
 class pipes.views.PipeItemMetaView extends Backbone.View

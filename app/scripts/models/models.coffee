@@ -56,7 +56,7 @@ class pipes.models.Pipe extends Backbone.Model
     if v
       @set(pipe_status: _.extend {}, @get('pipe_status'), sync_log: v)
     else
-      @get('pipes_status')?.sync_log or null
+      @get('pipe_status')?.sync_log or null
 
   lastSyncHuman: ->
     d = @lastSync()
