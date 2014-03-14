@@ -120,5 +120,31 @@
         }
       }
     }
+    .log-container {
+      position: relative;
+      display: none;
+      font-size: 11px;
+      color: #555;
+      margin: 0px -10px 20px;
+      background: #fafafa;
+      border: 1px dashed #ddd;
+      padding: 10px;
+      pre {
+      }
+      a.close-log {
+        display: block;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        padding: 10px;
+        color: #999;
+        .fa {
+          margin-right: 5px;
+        }
+        &:hover, &:focus  {
+          color: #666;
+        }
+      }
+    }
   }
 }

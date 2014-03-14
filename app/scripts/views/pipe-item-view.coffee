@@ -7,6 +7,7 @@ class pipes.views.PipeItemView extends Backbone.View
   events:
     'click .button.sync': 'startSync'
     'click .log': 'clickLog'
+    'click .close-log': 'clickCloseLog'
 
   initialize: ->
     @listenTo @model, 'change:pipe_status change:configured change:authorized', @refreshStatus
@@ -59,8 +60,14 @@ class pipes.views.PipeItemView extends Backbone.View
     @metaView.render()
     @refreshSyncButton()
 
-  clickLog: (e) ->
+  clickLog: (e) =>
     e.preventDefault()
+    $.get $(e.currentTarget).attr('href'), (response) =>
+      @$('.log-container').show().children('pre').text response
+
+  clickCloseLog: (e) =>
+    e.preventDefault()
+    @$('.log-container').hide()
 
 
 class pipes.views.PipeItemMetaView extends Backbone.View
