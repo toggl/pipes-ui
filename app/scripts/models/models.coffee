@@ -32,9 +32,11 @@ class pipes.models.IntegrationCollection extends Backbone.Collection
 
 class pipes.models.Pipe extends Backbone.Model
 
-  status: (v) ->
+  status: (v, message = null) ->
     if v
-      @set(pipe_status: _.extend {}, @get('pipe_status'), status: v)
+      diff = status: v
+      diff.message = message if message?
+      @set(pipe_status: _.extend {}, @get('pipe_status'), diff)
     else
       @get('pipe_status')?.status or 'success'
 

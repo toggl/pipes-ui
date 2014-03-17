@@ -21,13 +21,11 @@ class pipes.steps.IdleState extends pipes.steps.DataPollStep
   callback: (response, self) =>
     # We can simply let the view update itself because this step doesn't draw any custom html
     # and since this is running, the view must be in this step (duh)
-    # TODO: change this stupid stuff right here:
-    @view.model.status response.pipe_status.status
-    @view.model.statusMessage response.pipe_status.message
-    @view.model.lastSync response.pipe_status.sync_date
-    @view.model.logLink response.pipe_status.sync_log
+    @view.model.lastSync response.pipe_status.sync_date, silent: true
+    @view.model.logLink response.pipe_status.sync_log, silent: true
+    @view.model.status response.pipe_status.status, response.pipe_status.message
 
-    if response.pipe_status.status == 'running'
+    if @view.model.status() == 'running'
       @setNextPoll()
     else
       @endPolling()
