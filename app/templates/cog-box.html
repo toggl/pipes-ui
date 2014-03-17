@@ -7,7 +7,7 @@
       <li class="title"><%= group.title %></li>
     <% } %>
     <% _.each(group.items, function(item) { %>
-      <% if(item.skipped) return; %>
+      <% if(item.skip === true || (item.skip && item.skip())) return; %>
       <% if (item.divider) { %>
         <li class="divider"></li>
       <% } else { %>

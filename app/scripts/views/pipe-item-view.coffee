@@ -14,7 +14,7 @@ class pipes.views.PipeItemView extends Backbone.View
     @cogView = new pipes.views.CogView
       el: @$('.cog-box')
       items: [
-        {name: 'teardown', label: "Delete configuration", fn: @teardown}
+        {name: 'teardown', label: "Delete configuration", fn: @teardown, skip: => not @model.get('configured')}
       ]
     @metaView = new pipes.views.PipeItemMetaView
       el: @$('.meta')
@@ -54,6 +54,7 @@ class pipes.views.PipeItemView extends Backbone.View
   refreshStatus: ->
     @metaView.render()
     @refreshSyncButton()
+    @cogView.render()
 
   teardown: =>
     # Tear down the saved confucation (mostly account_id), setup is handled via steps

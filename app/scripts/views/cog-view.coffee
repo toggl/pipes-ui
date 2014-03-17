@@ -32,3 +32,4 @@ class pipes.views.CogView extends Backbone.View
     @$el.html @template
       _id: @_id
       groups: @items
+    @$el.toggle @$('li:not(.title):not(.divider)').length > 0
