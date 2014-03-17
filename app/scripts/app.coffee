@@ -88,7 +88,7 @@ class PipesApp
     if window.self == window.top
       $('body').addClass 'no-frame'
 
-    # Need to wait until apiToken & oAuthQuery & wid(optional) before really doing anything
+    # Need to wait until apiToken & oAuthQuery & wid(optional) & dateFormats(optional) before really doing anything
     initializeApp = _.after 4, =>
       @router = new pipes.AppRouter()
       Backbone.history.start()

@@ -37,14 +37,13 @@
       .large-container {
         padding: 25px 30px;
       }
-      .loading {
+      .loading, .broken {
         display: none;
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
         background: #FFF;
-        opacity: 0.6;
         z-index: 1;
-        .fa-refresh {
+        .fa {
           position: absolute;
           font-size: 116px;
           top: 20px;
@@ -54,6 +53,15 @@
       }
       &.loading>.loading {
         display: block;
+      }
+      .loading {
+        opacity: 0.6;
+      }
+      .broken {
+        opacity: 0.7;
+        .fa {
+          opacity: .2;
+        }
       }
     }
     .meta {
