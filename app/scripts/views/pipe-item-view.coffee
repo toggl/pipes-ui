@@ -14,12 +14,7 @@ class pipes.views.PipeItemView extends Backbone.View
     @cogView = new pipes.views.CogView
       el: @$('.cog-box')
       items: [
-        {name: 'getup1', label: "Get up!", fn: ->}
-        {name: 'getup2', label: "Get on uppah!", fn: ->}
-        {name: 'getup3', label: "Get up!", fn: ->}
-        {name: 'getup4', label: "Get on uppah!", fn: ->}
-        pipes.views.CogView.divider
-        {name: 'getdown', label: "Get down!", fn: ->}
+        {name: 'teardown', label: "Delete configuration", fn: @teardown}
       ]
     @metaView = new pipes.views.PipeItemMetaView
       el: @$('.meta')
@@ -60,6 +55,14 @@ class pipes.views.PipeItemView extends Backbone.View
     @metaView.render()
     @refreshSyncButton()
 
+  teardown: =>
+    # Tear down the saved confucation (mostly account_id), setup is handled via steps
+    @ajaxStart -> $.ajax
+      type: 'DELETE'
+      url: "#{@model.url()}/setup"
+      success: => @ajaxEnd ->
+        @model.set configured: false
+
   clickLog: (e) =>
     e.preventDefault()
     $.get $(e.currentTarget).attr('href'), (response) =>
@@ -68,6 +71,16 @@ class pipes.views.PipeItemView extends Backbone.View
   clickCloseLog: (e) =>
     e.preventDefault()
     @$('.log-container').hide()
+
+  ajaxStart: (fn = null, context = null) ->
+    # Shows UI as 'loading' and optionally runs the callback 'fn' bound to 'context'
+    @$el.addClass('spinning-container').addClass('loading')
+    fn.call(context or this) if fn
+
+  ajaxEnd: (fn = null, context) ->
+    # Ends UI 'loading' and optionally runs the callback 'fn' bound to 'context'
+    @$el.removeClass('spinning-container').removeClass('loading')
+    fn.call(context or this) if fn
 
 
 class pipes.views.PipeItemMetaView extends Backbone.View

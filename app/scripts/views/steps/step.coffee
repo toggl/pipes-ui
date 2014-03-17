@@ -36,12 +36,10 @@ class pipes.steps.Step
   onEnd: -> # Override me
 
   ajaxStart: (fn) ->
-    @view.$el.addClass('spinning-container').addClass('loading')
-    fn.call(@) if fn
+    @view.ajaxStart(fn, this)
 
   ajaxEnd: (fn) ->
-    @view.$el.removeClass('spinning-container').removeClass('loading')
-    fn.call(@) if fn
+    @view.ajaxEnd(fn, this)
 
   getContainer: -> # Return the efficiently cached .step-container of the view
     if not @_container or not $.contains(document.documentElement, @_container[0])
