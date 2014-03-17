@@ -15,17 +15,17 @@ class pipes.steps.IdleState extends pipes.steps.DataPollStep
     @url = @view.model.url() unless @url
 
   onRun: ->
-    if @view.model.status() == 'running'
+    if @view.model.getStatus() == 'running'
       @startPolling()
 
   callback: (response, self) =>
     # We can simply let the view update itself because this step doesn't draw any custom html
     # and since this is running, the view must be in this step (duh)
-    @view.model.lastSync response.pipe_status.sync_date, silent: true
-    @view.model.logLink response.pipe_status.sync_log, silent: true
-    @view.model.status response.pipe_status.status, response.pipe_status.message
+    @view.model.setLastSync response.pipe_status.sync_date, silent: true
+    @view.model.setLogLink response.pipe_status.sync_log, silent: true
+    @view.model.setStatus response.pipe_status.status, response.pipe_status.message
 
-    if @view.model.status() == 'running'
+    if @view.model.getStatus() == 'running'
       @setNextPoll()
     else
       @endPolling()

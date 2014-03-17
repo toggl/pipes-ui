@@ -1,18 +1,18 @@
   Last import:
-<% if(model.lastSync()) { %>
-  <span class="last-sync"><%- model.lastSyncHuman() %></span>
+<% if(model.getLastSync()) { %>
+  <span class="last-sync"><%- model.getLastSyncHuman() %></span>
 <% } else { %>
   <span class="last-sync never">never</span>
 <% } %>
 
-<span class="status <%- model.status() %>">
+<span class="status <%- model.getStatus() %>">
 
   <i class="dot"></i>
 
-  <%- model.statusMessage() %>
+  <%- model.getStatusMessage() %>
 
-  <% if(model.logLink() && model.status() != 'running') { %>
-    <a href="<%- model.logLink() %>" class="blue-text underline log">View log for details</a>
+  <% if(model.getLogLink() && model.getStatus() != 'running') { %>
+    <a href="<%- model.getLogLink() %>" class="blue-text underline log">View log for details</a>
   <% } %>
 
 </span>

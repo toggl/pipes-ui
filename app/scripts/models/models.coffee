@@ -32,36 +32,36 @@ class pipes.models.IntegrationCollection extends Backbone.Collection
 
 class pipes.models.Pipe extends Backbone.Model
 
-  status: (v, message = null) ->
-    if v
-      diff = status: v
-      diff.message = message if message?
-      @set(pipe_status: _.extend {}, @get('pipe_status'), diff)
-    else
-      @get('pipe_status')?.status or 'success'
+  getStatus: ->
+    @get('pipe_status')?.status or 'success'
 
-  statusMessage: (v) ->
-    if v
-      @set(pipe_status: _.extend {}, @get('pipe_status'), message: v)
-    else
-      @get('pipe_status')?.message or 'Ready'
+  setStatus: (v, message = null, options=null) ->
+    diff = status: v
+    diff.message = message if message?
+    @set(pipe_status: _.extend({}, @get('pipe_status'), diff), options)
 
-  lastSync: (v) ->
-    if v
-      @set(pipe_status: _.extend {}, @get('pipe_status'), sync_date: v)
-    else
-      str = @get('pipe_status')?.sync_date
-      return null if not str
-      moment(str)
+  getStatusMessage: ->
+    @get('pipe_status')?.message or 'Ready'
 
-  logLink: (v) ->
-    if v
-      @set(pipe_status: _.extend {}, @get('pipe_status'), sync_log: v)
-    else
-      @get('pipe_status')?.sync_log or null
+  setStatusMessage: (v, options=null) ->
+    @set(pipe_status: _.extend({}, @get('pipe_status'), message: v), options)
 
-  lastSyncHuman: ->
-    d = @lastSync()
+  getLastSync: ->
+    str = @get('pipe_status')?.sync_date
+    return null if not str
+    moment(str)
+
+  setLastSync: (v, options=null) ->
+    @set(pipe_status: _.extend({}, @get('pipe_status'), sync_date: v), options)
+
+  getLogLink: ->
+    @get('pipe_status')?.sync_log or null
+
+  setLogLink: (v, options=null) ->
+    @set(pipe_status: _.extend({}, @get('pipe_status'), sync_log: v), options)
+
+  getLastSyncHuman: ->
+    d = @getLastSync()
     if d then d.calendar() else null
 
 class pipes.models.PipeCollection extends Backbone.Collection

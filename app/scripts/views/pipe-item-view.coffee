@@ -32,8 +32,7 @@ class pipes.views.PipeItemView extends Backbone.View
       @stepper.endCurrentStep()
 
   setRunning: ->
-    @model.status 'running'
-    @model.statusMessage 'In progress'
+    @model.setStatus 'running', 'In progress'
 
   render: =>
     @$el.html @template model: @model
@@ -48,8 +47,8 @@ class pipes.views.PipeItemView extends Backbone.View
   refreshSyncButton: ->
     # Allow sync button only in default step if status = ok
     @$('.button.sync')
-      .attr 'disabled', not @stepper.current.default or @model.status() != 'success'
-      .children('.button-label').text if @stepper.current.default and @model.status() == 'success' then "Sync now" else "In progress..."
+      .attr 'disabled', not @stepper.current.default or @model.getStatus() != 'success'
+      .children('.button-label').text if @stepper.current.default and @model.getStatus() == 'success' then "Sync now" else "In progress..."
 
   refreshStatus: ->
     @metaView.render()
@@ -65,7 +64,7 @@ class pipes.views.PipeItemView extends Backbone.View
         @model.set configured: false
       error: (response) =>
         @ajaxEnd()
-        @model.status 'fail', "Error: #{response.responseText}"
+        @model.setStatus 'fail', "Error: #{response.responseText}"
 
   clickLog: (e) =>
     e.preventDefault()
