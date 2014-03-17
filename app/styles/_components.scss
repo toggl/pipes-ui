@@ -174,8 +174,7 @@
     }
   }
 }
-// Overrides for white bg
-.large-container.light {
+.large-container.light { // Overrides for white bg
   .button.dropdown {
     &:hover {
       border-color: #eee;

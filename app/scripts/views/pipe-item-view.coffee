@@ -19,7 +19,7 @@ class pipes.views.PipeItemView extends Backbone.View
     @metaView = new pipes.views.PipeItemMetaView
       el: @$('.meta')
       model: @model
-    @stepper = pipes.getStepper(@model.collection.integration, @model, @)
+    @stepper = pipes.getStepper(@model.collection.integration, @model, this)
     @stepper.on 'step', @stepChanged
     @setRunning() if not @stepper.current.default
 
@@ -43,7 +43,7 @@ class pipes.views.PipeItemView extends Backbone.View
     @metaView.render()
     @$el.foundation()
     @refreshSyncButton()
-    @
+    this
 
   refreshSyncButton: ->
     # Allow sync button only in default step if status = ok
@@ -88,7 +88,7 @@ class pipes.views.PipeItemMetaView extends Backbone.View
 
   render: =>
     @$el.html @template model: @model
-    @
+    this
 
 
 pipes.getStepper  = (integration, pipe, pipeView) ->
