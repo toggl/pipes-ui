@@ -8,27 +8,33 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
   inKey: 'objects'
   outKey: 'selectedObjects'
   columns: null
+  title: "Select objects to import"
 
   constructor: (options = {}) ->
     super(options)
     @inKey = options.inKey
     @outKey = options.outKey
     @columns = options.columns
+    @title = options.title if options.title
 
   onRun: ->
+    @render()
+
+  onEnd: ->
+    @getContainer().empty().off '.manual-picker'
+
+  render: ->
     container = @getContainer()
     container.html @template
       columns: @columns
       objects: @sharedData[@inKey]
+      title: @title
     container.on 'change.manual-picker', 'thead input:checkbox', @clickMainCheckbox
     container.on 'change.manual-picker', 'tbody input:checkbox', @clickCheckbox
     container.on 'click.manual-picker', '.button.submit', @clickSubmit
     container.on 'keyup.manual-picker', 'input.filter', _.throttle(@filterObjects, 200, leading: false)
     @refreshSubmitButton()
     @refreshMainCheckbox()
-
-  onEnd: ->
-    @getContainer().empty().off '.manual-picker'
 
   clickMainCheckbox: (e, extra = {}) =>
     return if extra?.manualPickerIgnore

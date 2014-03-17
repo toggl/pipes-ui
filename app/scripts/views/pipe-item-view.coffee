@@ -123,6 +123,7 @@ pipes.getStepper  = (integration, pipe, pipeView) ->
                 responseMap: {'users': 'users'} # Mapping 'key in sharedData': 'key in response data'
               )
               new pipes.steps.ManualPickerStep(
+                title: "Select users to import"
                 inKey: 'users'
                 outKey: 'selectedUsers'
                 columns: [{key: 'name', label: "Name", filter: true}, {key: 'email', label: "E-mail", filter: true}]
