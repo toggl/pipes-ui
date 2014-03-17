@@ -57,21 +57,26 @@ class pipes.views.PipeItemView extends Backbone.View
     @cogView.render()
 
   teardown: =>
-    # Tear down the saved confucation (mostly account_id), setup is handled via steps
+    # Tear down the saved configuration (mostly account_id), setup is handled via steps
     @ajaxStart -> $.ajax
       type: 'DELETE'
       url: "#{@model.url()}/setup"
       success: => @ajaxEnd ->
         @model.set configured: false
+      error: (response) =>
+        @ajaxEnd()
+        @model.status 'fail', "Error: #{response.responseText}"
 
   clickLog: (e) =>
     e.preventDefault()
     $.get $(e.currentTarget).attr('href'), (response) =>
       @$('.log-container').show().children('pre').text response
+      @$('a.log').hide()
 
   clickCloseLog: (e) =>
     e.preventDefault()
     @$('.log-container').hide()
+    @$('a.log').show()
 
   ajaxStart: (fn = null, context = null) ->
     # Shows UI as 'loading' and optionally runs the callback 'fn' bound to 'context'
