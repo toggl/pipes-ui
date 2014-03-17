@@ -21,6 +21,20 @@ $(document.body).on 'click', '.button.checkbox:not(.dropdown)', (e) ->
 $(document).ajaxSend (e, xhr, options) ->
   xhr.setRequestHeader 'Authorization', 'Basic ' + btoa(pipes.apiToken + ':x') # TODO: cross-browser base64 encoding!
 
+configureMoment = (dateFormat = 'L', timeFormat = 'LT', dow = 1) ->
+  moment.lang 'en',
+    week:
+      dow: dow
+    calendar:
+      lastDay:  "[Yesterday at] #{timeFormat}"
+      sameDay:  "[Today at] #{timeFormat}"
+      nextDay:  "[Tomorrow at] #{timeFormat}"
+      lastWeek: "[last] dddd [at] #{timeFormat}"
+      nextWeek: "dddd [at] #{timeFormat}"
+      sameElse: "#{dateFormat}"
+
+configureMoment()
+
 class PipesApp
 
   models: {}
@@ -38,7 +52,7 @@ class PipesApp
       return null if not oAuthQuery
       state = oAuthQuery.match(/state=([^?&]+)/)?[1]
       code = oAuthQuery.match(/code=([^?&]+)/)?[1]
-      return null if not state or not code
+      return null if not state or not code # User canceled or otherwise normal panic
       state = state.split(':') # [wid,] stepId
       wid: +state[0], stepId: state[1], code: code
     createState: (oAuthStep) ->
@@ -75,7 +89,7 @@ class PipesApp
       $('body').addClass 'no-frame'
 
     # Need to wait until apiToken & oAuthQuery & wid(optional) before really doing anything
-    initializeApp = _.after 3, =>
+    initializeApp = _.after 4, =>
       @router = new pipes.AppRouter()
       Backbone.history.start()
 
@@ -91,11 +105,16 @@ class PipesApp
       initializeApp()
 
     @windowApi.once 'apiToken', (@apiToken) =>
-      console.log('WOOOHOOO API', 'apiToken:', @apiToken)
+      console.log('WOOOHOOO apiToken', 'apiToken:', @apiToken)
       initializeApp()
 
     @windowApi.once 'wid', (@wid) =>
-      console.log('WOOOHOOO WID', 'wid:', @wid)
+      console.log('WOOOHOOO wid', 'wid:', @wid)
+      initializeApp()
+
+    @windowApi.once 'dateFormats', ({dateFormat, timeFormat, dow}) =>
+      console.log('WOOOHOOO dateFormats', 'dateFormats:', dateFormat, timeFormat, dow)
+      configureMoment(dateFormat, timeFormat, dow)
       initializeApp()
 
 

@@ -23,23 +23,30 @@ class pipes.WindowApi
         return if msg.length < 2 or msg[0] != 'TogglPipes'
 
         msg = [msg[0]].concat _.flatten msg[1...].join('.').split(':') # ["TogglPipes", ...<:-separated strings>]
+        params = msg[2...].join(':')
 
         if msg[1] == 'initialize'
           @initialized = true
           e.originalEvent.source.postMessage("TogglPipes.getApiToken", e.originalEvent.origin)
           e.originalEvent.source.postMessage("TogglPipes.getOAuthQuery", e.originalEvent.origin)
           e.originalEvent.source.postMessage("TogglPipes.getWid", e.originalEvent.origin)
+          e.originalEvent.source.postMessage("TogglPipes.getDateFormats", e.originalEvent.origin)
 
         return if not @initialized
 
         switch msg[1]
           when'notifyOAuthQuery'
-            oAuthQuery = msg[2...].join(':')
+            oAuthQuery = params
             @trigger 'oAuthQuery', oAuthQuery
           when 'notifyApiToken'
-            apiToken = msg[2...].join(':')
+            apiToken = params
             @trigger 'apiToken', apiToken
           when 'notifyWid'
-            wid = +msg[2...] or null
+            wid = +params or null
             @trigger 'wid', wid
-
+          when 'notifyDateFormats'
+            [dateFormat, timeFormat, dow] = params.split(',')
+            @trigger 'dateFormats',
+              dateFormat: dateFormat
+              timeFormat: timeFormat
+              dow: dow
