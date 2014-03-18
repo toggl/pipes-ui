@@ -70,11 +70,11 @@ class pipes.views.PipeItemView extends Backbone.View
 
   refreshSyncState: ->
     # Allow sync button & cog only in default step
+    # Show cancel button only if not in default step
     @$el.toggleClass 'default-step', @stepper.current.default
     @$('.button.sync')
       .attr 'disabled', not @stepper.current.default
       .children('.button-label').text if @stepper.current.default and @model.getStatus() == 'success' then "Sync now" else "In progress..."
-    # Show cancel button only if not in default step
 
   refreshStatus: ->
     @metaView.render()

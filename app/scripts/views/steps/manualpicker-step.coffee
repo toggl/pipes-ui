@@ -54,7 +54,7 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
 
   refreshSubmitButton: ->
     @getContainer().find('.button.submit').attr 'disabled',
-      @getContainer().find('tbody tr:visible input:checkbox:checked').length == 0
+      @getContainer().find('tbody input:checkbox:checked').length == 0
 
   refreshMainCheckbox: ->
     @getContainer().find('thead input:checkbox').prop('checked',
@@ -78,6 +78,7 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
     filteredRows= _.filter rows, (row) -> row.id in filteredIds
 
     row.el.show() for row in filteredRows
+    @refreshMainCheckbox()
 
   clickSubmit: (e) =>
     @submitItems(+$(el).data('id') for el in @getContainer().find('tbody input:checked'))
