@@ -12,7 +12,9 @@ class pipes.steps.Stepper
 
   constructor: ({@view, @steps}) ->
     @sharedData = {}
-    step.initialize(view: @view, sharedData: @sharedData, state: pipes.pipeStates[step.id]) for step in @steps
+    for step in @steps
+      step.initialize(view: @view, sharedData: @sharedData, state: pipes.pipeStates[step.id])
+      step.on 'error', @onStepError
     initialStep = _.findIndex @steps, (step) -> step.id of pipes.pipeStates
     initialStep = 0 if initialStep == -1
     @startStep initialStep
@@ -21,9 +23,21 @@ class pipes.steps.Stepper
     console.log('startStep', 'i:', @currentI, 'step:', @steps[@currentI], 'data:', @sharedData)
     @current = @steps[@currentI]
     @current.once 'end', => @startStep (@currentI+1) % @steps.length
+    @trigger 'beforeStep', @current, @currentI, @steps
+    @trigger 'beforeEnd', @current, @currentI, @steps if @currentI == 0
     @current.run()
     @trigger 'step', @current, @currentI, @steps
+    @trigger 'end', @current, @currentI, @steps if @currentI == 0
 
   endCurrentStep: ->
     @current.end()
+
+  reset: ->
+    @current.end(silent: true)
+    @current.off 'end'
+    @startStep 0
+
+  onStepError: (args...) =>
+    @reset() unless @currentI == 0 # Auto-reset on all errors, no smart error handling here
+    @trigger.apply this, ['error'].concat(args) # Manual propagation
 

@@ -8,12 +8,13 @@ class pipes.steps.Step
   view: null # PipeView
   sharedData: null # Data pool that is shared between the steps of a pipe
   default: false # Whether this is the default idle step for a pipe
-  skip: false
+  skip: null
   id: null # Required for steps that need to recover state after navigating away
+  active: false # True if the step is active (current step)
 
   constructor: (options={}) ->
     @default = options.default or false
-    @skip = !!options.skip
+    @skip = options.skip
 
   initialize: ({@view, @sharedData, state}) -> # Called by stepper
     if state
@@ -21,16 +22,18 @@ class pipes.steps.Step
 
   initializeState: (state) -> # Recover state, for steps that leave the page
 
-  run: =>
-    return @end() if @skip
+  run: (options={}) =>
     # Called by Stepper to start this step
+    return @end() if @skip?(this)
+    @active = true
     @onRun()
 
-  end: =>
+  end: (options={}) =>
     # Clean up & signal Stepper to move to the next step
     # Most steps end themselves, but some forever-running steps (IdleState) are forced to end
     @onEnd()
-    @trigger 'end'
+    @active = false
+    @trigger 'end' if not options.silent
 
   onRun: -> # Override me
   onEnd: -> # Override me

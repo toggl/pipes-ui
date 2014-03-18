@@ -16,7 +16,7 @@ class pipes.steps.AccountSelectorStep extends pipes.steps.DataPollStep
     super(options)
     @url = @view.model.collection.integration.accountsUrl()
 
-  callback: (response, step) ->
+  successCallback: (response, step) ->
     if not response?.accounts?.length?
       throw 'OMG'
       # TODO

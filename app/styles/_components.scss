@@ -77,11 +77,19 @@
 .button, a.button {
   font-weight: $semibold !important;
   font-size: $base * 1.2;
-  &.green {
+  color: $white;
+  text-decoration: none;
+  &:hover, &:focus {
     color: $white;
-    text-decoration: none;
-    &:hover, &:focus {
-      color: $white;
+    outline: none;
+  }
+  &.gray-bg:hover, &.gray-bg:focus, &.gray-bg:active {
+    background-color: $gray-dark;
+  }
+  &.white-bg {
+    color: $gray-dark;
+    &:hover, &:focus, &:active {
+      background-color: $gray-lightest;
     }
   }
   .fa {

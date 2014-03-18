@@ -11,13 +11,16 @@ class pipes.steps.DataSubmitStep extends pipes.steps.Step
 
   # Callback to invoke when request has succeeded
   # Return false if you don't want the step to be automatically end()ed
-  callback: ->
+  successCallback: (response, step) ->
+
+  errorCallback: (response, step) ->
+    step.trigger 'error', step, response.responseText
 
   constructor: (options={}) ->
     super(options)
     @url = options.url
     @requestMap = options.requestMap or {}
-    @callback = options.callback if options.callback
+    @successCallback = options.successCallback if options.successCallback
 
   getRequestData: ->
     _.mapValues @requestMap, (v, k) => @sharedData[v]
@@ -29,7 +32,12 @@ class pipes.steps.DataSubmitStep extends pipes.steps.Step
       data: JSON.stringify(@getRequestData())
       contentType: 'application/json'
       success: (@data) =>
-        if @callback(@data, @) != false
+        return if not @active # Oops, someone canceled this action
+        if @successCallback(@data, @) != false
           @ajaxEnd()
           @end()
+      error: (response) =>
+        return if not @active # Oops, someone canceled this action
+        @errorCallback(response, this)
+        @ajaxEnd()
 

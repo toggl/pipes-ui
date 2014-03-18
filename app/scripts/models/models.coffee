@@ -41,7 +41,7 @@ class pipes.models.Pipe extends Backbone.Model
     @set(pipe_status: _.extend({}, @get('pipe_status'), diff), options)
 
   getStatusMessage: ->
-    @get('pipe_status')?.message or 'Ready'
+    @get('pipe_status')?.message or if @getStatus() == 'running' then 'Running' else 'Ready'
 
   setStatusMessage: (v, options=null) ->
     @set(pipe_status: _.extend({}, @get('pipe_status'), message: v), options)

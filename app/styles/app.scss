@@ -63,6 +63,16 @@
           opacity: .2;
         }
       }
+      &.default-step {
+        .button.cancel {
+          display: none;
+        }
+      }
+      &:not(.default-step) {
+        .cog-box {
+          display: none !important;
+        }
+      }
     }
     .meta {
       clear: both;

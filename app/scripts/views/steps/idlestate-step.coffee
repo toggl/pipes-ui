@@ -6,7 +6,7 @@ class pipes.steps.IdleState extends pipes.steps.DataPollStep
   Also polls for status changes if status == inprogress.
   ###
 
-  pollDelay: 500
+  pollDelay: 1000
   pollDelayIncrement: 500
   forceFirst: false
 
@@ -18,12 +18,15 @@ class pipes.steps.IdleState extends pipes.steps.DataPollStep
     if @view.model.getStatus() == 'running'
       @startPolling()
 
-  callback: (response, self) =>
+  successCallback: (response, step) =>
     # We can simply let the view update itself because this step doesn't draw any custom html
     # and since this is running, the view must be in this step (duh)
-    @view.model.setLastSync response.pipe_status.sync_date, silent: true
-    @view.model.setLogLink response.pipe_status.sync_log, silent: true
-    @view.model.setStatus response.pipe_status.status, response.pipe_status.message
+    if response.pipe_status
+      @view.model.setLastSync response.pipe_status.sync_date, silent: true
+      @view.model.setLogLink response.pipe_status.sync_log, silent: true
+      @view.model.setStatus response.pipe_status.status, response.pipe_status.message
+    else
+      @view.model.setStatus 'success', 'Ready'
 
     if @view.model.getStatus() == 'running'
       @setNextPoll()
@@ -31,4 +34,8 @@ class pipes.steps.IdleState extends pipes.steps.DataPollStep
       @endPolling()
 
     return false # Never exit this step
+
+  errorCallback: (response, step) ->
+    super(reponse, step)
+    step.endPolling()
 

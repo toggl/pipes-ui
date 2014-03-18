@@ -20,39 +20,62 @@ class pipes.views.PipeItemView extends Backbone.View
       el: @$('.meta')
       model: @model
     @stepper = pipes.getStepper(@model.collection.integration, @model, this)
-    @stepper.on 'step', @stepChanged
+    @stepper.on 'step', @onStepChange
+    @stepper.on 'error', @onStepError
+    @stepper.on 'beforeEnd', @onStepperBeforeEnd
     @setRunning() if not @stepper.current.default
 
-  stepChanged: (step, i, steps) =>
-    @refreshSyncButton()
+  onStepChange: (step, i, steps) =>
+    @refreshSyncState()
+
+  onStepError: (step, message) =>
+    @overrideStatus 'fail', "Error: #{message}"
+    @stepper.current.poll() # Sync once through IdleStep TODO: uncouple PipeItemView from stepper.steps[0] here!
+
+  setRunning: ->
+    @overrideStatus 'running', 'In progress'
+
+  onStepperBeforeEnd: =>
+    # No steps left, stepper has successfully rolled over to first
+    # We know that backend should have set 'running' by now: sync it manually (upon which IdleState starts polling)
+    @model.setStatus @metaView.statusOverride.status, @metaView.statusOverride.message
+    @overrideStatus null # Take real status from model
+
+  overrideStatus: (status = null, message = null) ->
+    if status
+      @metaView.statusOverride = status: status, message: message or @model.getStatusMessage()
+    else
+      @metaView.statusOverride = null
+    @refreshStatus()
 
   startSync: =>
     if @stepper.current.default
       @setRunning()
       @stepper.endCurrentStep()
 
-  setRunning: ->
-    @model.setStatus 'running', 'In progress'
-
   render: =>
-    @$el.html @template model: @model
+    @$el.html @template
+      model: @model
+      status: @metaView.getStatusObject()
     @cogView.setElement @$('.cog-box')
     @cogView.render()
     @metaView.setElement @$('.meta')
     @metaView.render()
     @$el.foundation()
-    @refreshSyncButton()
+    @refreshSyncState()
     this
 
-  refreshSyncButton: ->
-    # Allow sync button only in default step if status = ok
+  refreshSyncState: ->
+    # Allow sync button & cog only in default step
+    @$el.toggleClass 'default-step', @stepper.current.default
     @$('.button.sync')
-      .attr 'disabled', not @stepper.current.default or @model.getStatus() != 'success'
+      .attr 'disabled', not @stepper.current.default
       .children('.button-label').text if @stepper.current.default and @model.getStatus() == 'success' then "Sync now" else "In progress..."
+    # Show cancel button only if not in default step
 
   refreshStatus: ->
     @metaView.render()
-    @refreshSyncButton()
+    @refreshSyncState()
     @cogView.render()
 
   teardown: =>
@@ -62,8 +85,7 @@ class pipes.views.PipeItemView extends Backbone.View
       url: "#{@model.url()}/setup"
       success: => @ajaxEnd ->
         @model.set configured: false
-      error: (response) =>
-        @ajaxEnd()
+      error: (response) => @ajaxEnd ->
         @model.setStatus 'fail', "Error: #{response.responseText}"
 
   clickLog: (e) =>
@@ -90,9 +112,15 @@ class pipes.views.PipeItemView extends Backbone.View
 
 class pipes.views.PipeItemMetaView extends Backbone.View
   template: templates['pipe-item-meta.html']
+  statusOverride: null # Use this to display a different status than the one in the model
+
+  getStatusObject: ->
+    @statusOverride or {status: @model.getStatus(), message: @model.getStatusMessage()}
 
   render: =>
-    @$el.html @template model: @model
+    @$el.html @template
+      model: @model
+      status: @getStatusObject()
     this
 
 
@@ -107,14 +135,14 @@ pipes.getStepper  = (integration, pipe, pipeView) ->
               new pipes.steps.IdleState(default: true)
               new pipes.steps.OAuthStep(pipe: pipe)
               new pipes.steps.AccountSelectorStep(
-                skip: pipe.get 'configured'
+                skip: -> pipe.get 'configured'
                 outKey: 'accountId'
               )
               new pipes.steps.DataSubmitStep(
-                skip: pipe.get 'configured'
+                skip: -> pipe.get 'configured'
                 url: "#{pipe.url()}/setup"
                 requestMap: {'account_id': 'accountId'}
-                callback: ->
+                successCallback: ->
                   pipe.set configured: true
               )
               new pipes.steps.DataPollStep(

@@ -33,12 +33,16 @@ $orange: rgb(196, 136, 10);
 .yellow-text { color: $yellow; &:hover {color: $yellow; } }
 .orange-text { color: $orange; &:hover {color: $orange; } }
 .blue-text { color: $blue; &:hover {color: $blue; } }
+.gray-text { background-color: $gray; }
+.white-text { background-color: $white; }
 .red-bg { background-color: $red; }
 .green-bg { background-color: $green; }
 .green-dark-bg { background-color: $green-dark; }
 .yellow-bg { background-color: $yellow; }
 .orange-bg { background-color: $orange; }
 .blue-bg { background-color: $blue; }
+.gray-bg { background-color: $gray; }
+.white-bg { background-color: $white; }
 
 $text-color: $black;
 $bg-color: #f5f5f5;

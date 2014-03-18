@@ -5,13 +5,13 @@
   <span class="last-sync never">never</span>
 <% } %>
 
-<span class="status <%- model.getStatus() %>">
+<span class="status <%- status.status %>">
 
   <i class="dot"></i>
 
-  <%- model.getStatusMessage() %>
+  <%- status.message %>
 
-  <% if(model.getLogLink() && model.getStatus() != 'running') { %>
+  <% if(model.getLogLink() && status.status != 'running') { %>
     <a href="<%- model.getLogLink() %>" class="blue-text underline log">View log for details</a>
   <% } %>
 

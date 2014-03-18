@@ -23,9 +23,12 @@ class pipes.steps.DataPollStep extends pipes.steps.Step
   # Callback to invoke when data has been received
   # Return false if you don't want the step to be automatically end()ed
   # Default behaviour: uses responseMap to map response values to sharedData
-  callback: (response, step) ->
+  successCallback: (response, step) ->
     for k, v of @responseMap
       @sharedData[k] = if v then response[v] else response
+
+  errorCallback: (response, step) ->
+    step.trigger 'error', step, response.responseText
 
   constructor: (options = {}) ->
     super(options)
@@ -65,10 +68,12 @@ class pipes.steps.DataPollStep extends pipes.steps.Step
       url: @url
       data: @getRequestData()
       success: (@responseData) =>
+        return if not @active # Oops, someone canceled this action
         if not @responseData
           @setNextPoll()
         else
-          if @callback(@responseData, @) != false
+          if @successCallback(@responseData, this) != false
             @end()
-      error: =>
-        @setNextPoll()
+      error: (response) =>
+        return if not @active # Oops, someone canceled this action
+        @errorCallback(response, this)
