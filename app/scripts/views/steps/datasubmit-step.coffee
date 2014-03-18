@@ -14,7 +14,7 @@ class pipes.steps.DataSubmitStep extends pipes.steps.Step
   successCallback: (response, step) ->
 
   errorCallback: (response, step) ->
-    step.trigger 'error', step, response.responseText
+    step.trigger 'error', step, response
 
   constructor: (options={}) ->
     super(options)
@@ -31,13 +31,15 @@ class pipes.steps.DataSubmitStep extends pipes.steps.Step
       url: @url
       data: JSON.stringify(@getRequestData())
       contentType: 'application/json'
-      success: (@data) =>
+      success: (response) =>
         return if not @active # Oops, someone canceled this action
-        if @successCallback(@data, @) != false
+        if response?.error
+          @errorCallback(response.error, this)
+        else if @successCallback(response, this) != false
           @ajaxEnd()
           @end()
       error: (response) =>
         return if not @active # Oops, someone canceled this action
-        @errorCallback(response, this)
+        @errorCallback(response.responseText, this)
         @ajaxEnd()
 

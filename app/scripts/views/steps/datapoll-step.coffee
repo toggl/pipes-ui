@@ -28,7 +28,7 @@ class pipes.steps.DataPollStep extends pipes.steps.Step
       @sharedData[k] = if v then response[v] else response
 
   errorCallback: (response, step) ->
-    step.trigger 'error', step, response.responseText
+    step.trigger 'error', step, response
 
   constructor: (options = {}) ->
     super(options)
@@ -67,13 +67,15 @@ class pipes.steps.DataPollStep extends pipes.steps.Step
       type: 'GET'
       url: @url
       data: @getRequestData()
-      success: (@responseData) =>
+      success: (responseData) =>
         return if not @active # Oops, someone canceled this action
-        if not @responseData
+        if not responseData
           @setNextPoll()
+        else if responseData.error
+          @errorCallback(responseData, this)
         else
-          if @successCallback(@responseData, this) != false
+          if @successCallback(responseData, this) != false
             @end()
       error: (response) =>
         return if not @active # Oops, someone canceled this action
-        @errorCallback(response, this)
+        @errorCallback(response.responseText, this)
