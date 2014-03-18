@@ -8,6 +8,7 @@ class pipes.views.PipeItemView extends Backbone.View
     'click .button.sync': 'startSync'
     'click .log': 'clickLog'
     'click .close-log': 'clickCloseLog'
+    'click .cancel': 'clickCancel'
 
   initialize: ->
     @listenTo @model, 'change:pipe_status change:configured change:authorized', @refreshStatus
@@ -98,6 +99,10 @@ class pipes.views.PipeItemView extends Backbone.View
     e.preventDefault()
     @$('.log-container').hide()
     @$('a.log').show()
+
+  clickCancel: (e) =>
+    e.preventDefault()
+    @stepper.reset()
 
   ajaxStart: (fn = null, context = null) ->
     # Shows UI as 'loading' and optionally runs the callback 'fn' bound to 'context'
