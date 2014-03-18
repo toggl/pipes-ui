@@ -39,10 +39,12 @@ class pipes.steps.Step
   onEnd: -> # Override me
 
   ajaxStart: (fn) ->
-    @view.ajaxStart(fn, this)
+    @trigger 'ajaxStart', this
+    fn.call this if fn?
 
   ajaxEnd: (fn) ->
-    @view.ajaxEnd(fn, this)
+    @trigger 'ajaxEnd', this
+    fn.call this if fn?
 
   getContainer: -> # Return the efficiently cached .step-container of the view
     if not @_container or not $.contains(document.documentElement, @_container[0])

@@ -24,6 +24,8 @@ class pipes.views.PipeItemView extends Backbone.View
     @stepper.on 'step', @onStepChange
     @stepper.on 'error', @onStepError
     @stepper.on 'beforeEnd', @onStepperBeforeEnd
+    @stepper.on 'ajaxStart', => @ajaxStart()
+    @stepper.on 'ajaxEnd', => @ajaxEnd()
     @setRunning() if not @stepper.current.default
 
   onStepChange: (step, i, steps) =>
@@ -107,12 +109,12 @@ class pipes.views.PipeItemView extends Backbone.View
   ajaxStart: (fn = null, context = null) ->
     # Shows UI as 'loading' and optionally runs the callback 'fn' bound to 'context'
     @$el.addClass('spinning-container').addClass('loading')
-    fn.call(context or this) if fn
+    fn.call context or this if fn?
 
   ajaxEnd: (fn = null, context) ->
     # Ends UI 'loading' and optionally runs the callback 'fn' bound to 'context'
     @$el.removeClass('spinning-container').removeClass('loading')
-    fn.call(context or this) if fn
+    fn.call context or this if fn?
 
 
 class pipes.views.PipeItemMetaView extends Backbone.View
