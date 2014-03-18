@@ -20,8 +20,7 @@ var gulp = require('gulp'),
     notifier = require('node-notifier'),
     Entities = require('html-entities').XmlEntities,
     shell = require('gulp-shell'),
-    bump = require('gulp-bump')
-    git = require('gulp-git'),
+    bump = require('gulp-bump'),
     tap = require('gulp-tap');
 // var imagemin = require('gulp-imagemin'); // TODO
 
@@ -234,11 +233,15 @@ var bumpVersion = function(type) {
     .pipe(gulp.dest('./'))
     .pipe(tap(function(file, t) {
       version = JSON.parse(file.contents.toString()).version;
-    }))
-    .pipe(git.add())
-    .on('end', function() {
+    })).on('end', function() {
       gulp.src('')
-        .pipe(git.commit("Version " + version));
+        .pipe(shell([
+          'git commit --all --message "Version ' + version + '"',
+          (type != 'patch' ? 'git tag --annotate "v' + version + '" --message "Version ' + version + '"' : 'true')
+        ], {ignoreErrors: true}))
+        .pipe(tap(function() {
+          gutil.log(gutil.colors.green("Version bumped to ") + gutil.colors.yellow(version) + gutil.colors.green(", don't forget to push!"));
+        }));
     });
 
 }
