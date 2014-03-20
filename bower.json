@@ -9,7 +9,7 @@
     "font-awesome": "~4.0.3",
     "iframe-resizer": "~1.4.4",
     "momentjs": "~2.5.1",
-    "foundation": "git://github.com/syko/foundation.git#master"
+    "foundation": "foundation#master"
   },
   "devDependencies": {},
   "overrides": {
