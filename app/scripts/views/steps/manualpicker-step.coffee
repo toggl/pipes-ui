@@ -29,6 +29,7 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
       columns: @columns
       objects: @sharedData[@inKey]
       title: @title
+    container.off '.manual-picker'
     container.on 'change.manual-picker', 'thead input:checkbox', @clickMainCheckbox
     container.on 'change.manual-picker', 'tbody input:checkbox', @clickCheckbox
     container.on 'click.manual-picker', '.button.submit', @clickSubmit

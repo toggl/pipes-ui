@@ -14,9 +14,9 @@ class pipes.steps.Stepper
     @sharedData = {}
     for step in @steps
       step.initialize(view: @view, sharedData: @sharedData, state: pipes.pipeStates[step.id])
-      step.on 'error', @onStepError
-      step.on 'ajaxStart', => @trigger 'ajaxStart', step
-      step.on 'ajaxEnd', => @trigger 'ajaxEnd', step
+      @listenTo step, 'error', @onStepError
+      @listenTo step, 'ajaxStart', => @trigger 'ajaxStart', step
+      @listenTo step, 'ajaxEnd', => @trigger 'ajaxEnd', step
     initialStep = _.findIndex @steps, (step) -> step.id of pipes.pipeStates
     initialStep = 0 if initialStep == -1
     @startStep initialStep

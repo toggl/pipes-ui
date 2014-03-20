@@ -16,6 +16,7 @@ class pipes.views.ListView extends Backbone.View
     for id, view of @childViews
       if not @collection.get(id)
         view.remove()
+        view.stopListening()
         delete @childViews[id]
 
   render: ->

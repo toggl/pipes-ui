@@ -21,11 +21,11 @@ class pipes.views.PipeItemView extends Backbone.View
       el: @$('.meta')
       model: @model
     @stepper = pipes.stepperFactory(@model.collection.integration, @model, this)
-    @stepper.on 'step', @onStepChange
-    @stepper.on 'error', @onStepError
-    @stepper.on 'beforeEnd', @onStepperBeforeEnd
-    @stepper.on 'ajaxStart', => @ajaxStart()
-    @stepper.on 'ajaxEnd', => @ajaxEnd()
+    @listenTo @stepper, 'step', @onStepChange
+    @listenTo @stepper, 'error', @onStepError
+    @listenTo @stepper, 'beforeEnd', @onStepperBeforeEnd
+    @listenTo @stepper, 'ajaxStart', => @ajaxStart()
+    @listenTo @stepper, 'ajaxEnd', => @ajaxEnd()
     @setRunning() if not @stepper.current.default
 
   onStepChange: (step, i, steps) =>
