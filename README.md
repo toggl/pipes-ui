@@ -4,7 +4,10 @@ User Interface for the Toggl Pipes project. Currently in development.
 
 ## Contributing
 
-To run, install NodeJS and gulp via `npm install -g gulp`. Then to install all the dependencies run `npm install` and `bower install`.
+To run, first install NodeJS and gulp via `npm install -g gulp`.
+Then, to install all the dependencies run `npm install` and `bower install`.
+
+To run the development server and watch for file changes, simply run `gulp`.
 
 ### local_config.json
 
@@ -17,7 +20,7 @@ Sample `local_config.json`
     "development": {
       "apiHost": "https://my-dev-pipes-api-host.com"
     },
-    "staging": {
+    "production": {
       "host": "my-production-server-host",
       "root": "/project/root/folder/",
       "apiHost": "https://my-production-pipes-api-host.com"
