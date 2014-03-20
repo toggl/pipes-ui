@@ -24,7 +24,7 @@ var gulp = require('gulp'),
     tap = require('gulp-tap');
 // var imagemin = require('gulp-imagemin'); // TODO
 
-// Custom notification function because gulp-notify doesn't work
+// Custom notification function because gulp-notify doesn't work for some reason
 var htmlEntities = new Entities();
 function logError(error, print) {
   if(print) {
@@ -59,11 +59,13 @@ var paths = {
   build: 'build/'
 };
 
+var cl = gutil.colors;
+
 try {
    var localConfig = require('./local_config.json');
 } catch(err) {
   localConfig = null;
-  gutil.log(gutil.colors.yellow('Warning: You need a local_config.json to be able to deploy or specify api host'));
+  gutil.log(cl.yellow('Warning: You need a local_config.json to be able to deploy or specify api host'));
 }
 
 var vendorPreScss = ''; // String to prepend to all vendor scss files
@@ -178,7 +180,7 @@ gulp.task('serve', function(next) {
       server.serve(request, response);
     }).resume();
   }).listen(port, function() {
-    gutil.log(gutil.colors.green('Server listening on port: ') + gutil.colors.magenta(port));
+    gutil.log(cl.green('Server listening on port: ') + cl.magenta(port));
     next();
   });
 });
@@ -190,21 +192,13 @@ gulp.task('clean', function() {
 
 gulp.task('deploy', ['build'], function() {
 
-  if(!localConfig) {
-    gutil.log(gutil.colors.red("Error: You need a local_config.json to be able to deploy"));
-    return;
-  }
-  if(!localConfig.targets[env]) {
-    gutil.log(gutil.colors.red("Error: Please specify a deployment target that exists in local_config.json using -e"));
-    return;
-  }
+  if(!localConfig) { gutil.log(cl.red("Error: You need a local_config.json to be able to deploy")); return; }
+  if(env == 'development') { gutil.log(cl.red("Error: Please specify a deployment target other than development using -e")); return; }
+  if(!localConfig.targets[env]) { gutil.log(cl.red("Error: Please specify a deployment target that exists in local_config.json using -e")); return; }
 
   targetConfig = localConfig.targets[env];
 
-  if(targetConfig.root[0] != '/') {
-    gutil.log(gutil.colors.red("Error: Please specify the remote root as an absolute path"));
-    return;
-  }
+  if(targetConfig.root[0] != '/') { gutil.log(cl.red("Error: Please specify the remote root as an absolute path")); return; }
 
   if(!targetConfig.root.match('\/$')) {
     targetConfig.root += '/';
@@ -220,6 +214,9 @@ gulp.task('deploy', ['build'], function() {
       'ssh root@hubert "mkdir -p ' + targetConfig.root + '/current; cd ' + targetConfig.root + ';"',
       'rsync --checksum --archive --compress --delete --safe-links build/ ' + (targetConfig.user ? targetConfig.user + '@' : '') + targetConfig.host + ':' + targetConfig.root + 'current/'
     ]))
+    .pipe(tap(function() {
+      gutil.log(cl.green("Successfully deployed to ") + cl.yellow(env));
+    }))
 
 });
 
@@ -240,7 +237,7 @@ var bumpVersion = function(type) {
           (type != 'patch' ? 'git tag --annotate "v' + version + '" --message "Version ' + version + '"' : 'true')
         ], {ignoreErrors: true}))
         .pipe(tap(function() {
-          gutil.log(gutil.colors.green("Version bumped to ") + gutil.colors.yellow(version) + gutil.colors.green(", don't forget to push!"));
+          gutil.log(cl.green("Version bumped to ") + cl.yellow(version) + cl.green(", don't forget to push!"));
         }));
     });
 
