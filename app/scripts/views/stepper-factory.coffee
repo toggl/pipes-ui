@@ -30,7 +30,7 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
                 columns: [{key: 'name', label: "Name", filter: true}, {key: 'email', label: "E-mail", filter: true}]
               )
               new pipes.steps.DataSubmitStep(
-                url: "#{pipe.url()}/users"
+                url: "#{pipe.url()}/run"
                 requestMap: {'ids': 'selectedUsers'} # Mapping 'query string param name': 'key in sharedData'
               )
             ]
@@ -50,6 +50,9 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
                 requestMap: {'account_id': 'accountId'}
                 successCallback: ->
                   pipe.set configured: true
+              )
+              new pipes.steps.DataSubmitStep(
+                url: "#{pipe.url()}/run"
               )
             ]
         else
