@@ -96,6 +96,12 @@ class PipesApp
     @windowApi = new pipes.WindowApi()
     @windowApi.initialize()
 
+    @windowApi.once 'initialize', =>
+      @windowApi.query 'oAuthQuery'
+      @windowApi.query 'wid'
+      @windowApi.query 'apiToken'
+      @windowApi.query 'dateFormats'
+
     @windowApi.once 'oAuthQuery', (@oAuthQuery) =>
       console.log('WOOOHOOO', 'oAuthQuery:', @oAuthQuery)
       # Try to parse oauth data from oauth query params

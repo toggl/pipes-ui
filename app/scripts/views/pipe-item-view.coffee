@@ -32,7 +32,8 @@ class pipes.views.PipeItemView extends Backbone.View
     @refreshSyncState()
 
   onStepError: (step, message) =>
-    @overrideStatus 'fail', "Error: #{message}"
+    console.log('onStepError', 'step:', step, 'message:', message)
+    @overrideStatus 'fail', "Error: #{message or 'Unknown error'}"
     @stepper.current.poll() # Sync once through IdleStep TODO: uncouple PipeItemView from stepper.steps[0] here!
 
   setRunning: ->
