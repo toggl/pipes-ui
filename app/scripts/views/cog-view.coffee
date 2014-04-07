@@ -7,7 +7,7 @@ class pipes.views.CogView extends Backbone.View
     'click li a:not(.disabled), li button:not(.disabled)': 'clickItem'
 
   initialize: (options) ->
-    @_id = "cog-#{~~Math.random()*999999999}" # Used to link together menu & button
+    @_id = "cog-#{Math.random()*999999999 | 0}" # Used to link together menu & button
     throw new Error("'items' is required parameter for CogView.initialize") if not options.items
     if not options.items[0]?.items? # No groups: simulate 1 untitled group
       @items = [{title: null, items: options.items}]
