@@ -23,7 +23,9 @@ var gulp = require('gulp'),
     bump = require('gulp-bump'),
     tap = require('gulp-tap'),
     rev = require('gulp-rev')
-    inject = require('gulp-inject');
+    inject = require('gulp-inject')
+    request = require('request'),
+    exec = require('child_process').exec;
 // var imagemin = require('gulp-imagemin'); // TODO
 
 // Custom notification function because gulp-notify doesn't work for some reason
@@ -63,8 +65,9 @@ var paths = {
 
 var cl = gutil.colors;
 
+var localConfig = null;
 try {
-   var localConfig = require('./local_config.json');
+  localConfig = require('./local_config.json');
 } catch(err) {
   localConfig = null;
   gutil.log(cl.yellow('Warning: You need a local_config.json to be able to deploy or specify api host'));
@@ -212,6 +215,43 @@ gulp.task('clean', function() {
     .pipe(clean());
 });
 
+function notifyDeploy(duration) {
+
+  function postNotification(head) {
+    var postData = {
+      token: localConfig.deployInfo.appToken,
+      operator: process.env.USER,
+      target: env,
+      branch: head.branch,
+      revision: head.revision,
+      duration: duration
+    };
+    request.post({
+      url: localConfig.deployInfo.url,
+      method: 'POST',
+      form: postData
+    }, function(error, response) {
+      if(error) {
+        gutil.log(cl.red("Error: Failed to send deployment notification, error was:\n"), error);
+      }
+    });
+  }
+
+  function gitInfo(cb) {
+    exec('echo "`git rev-parse HEAD` `git branch | sed -n \'/\* /s///p\'`"', function(error, stdout, stderr) {
+      var output = stdout.trim().split(' ');
+      var head = {
+        branch: output && output[1] || 'unknown',
+        revision: output && output[0] || 'unknown'
+      }
+      cb(head);
+    });
+  }
+
+  gitInfo(postNotification);
+
+};
+
 gulp.task('deploy', ['build'], function() {
 
   if(!localConfig) { gutil.log(cl.red("Error: You need a local_config.json to be able to deploy")); return; }
@@ -231,14 +271,18 @@ gulp.task('deploy', ['build'], function() {
     port: targetConfig.port || 22
   }
 
+  var deployStart = Date.now();
+
   gulp.src('')
     .pipe(shell([
       'ssh root@hubert "mkdir -p ' + targetConfig.root + '/current; cd ' + targetConfig.root + ';"',
       'rsync --checksum --archive --compress --delete --safe-links build/ ' + (targetConfig.user ? targetConfig.user + '@' : '') + targetConfig.host + ':' + targetConfig.root + 'current/'
     ]))
     .pipe(tap(function() {
-      gutil.log(cl.green("Successfully deployed to ") + cl.yellow(env));
-    }))
+      var time = Date.now() - deployStart;
+      gutil.log(cl.green("Successfully deployed to ") + cl.yellow(env) + cl.green(" in ") + cl.yellow((time/1000).toFixed(2) + " seconds"));
+      if(localConfig.deployInfo) notifyDeploy(time);
+    }));
 
 });
 
