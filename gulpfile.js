@@ -211,7 +211,7 @@ gulp.task('serve', function(next) {
 });
 
 gulp.task('clean', function() {
-  gulp.src(paths.build, {read: false})
+  return gulp.src(paths.build, {read: false})
     .pipe(clean());
 });
 
@@ -252,7 +252,7 @@ function notifyDeploy(duration) {
 
 };
 
-gulp.task('deploy', ['build'], function() {
+gulp.task('deploy', ['clean', 'build'], function() {
 
   if(!localConfig) { gutil.log(cl.red("Error: You need a local_config.json to be able to deploy")); return; }
   if(env == 'development') { gutil.log(cl.red("Error: Please specify a deployment target other than development using -e")); return; }
