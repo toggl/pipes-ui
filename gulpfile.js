@@ -107,7 +107,7 @@ gulp.task('build-scripts-internal', function() {
     .on('error', function(err) { logError(err, true); })
     .pipe(env == 'development' ? gutil.noop() : uglify())
     .pipe(concat('app.js'))
-    .pipe(rev())
+    .pipe(env == 'development' ? gutil.noop() : rev())
     .pipe(gulp.dest(paths.build + 'scripts/'));
 });
 gulp.task('build-scripts-external', function() {
@@ -117,7 +117,7 @@ gulp.task('build-scripts-external', function() {
     .pipe(filter('!jQuery/**/*')) // TODO: Remove this hack (iframe-resizer invalid dep - should be lowercase)
     .pipe(env == 'development' ? gutil.noop() : uglify())
     .pipe(concat('vendor.js'))
-    .pipe(rev())
+    .pipe(env == 'development' ? gutil.noop() : rev())
     .pipe(gulp.dest(paths.build + 'scripts/'));
 });
 gulp.task('build-scripts', ['build-scripts-internal', 'build-scripts-external']);
@@ -132,7 +132,7 @@ gulp.task('build-styles-internal', function() {
     }))
     .on('error', function(err) { logError(err); })
     .pipe(concat("app.css"))
-    .pipe(rev())
+    .pipe(env == 'development' ? gutil.noop() : rev())
     .pipe(gulp.dest(paths.build + 'styles/'))
 });
 gulp.task('build-styles-external', ['_getVendorPreScss'], function() {
@@ -147,7 +147,7 @@ gulp.task('build-styles-external', ['_getVendorPreScss'], function() {
     .on('error', function(err) { logError(err); })
     .pipe(scssFilter.restore())
     .pipe(concat("vendor.css"))
-    .pipe(rev())
+    .pipe(env == 'development' ? gutil.noop() : rev())
     .pipe(gulp.dest(paths.build + 'styles/'))
 });
 gulp.task('build-styles', ['build-styles-internal', 'build-styles-external']);
@@ -160,7 +160,7 @@ gulp.task('build-templates', function() {
     }))
     .on('error', function(err) { logError(err); })
     .pipe(concat("templates.js"))
-    .pipe(rev())
+    .pipe(env == 'development' ? gutil.noop() : rev())
     .pipe(gulp.dest(paths.build + 'scripts/'));
 });
 
