@@ -3,6 +3,7 @@ class pipes.views.PipeItemView extends Backbone.View
   className: 'row pipe'
 
   stepper: null
+  loading: false
 
   events:
     'click .button.sync': 'startSync'
@@ -26,13 +27,13 @@ class pipes.views.PipeItemView extends Backbone.View
     @listenTo @stepper, 'beforeEnd', @onStepperBeforeEnd
     @listenTo @stepper, 'ajaxStart', => @ajaxStart()
     @listenTo @stepper, 'ajaxEnd', => @ajaxEnd()
+    @stepper.run()
     @setRunning() if not @stepper.current.default
 
   onStepChange: (step, i, steps) =>
     @refreshSyncState()
 
   onStepError: (step, message) =>
-    console.log('onStepError', 'step:', step, 'message:', message)
     @overrideStatus 'fail', "Error: #{message or 'Unknown error'}"
     @stepper.current.poll() # Sync once through IdleStep TODO: uncouple PipeItemView from stepper.steps[0] here!
 
@@ -67,6 +68,7 @@ class pipes.views.PipeItemView extends Backbone.View
     @metaView.render()
     @$el.foundation()
     @refreshSyncState()
+    @refreshLoading()
     this
 
   refreshSyncState: ->
@@ -81,6 +83,9 @@ class pipes.views.PipeItemView extends Backbone.View
     @metaView.render()
     @refreshSyncState()
     @cogView.render()
+
+  refreshLoading: ->
+    @$el.toggleClass('spinning-container', @loading).toggleClass('loading', @loading)
 
   teardown: =>
     # Tear down the saved configuration (mostly account_id), setup is handled via steps
@@ -109,12 +114,14 @@ class pipes.views.PipeItemView extends Backbone.View
 
   ajaxStart: (fn = null, context = null) ->
     # Shows UI as 'loading' and optionally runs the callback 'fn' bound to 'context'
-    @$el.addClass('spinning-container').addClass('loading')
+    @loading = true
+    @refreshLoading()
     fn.call context or this if fn?
 
   ajaxEnd: (fn = null, context) ->
     # Ends UI 'loading' and optionally runs the callback 'fn' bound to 'context'
-    @$el.removeClass('spinning-container').removeClass('loading')
+    @loading = false
+    @refreshLoading()
     fn.call context or this if fn?
 
 

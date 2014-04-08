@@ -17,19 +17,22 @@ class pipes.steps.Stepper
       @listenTo step, 'error', @onStepError
       @listenTo step, 'ajaxStart', => @trigger 'ajaxStart', step
       @listenTo step, 'ajaxEnd', => @trigger 'ajaxEnd', step
+
+  run: ->
     initialStep = _.findIndex @steps, (step) -> step.id of pipes.pipeStates
     initialStep = 0 if initialStep == -1
     @startStep initialStep
 
   startStep: (@currentI) ->
     console.log('startStep', 'i:', @currentI, 'step:', @steps[@currentI], 'data:', @sharedData)
+    lastI = @currentI
     @current = @steps[@currentI]
     @current.once 'end', => @startStep (@currentI+1) % @steps.length
     @trigger 'beforeStep', @current, @currentI, @steps
-    @trigger 'beforeEnd', @current, @currentI, @steps if @currentI == 0
+    @trigger 'beforeEnd', @current, @currentI, @steps if lastI == @steps.length - 1
     @current.run()
     @trigger 'step', @current, @currentI, @steps
-    @trigger 'end', @current, @currentI, @steps if @currentI == 0
+    @trigger 'end', @current, @currentI, @steps if lastI == @steps.length - 1
 
   endCurrentStep: ->
     @current.end()
