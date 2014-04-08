@@ -20,10 +20,10 @@
       </thead>
       <tbody>
         <% for(var i = 0; i < objects.length ; i++) { %>
-          <tr class="entry" data-id="<%- objects[i].id %>">
+          <tr class="entry" data-id="<%- objects[i].foreign_id %>">
             <td class="col-checkbox">
               <div class="button checkbox">
-                <input type="checkbox" name="mark" class="custom checkbox" data-id="<%- objects[i].id %>" />
+                <input type="checkbox" name="mark" class="custom checkbox" data-id="<%- objects[i].foreign_id %>" />
                 <span class="checkbox"></span>
               </div>
             </td>
