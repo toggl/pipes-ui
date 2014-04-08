@@ -72,7 +72,7 @@ class pipes.steps.DataPollStep extends pipes.steps.Step
         if not responseData
           @setNextPoll()
         else if responseData.error
-          @errorCallback(responseData, this)
+          @errorCallback(responseData.error, this)
         else
           if @successCallback(responseData, this) != false
             @end()
