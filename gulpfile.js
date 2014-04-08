@@ -2,7 +2,6 @@ var gulp = require('gulp'),
     fs = require('fs'),
     es = require('event-stream'),
     path = require('path'),
-    clean = require('gulp-clean'),
     insert = require('gulp-insert'),
     sass = require('gulp-sass'),
     compass = require('gulp-compass'),
@@ -89,17 +88,18 @@ var env = gutil.env.e || 'development';
 // Tasks
 // =====
 
-gulp.task('build-assets', function() {
+gulp.task('build-assets-internal', function() {
   // Copy files as-is
-  // Project files
-  gulp.src(paths.images)
+  return gulp.src(paths.images)
     .pipe(gulp.dest(paths.build + "images/"));
-  // External files
-  bowerFiles()
+});
+gulp.task('build-assets-external', function() {
+  return bowerFiles()
     .pipe(filter('**/*.{otf,eot,svg,ttf,woff}'))
     .pipe(flatten())
     .pipe(gulp.dest(paths.build + 'fonts/'));
 });
+gulp.task('build-assets', ['build-assets-internal', 'build-assets-external']);
 
 gulp.task('build-scripts-internal', function() {
   return gulp.src(paths.scripts)
@@ -211,8 +211,8 @@ gulp.task('serve', function(next) {
 });
 
 gulp.task('clean', function() {
-  return gulp.src(paths.build, {read: false})
-    .pipe(clean());
+  return gulp.src('')
+    .pipe(shell(['rm -rf ' + paths.build]))
 });
 
 function notifyDeploy(duration) {
@@ -273,7 +273,7 @@ gulp.task('deploy', ['build'], function() {
 
   var deployStart = Date.now();
 
-  gulp.src('')
+  return gulp.src('')
     .pipe(shell([
       'ssh root@hubert "mkdir -p ' + targetConfig.root + '/current; cd ' + targetConfig.root + ';"',
       'rsync --checksum --archive --compress --delete --safe-links build/ ' + (targetConfig.user ? targetConfig.user + '@' : '') + targetConfig.host + ':' + targetConfig.root + 'current/'
