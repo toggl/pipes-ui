@@ -252,7 +252,7 @@ function notifyDeploy(duration) {
 
 };
 
-gulp.task('deploy', ['clean', 'build'], function() {
+gulp.task('deploy', ['build'], function() {
 
   if(!localConfig) { gutil.log(cl.red("Error: You need a local_config.json to be able to deploy")); return; }
   if(env == 'development') { gutil.log(cl.red("Error: Please specify a deployment target other than development using -e")); return; }
@@ -314,5 +314,5 @@ gulp.task('bump:patch', function() { bumpVersion('patch'); });
 gulp.task('bump:minor', function() { bumpVersion('minor'); });
 gulp.task('bump:major', function() { bumpVersion('major'); });
 
-gulp.task('build', ['build-assets', 'build-scripts', 'build-styles', 'build-templates', 'build-index']);
+gulp.task('build', ['clean', 'build-assets', 'build-scripts', 'build-styles', 'build-templates', 'build-index']);
 gulp.task('default', ['build', 'watch', 'livereload', 'serve']);
