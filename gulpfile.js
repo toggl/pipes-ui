@@ -163,7 +163,11 @@ gulp.task('build-templates', function() {
 
 gulp.task('build-index', ['build-scripts', 'build-styles', 'build-templates'], function() {
   var apiHost = ((localConfig || {targets:{}}).targets[env] || {}).apiHost || '';
-  return gulp.src(paths.build + '**/*')
+  return gulp.src([
+      paths.build + '**/*vendor*.{css,js}',
+      paths.build + '**/*templates*.js',
+      paths.build + '**/*app*.{css,js}'
+    ])
     .pipe(inject(paths.index, {
       addRootSlash: true,
       ignorePath: paths.build
