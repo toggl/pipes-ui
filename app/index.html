@@ -6,8 +6,8 @@
     <title>Toggl Pipes - integrations configuration</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="styles/vendor.css">
-    <link rel="stylesheet" href="styles/app.css">
+    <!-- inject:css -->
+    <!-- endinject -->
   </head>
   <body>
 
@@ -33,9 +33,8 @@
       window.PIPES_API_HOST = '<!-- @echo API_HOST -->';
     </script>
 
-    <script src="scripts/vendor.js"></script>
-    <script src="scripts/templates.js"></script>
-    <script src="scripts/app.js"></script>
+    <!-- inject:js -->
+    <!-- endinject -->
 
     <!-- @if ENV='development' -->
     <script src="http://localhost:35730/livereload.js?snipver=1"></script>

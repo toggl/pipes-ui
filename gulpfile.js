@@ -21,7 +21,9 @@ var gulp = require('gulp'),
     Entities = require('html-entities').XmlEntities,
     shell = require('gulp-shell'),
     bump = require('gulp-bump'),
-    tap = require('gulp-tap');
+    tap = require('gulp-tap'),
+    rev = require('gulp-rev')
+    inject = require('gulp-inject');
 // var imagemin = require('gulp-imagemin'); // TODO
 
 // Custom notification function because gulp-notify doesn't work for some reason
@@ -85,12 +87,8 @@ var env = gutil.env.e || 'development';
 // =====
 
 gulp.task('build-assets', function() {
-  // Copy files as-is (+preprocess)
-  var apiHost = ((localConfig || {targets:{}}).targets[env] || {}).apiHost || '';
+  // Copy files as-is
   // Project files
-  gulp.src(paths.index)
-    .pipe(preprocess({context: {ENV: env, API_HOST: apiHost}}))
-    .pipe(gulp.dest(paths.build));
   gulp.src(paths.images)
     .pipe(gulp.dest(paths.build + "images/"));
   // External files
@@ -100,27 +98,30 @@ gulp.task('build-assets', function() {
     .pipe(gulp.dest(paths.build + 'fonts/'));
 });
 
-gulp.task('build-scripts', function() {
-  // Project files
-  gulp.src(paths.scripts)
+gulp.task('build-scripts-internal', function() {
+  return gulp.src(paths.scripts)
     .pipe(coffee())
     .on('error', function(err) { logError(err, true); })
     .pipe(env == 'development' ? gutil.noop() : uglify())
     .pipe(concat('app.js'))
+    .pipe(rev())
     .pipe(gulp.dest(paths.build + 'scripts/'));
-  // External files (bower + scripts/vendor/)
-  bowerFiles()
+});
+gulp.task('build-scripts-external', function() {
+  return bowerFiles()
     .pipe(filter('**/*.js'))
     .pipe(filter('!underscore/**/*')) // TODO: Remove this hack (backbone dep not needed)
     .pipe(filter('!jQuery/**/*')) // TODO: Remove this hack (iframe-resizer invalid dep - should be lowercase)
     .pipe(env == 'development' ? gutil.noop() : uglify())
     .pipe(concat('vendor.js'))
+    .pipe(rev())
     .pipe(gulp.dest(paths.build + 'scripts/'));
 });
+gulp.task('build-scripts', ['build-scripts-internal', 'build-scripts-external']);
 
-gulp.task('build-styles', ['_getVendorPreScss'], function() {
-  // Project files
-  gulp.src(paths.styles)
+
+gulp.task('build-styles-internal', function() {
+  return gulp.src(paths.styles)
     .pipe(compass({
       config_file: 'compass.rb',
       sass: 'app/styles/', // must be same as in compass config
@@ -128,10 +129,12 @@ gulp.task('build-styles', ['_getVendorPreScss'], function() {
     }))
     .on('error', function(err) { logError(err); })
     .pipe(concat("app.css"))
+    .pipe(rev())
     .pipe(gulp.dest(paths.build + 'styles/'))
-  // External files: scss + css (bower + styles/vendor/)
+});
+gulp.task('build-styles-external', ['_getVendorPreScss'], function() {
   var scssFilter = filter('**/*.scss')
-  es.concat(
+  return es.concat(
     bowerFiles().pipe(filter('**/*.{scss,css}')),
     gulp.src(paths.stylesVendor)
   )
@@ -141,8 +144,10 @@ gulp.task('build-styles', ['_getVendorPreScss'], function() {
     .on('error', function(err) { logError(err); })
     .pipe(scssFilter.restore())
     .pipe(concat("vendor.css"))
+    .pipe(rev())
     .pipe(gulp.dest(paths.build + 'styles/'))
 });
+gulp.task('build-styles', ['build-styles-internal', 'build-styles-external']);
 
 gulp.task('build-templates', function() {
   // Precompile lodash templates into window.templates["relpath/filename.html", ...]
@@ -152,7 +157,19 @@ gulp.task('build-templates', function() {
     }))
     .on('error', function(err) { logError(err); })
     .pipe(concat("templates.js"))
+    .pipe(rev())
     .pipe(gulp.dest(paths.build + 'scripts/'));
+});
+
+gulp.task('build-index', ['build-scripts', 'build-styles', 'build-templates'], function() {
+  var apiHost = ((localConfig || {targets:{}}).targets[env] || {}).apiHost || '';
+  return gulp.src(paths.build + '**/*')
+    .pipe(inject(paths.index, {
+      addRootSlash: true,
+      ignorePath: paths.build
+    }))
+    .pipe(preprocess({context: {ENV: env, API_HOST: apiHost}}))
+    .pipe(gulp.dest(paths.build));
 });
 
 gulp.task('watch', function () {
@@ -160,7 +177,8 @@ gulp.task('watch', function () {
   // TODO: watch project and external separately for faster changes
   gulp.watch(paths.scripts, ['build-scripts']);
   gulp.watch(paths.styles.concat(paths.stylesVendor, paths.stylesVendorPrepend), ['build-styles']);
-  gulp.watch([paths.index, paths.images], ['build-assets']);
+  gulp.watch(paths.images, ['build-assets']);
+  gulp.watch(paths.index, ['build-index']);
   gulp.watch(paths.templates, ['build-templates']);
 });
 
@@ -248,5 +266,5 @@ gulp.task('bump:patch', function() { bumpVersion('patch'); });
 gulp.task('bump:minor', function() { bumpVersion('minor'); });
 gulp.task('bump:major', function() { bumpVersion('major'); });
 
-gulp.task('build', ['build-scripts', 'build-styles', 'build-assets', 'build-templates']);
+gulp.task('build', ['build-assets', 'build-scripts', 'build-styles', 'build-templates', 'build-index']);
 gulp.task('default', ['build', 'watch', 'livereload', 'serve']);
