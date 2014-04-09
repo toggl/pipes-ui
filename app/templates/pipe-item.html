@@ -11,9 +11,7 @@
   <div class="left small-17 columns">
     <p class="name bigger-text space-after">
       <%- model.get('name') %>
-      <% if(model.get('automatic')) { %>
-        <span class="pill-box automatic green"><span>Automatic</span></span>
-      <% } %>
+      <span class="pill-box automatic green" style="display: <% if(model.get('automatic')) { %>block<% } else { %>none<% } %>;"><span>Automatic</span></span>
     </p>
     <p class="description">
       <%- model.get('description') %>

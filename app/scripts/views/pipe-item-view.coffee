@@ -12,11 +12,31 @@ class pipes.views.PipeItemView extends Backbone.View
     'click .cancel': 'clickCancel'
 
   initialize: ->
-    @listenTo @model, 'change:pipe_status change:configured change:authorized', @refreshStatus
+    @listenTo @model, 'change:pipe_status change:configured change:authorized change:automatic', @refreshStatus
     @cogView = new pipes.views.CogView
       el: @$('.cog-box')
       items: [
-        {name: 'teardown', label: "Delete configuration", fn: @teardown, skip: => not @model.get('configured')}
+        {
+          name: 'teardown'
+          label: "Delete configuration"
+          fn: @teardown
+          skip: =>
+            not @model.get('configured')
+        }
+        {
+          name: 'enable-auto'
+          label: "Enable auto-sync"
+          fn: @enableAuto
+          skip: =>
+            not @model.get('configured') or not @model.get('automatic_option') or @model.get('automatic')
+        }
+        {
+          name: 'disable-auto'
+          label: "Disable auto-sync"
+          fn: @disableAuto
+          skip: =>
+            not @model.get('configured') or not @model.get('automatic_option') or not @model.get('automatic')
+        }
       ]
     @metaView = new pipes.views.PipeItemMetaView
       el: @$('.meta')
@@ -83,6 +103,7 @@ class pipes.views.PipeItemView extends Backbone.View
     @metaView.render()
     @refreshSyncState()
     @cogView.render()
+    @$('.automatic').toggle !!@model.get('automatic')
 
   refreshLoading: ->
     @$el.toggleClass('spinning-container', @loading).toggleClass('loading', @loading)
@@ -93,7 +114,29 @@ class pipes.views.PipeItemView extends Backbone.View
       type: 'DELETE'
       url: "#{@model.url()}/setup"
       success: => @ajaxEnd ->
-        @model.set configured: false
+        @model.set
+          configured: false
+          automatic: false
+      error: (response) => @ajaxEnd ->
+        @model.setStatus 'fail', "Error: #{response.responseText}"
+
+  enableAuto: =>
+    @setAuto true
+
+  disableAuto: =>
+    @setAuto false
+
+  setAuto: (enabled) ->
+    @ajaxStart -> $.ajax
+      type: 'POST'
+      url: "#{@model.url()}/setup"
+      contentType: 'application/json'
+      data: JSON.stringify(
+        account_id: @model.get('account_id')
+        automatic: enabled
+      )
+      success: => @ajaxEnd ->
+        @model.set(automatic: enabled)
       error: (response) => @ajaxEnd ->
         @model.setStatus 'fail', "Error: #{response.responseText}"
 
