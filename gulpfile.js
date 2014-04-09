@@ -271,6 +271,10 @@ gulp.task('deploy', ['build'], function() {
     port: targetConfig.port || 22
   }
 
+  if(gutil.env.b) {
+    bumpVersion(gutil.env.b);
+  }
+
   var deployStart = Date.now();
 
   return gulp.src('')
