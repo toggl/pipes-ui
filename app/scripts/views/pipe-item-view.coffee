@@ -110,6 +110,7 @@ class pipes.views.PipeItemView extends Backbone.View
 
   clickCancel: (e) =>
     e.preventDefault()
+    @overrideStatus null
     @stepper.reset()
 
   ajaxStart: (fn = null, context = null) ->
