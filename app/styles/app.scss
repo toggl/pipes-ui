@@ -122,6 +122,12 @@
         vertical-align: middle;
       }
     }
+    .account-selection {
+      td, th {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
     .manual-picker {
       .filter {
         margin-bottom: 10px;

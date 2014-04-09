@@ -10,17 +10,16 @@ class pipes.steps.AccountSelectorStep extends pipes.steps.DataPollStep
 
   constructor: (options = {}) ->
     super(options)
-    @outKey = options.outKey or 'accountId'
+    @outKey = options.outKey or 'account_id'
 
   initialize: (options) ->
     super(options)
     @url = @view.model.collection.integration.accountsUrl()
 
   successCallback: (response, step) ->
-    if not response?.accounts?.length?
-      throw 'OMG'
-      # TODO
     @ajaxEnd()
+    if not response?.accounts?.length?
+      @trigger 'error', this, "Did not receive any accounts"
     if response.accounts.length > 1
       @displayList response.accounts
       return false # Don't auto-end()

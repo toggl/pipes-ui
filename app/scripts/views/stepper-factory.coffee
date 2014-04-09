@@ -10,14 +10,15 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
               new pipes.steps.OAuthStep(pipe: pipe)
               new pipes.steps.AccountSelectorStep(
                 skip: -> pipe.get 'configured'
-                outKey: 'accountId'
               )
               new pipes.steps.DataSubmitStep(
                 skip: -> pipe.get 'configured'
                 url: "#{pipe.url()}/setup"
-                requestMap: {'account_id': 'accountId'}
-                successCallback: ->
-                  pipe.set configured: true
+                requestMap: {'account_id': 'account_id'}
+                successCallback: (response, step) ->
+                  pipe.set
+                    configured: true
+                    account_id: step.sharedData.account_id
               )
               new pipes.steps.DataPollStep(
                 url: "#{pipe.url()}/users"
@@ -42,14 +43,15 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
               new pipes.steps.OAuthStep(pipe: pipe)
               new pipes.steps.AccountSelectorStep(
                 skip: -> pipe.get 'configured'
-                outKey: 'accountId'
               )
               new pipes.steps.DataSubmitStep(
                 skip: -> pipe.get 'configured'
                 url: "#{pipe.url()}/setup"
-                requestMap: {'account_id': 'accountId'}
-                successCallback: ->
-                  pipe.set configured: true
+                requestMap: {'account_id': 'account_id'}
+                successCallback: (response, step) ->
+                  pipe.set
+                    configured: true
+                    account_id: step.sharedData.account_id
               )
               new pipes.steps.DataSubmitStep(
                 url: "#{pipe.url()}/run"
