@@ -179,7 +179,7 @@ gulp.task('build-index', ['build-scripts', 'build-styles', 'build-templates'], f
     .pipe(gulp.dest(paths.build));
 });
 
-gulp.task('watch', function () {
+gulp.task('watch', ['build'], function () {
   // Watch for changes in files and rebuild them to build/
   // TODO: watch project and external separately for faster changes
   gulp.watch(paths.scripts, ['build-scripts']);
@@ -210,9 +210,10 @@ gulp.task('serve', function(next) {
   });
 });
 
-gulp.task('clean', function() {
-  return gulp.src('')
-    .pipe(shell(['rm -rf ' + paths.build]))
+gulp.task('clean', function(cb) {
+  exec('rm- rf ' + paths.build, function() {
+    cb();
+  })
 });
 
 function notifyDeploy(duration) {
