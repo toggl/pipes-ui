@@ -37,6 +37,7 @@
     "gulp-tap": "~0.1.1",
     "gulp-rev": "~0.3.2",
     "gulp-inject": "~0.4.1",
-    "request": "~2.34.0"
+    "request": "~2.34.0",
+    "gulp-imagemin": "~0.2.0"
   }
 }

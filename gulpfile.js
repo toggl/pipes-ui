@@ -21,11 +21,11 @@ var gulp = require('gulp'),
     shell = require('gulp-shell'),
     bump = require('gulp-bump'),
     tap = require('gulp-tap'),
-    rev = require('gulp-rev')
-    inject = require('gulp-inject')
+    rev = require('gulp-rev'),
+    inject = require('gulp-inject'),
     request = require('request'),
+    imagemin = require('gulp-imagemin'),
     exec = require('child_process').exec;
-// var imagemin = require('gulp-imagemin'); // TODO
 
 // Custom notification function because gulp-notify doesn't work for some reason
 var htmlEntities = new Entities();
@@ -89,8 +89,8 @@ var env = gutil.env.e || 'development';
 // =====
 
 gulp.task('build-assets-internal', function() {
-  // Copy files as-is
   return gulp.src(paths.images)
+    .pipe(imagemin({pngquant:true}))
     .pipe(gulp.dest(paths.build + "images/"));
 });
 gulp.task('build-assets-external', function() {
