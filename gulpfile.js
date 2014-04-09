@@ -211,7 +211,7 @@ gulp.task('serve', function(next) {
 });
 
 gulp.task('clean', function(cb) {
-  exec('rm- rf ' + paths.build, function() {
+  exec('rm -rf ' + paths.build, function() {
     cb();
   })
 });
