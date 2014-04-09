@@ -275,7 +275,7 @@ gulp.task('deploy', ['build'], function() {
 
   return gulp.src('')
     .pipe(shell([
-      'ssh root@hubert "mkdir -p ' + targetConfig.root + '/current; cd ' + targetConfig.root + ';"',
+      'ssh ' + targetConfig.host + ' "cd ' + targetConfig.root + '; mkdir -p current; rm -rf previous; cp -r current previous"',
       'rsync --checksum --archive --compress --delete --safe-links build/ ' + (targetConfig.user ? targetConfig.user + '@' : '') + targetConfig.host + ':' + targetConfig.root + 'current/'
     ]))
     .pipe(tap(function() {
