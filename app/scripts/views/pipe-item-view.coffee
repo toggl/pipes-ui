@@ -103,7 +103,7 @@ class pipes.views.PipeItemView extends Backbone.View
     @metaView.render()
     @refreshSyncState()
     @cogView.render()
-    @$('.automatic').toggle !!@model.get('automatic')
+    @$('.automatic').toggleClass 'hide', !@model.get('automatic')
 
   refreshLoading: ->
     @$el.toggleClass('spinning-container', @loading).toggleClass('loading', @loading)

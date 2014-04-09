@@ -4,9 +4,12 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600,700&subset=cyrillic,latin,latin-ext);
 
 @import 'globals';
-@import 'util';
-@import 'defaultstyles';
 @import 'colors';
+@import 'util';
+
+@import 'alerts';
+@import 'components';
+@import 'defaultstyles';
 
 // =============
 // Global layout
@@ -16,9 +19,6 @@
   width: 1152px;
   margin: 20px auto;
 }
-
-@import 'alerts';
-@import 'components';
 
 .integrations-list {
   .integration {
@@ -171,4 +171,8 @@
       }
     }
   }
+}
+
+.hide {
+  display: none;
 }
