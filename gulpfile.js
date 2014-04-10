@@ -321,12 +321,3 @@ gulp.task('bump:major', function() { bumpVersion('major'); });
 
 gulp.task('build', ['clean', 'build-assets', 'build-scripts', 'build-styles', 'build-templates', 'build-index']);
 gulp.task('default', ['build', 'watch', 'livereload', 'serve']);
-
-// Gulp hangs on task build-assets-internal, this is here to fix this
-// see issues https://github.com/sindresorhus/gulp-imagemin/issues/20#issuecomment-39984056
-// and https://github.com/gulpjs/gulp/issues/167
-gulp.on('stop', function () {
-  process.nextTick(function () {
-    process.exit(0);
-  });
-});
