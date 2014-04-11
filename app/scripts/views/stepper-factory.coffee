@@ -57,6 +57,28 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
                 url: "#{pipe.url()}/run"
               )
             ]
+        when 'todolists'
+          return new pipes.steps.Stepper
+            view: pipeView
+            steps: [
+              new pipes.steps.IdleState(default: true)
+              new pipes.steps.OAuthStep(pipe: pipe)
+              new pipes.steps.AccountSelectorStep(
+                skip: -> pipe.get 'configured'
+              )
+              new pipes.steps.DataSubmitStep(
+                skip: -> pipe.get 'configured'
+                url: "#{pipe.url()}/setup"
+                requestMap: {'account_id': 'account_id'}
+                successCallback: (response, step) ->
+                  pipe.set
+                    configured: true
+                    account_id: step.sharedData.account_id
+              )
+              new pipes.steps.DataSubmitStep(
+                url: "#{pipe.url()}/run"
+              )
+            ]
         else
           throw "Integration #{integration.id} doesn't have logic for pipe #{pipe.id}"
     else
