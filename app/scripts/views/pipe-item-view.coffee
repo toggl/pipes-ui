@@ -54,7 +54,7 @@ class pipes.views.PipeItemView extends Backbone.View
     @refreshSyncState()
 
   onStepError: (step, message) =>
-    @overrideStatus 'fail', "Error: #{message or 'Unknown error'}"
+    @overrideStatus 'error', "Error: #{message or 'Unknown error'}"
     @stepper.current.poll() # Sync once through IdleStep TODO: uncouple PipeItemView from stepper.steps[0] here!
 
   setRunning: ->
@@ -97,7 +97,7 @@ class pipes.views.PipeItemView extends Backbone.View
     @$el.toggleClass 'default-step', @stepper.current.default
     @$('.button.sync')
       .attr 'disabled', not @stepper.current.default
-      .children('.button-label').text if @stepper.current.default and @model.getStatus() == 'success' then "Sync now" else "In progress..."
+      .children('.button-label').text if @stepper.current.default and @model.getStatus() != 'running' then "Sync now" else "In progress..."
 
   refreshStatus: ->
     @metaView.render()
@@ -118,7 +118,7 @@ class pipes.views.PipeItemView extends Backbone.View
           configured: false
           automatic: false
       error: (response) => @ajaxEnd ->
-        @model.setStatus 'fail', "Error: #{response.responseText}"
+        @model.setStatus 'error', "Error: #{response.responseText}"
 
   enableAuto: =>
     @setAuto true
@@ -138,7 +138,7 @@ class pipes.views.PipeItemView extends Backbone.View
       success: => @ajaxEnd ->
         @model.set(automatic: enabled)
       error: (response) => @ajaxEnd ->
-        @model.setStatus 'fail', "Error: #{response.responseText}"
+        @model.setStatus 'error', "Error: #{response.responseText}"
 
   clickLog: (e) =>
     e.preventDefault()

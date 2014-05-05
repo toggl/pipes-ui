@@ -86,8 +86,13 @@
         a {
           margin-left: 10px;
         }
-        &.fail {
+        &.error {
+          display: inline;
+          background: none;
           color: $red;
+          padding: 0;
+          font-style: normal;
+          font-size: inherit;
           .dot {
             background: $red;
           }
