@@ -90,7 +90,7 @@ var env = gutil.env.e || 'development';
 
 gulp.task('build-assets-internal', function() {
   return gulp.src(paths.images)
-    .pipe(imagemin({pngquant:true}))
+    .pipe(imagemin())
     .pipe(gulp.dest(paths.build + "images/"));
 });
 gulp.task('build-assets-external', function() {
