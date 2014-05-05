@@ -57,7 +57,7 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
                 url: "#{pipe.url()}/run"
               )
             ]
-        when 'todolists'
+        when 'todolists', 'todos'
           return new pipes.steps.Stepper
             view: pipeView
             steps: [
