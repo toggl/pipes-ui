@@ -165,6 +165,7 @@ gulp.task('build-templates', function() {
     }))
     .on('error', function(err) { logError(err); })
     .pipe(concat("templates.js"))
+    .pipe(uglify())
     .pipe(env == 'development' ? gutil.noop() : rev())
     .pipe(gulp.dest(paths.build + 'scripts/'));
 });
