@@ -10,6 +10,7 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
     template = require('gulp-template-compile'),
+    minifyHTML = require('gulp-minify-html'),
     preprocess = require('gulp-preprocess'),
     bowerFiles = require("gulp-bower-files"),
     flatten = require('gulp-flatten'),
@@ -180,6 +181,7 @@ gulp.task('build-index', ['build-scripts', 'build-styles', 'build-templates'], f
       ignorePath: paths.build
     }))
     .pipe(preprocess({context: {ENV: env, API_HOST: apiHost}}))
+    .pipe(minifyHTML())
     .pipe(gulp.dest(paths.build));
 });
 
