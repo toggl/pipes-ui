@@ -5,6 +5,7 @@ var gulp = require('gulp'),
     insert = require('gulp-insert'),
     sass = require('gulp-sass'),
     compass = require('gulp-compass'),
+    minifyCSS = require('gulp-minify-css'),
     coffee = require('gulp-coffee'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
@@ -126,11 +127,13 @@ gulp.task('build-scripts', ['build-scripts-internal', 'build-scripts-external'])
 gulp.task('build-styles-internal', function() {
   return gulp.src(paths.styles)
     .pipe(compass({
-      config_file: 'compass.rb',
+      project: '.',
       sass: 'app/styles/', // must be same as in compass config
-      css: '.tmp/styles/' // must be same as in compass config
+      css: '.tmp/styles/', // must be same as in compass config
+      style: env == 'development' ? 'expanded' : 'compressed'
     }))
     .on('error', function(err) { logError(err); })
+    .pipe(minifyCSS())
     .pipe(concat("app.css"))
     .pipe(env == 'development' ? gutil.noop() : rev())
     .pipe(gulp.dest(paths.build + 'styles/'))
@@ -146,6 +149,7 @@ gulp.task('build-styles-external', ['_getVendorPreScss'], function() {
     .pipe(sass())
     .on('error', function(err) { logError(err); })
     .pipe(scssFilter.restore())
+    .pipe(minifyCSS())
     .pipe(concat("vendor.css"))
     .pipe(env == 'development' ? gutil.noop() : rev())
     .pipe(gulp.dest(paths.build + 'styles/'))
