@@ -103,7 +103,6 @@ class PipesApp
       @windowApi.query 'dateFormats'
 
     @windowApi.once 'oAuthQuery', (@oAuthQuery) =>
-      console.log('WOOOHOOO', 'oAuthQuery:', @oAuthQuery)
       # Try to parse oauth data from oauth query params
       state = @oauth.parseState oAuthQuery
       if state
@@ -111,15 +110,12 @@ class PipesApp
       initializeApp()
 
     @windowApi.once 'apiToken', (@apiToken) =>
-      console.log('WOOOHOOO apiToken', 'apiToken:', @apiToken)
       initializeApp()
 
     @windowApi.once 'wid', (@wid) =>
-      console.log('WOOOHOOO wid', 'wid:', @wid)
       initializeApp()
 
     @windowApi.once 'dateFormats', ({dateFormat, timeFormat, dow}) =>
-      console.log('WOOOHOOO dateFormats', 'dateFormats:', dateFormat, timeFormat, dow)
       configureMoment(dateFormat, timeFormat, dow)
       initializeApp()
 
