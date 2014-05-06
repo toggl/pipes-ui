@@ -134,7 +134,7 @@ gulp.task('build-styles-internal', function() {
       style: env == 'development' ? 'expanded' : 'compressed'
     }))
     .on('error', function(err) { logError(err); })
-    .pipe(minifyCSS())
+    .pipe(env == 'development' ? gutil.noop() : minifyCSS())
     .pipe(concat("app.css"))
     .pipe(env == 'development' ? gutil.noop() : rev())
     .pipe(gulp.dest(paths.build + 'styles/'))
@@ -150,7 +150,7 @@ gulp.task('build-styles-external', ['_getVendorPreScss'], function() {
     .pipe(sass())
     .on('error', function(err) { logError(err); })
     .pipe(scssFilter.restore())
-    .pipe(minifyCSS())
+    .pipe(env == 'development' ? gutil.noop() : minifyCSS())
     .pipe(concat("vendor.css"))
     .pipe(env == 'development' ? gutil.noop() : rev())
     .pipe(gulp.dest(paths.build + 'styles/'))
@@ -165,7 +165,7 @@ gulp.task('build-templates', function() {
     }))
     .on('error', function(err) { logError(err); })
     .pipe(concat("templates.js"))
-    .pipe(uglify())
+    .pipe(env == 'development' ? gutil.noop() : uglify())
     .pipe(env == 'development' ? gutil.noop() : rev())
     .pipe(gulp.dest(paths.build + 'scripts/'));
 });
@@ -182,7 +182,7 @@ gulp.task('build-index', ['build-scripts', 'build-styles', 'build-templates'], f
       ignorePath: paths.build
     }))
     .pipe(preprocess({context: {ENV: env, API_HOST: apiHost}}))
-    .pipe(minifyHTML())
+    .pipe(env == 'development' ? gutil.noop() : minifyHTML())
     .pipe(gulp.dest(paths.build));
 });
 
