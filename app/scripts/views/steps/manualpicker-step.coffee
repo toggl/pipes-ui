@@ -74,9 +74,9 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
 
     filteredIds = _.pluck(_.filter(objects, (obj) ->
       true in ( ('' + obj[col]).toLowerCase().indexOf(word) != -1 or not word for col in filteredColumns)
-    ), 'id')
+    ), 'foreign_id')
 
-    filteredRows= _.filter rows, (row) -> row.id in filteredIds
+    filteredRows = _.filter rows, (row) -> row.id in filteredIds
 
     row.el.show() for row in filteredRows
     @refreshMainCheckbox()
