@@ -198,7 +198,7 @@ gulp.task('watch', ['build'], function () {
 
 gulp.task('livereload', function () {
   // Trigger browser refresh when smth changes in build/
-  var server = livereload(35730);
+  var server = livereload(35710);
   gulp.watch(paths.build + '**').on('change', function(file) { server.changed(file.path); });
 });
 
