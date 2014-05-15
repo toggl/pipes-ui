@@ -7,9 +7,9 @@
     "lodash": "~2.4.1",
     "backbone": "~1.1.2",
     "font-awesome": "~4.0.3",
-    "iframe-resizer": "~1.4.4",
     "momentjs": "~2.5.1",
-    "foundation": "foundation#master"
+    "foundation": "foundation#master",
+    "iframe-resizer": "~2.4.6"
   },
   "devDependencies": {},
   "overrides": {
