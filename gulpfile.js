@@ -200,13 +200,13 @@ gulp.task('watch', ['build'], function () {
 gulp.task('livereload', function () {
   // Trigger browser refresh when smth changes in build/
   var server = livereload(35710);
-  gulp.watch(paths.scripts).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 500); });
-  gulp.watch(paths.styles).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 1000); });
-  gulp.watch(paths.stylesVendor).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 1000); });
-  gulp.watch(paths.stylesVendorPrepend).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 1000); });
-  gulp.watch(paths.images).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 1000); });
-  gulp.watch(paths.index).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 500); });
-  gulp.watch(paths.templates).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 500); });
+  gulp.watch(paths.scripts).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 1500); });
+  gulp.watch(paths.styles).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 2000); });
+  gulp.watch(paths.stylesVendor).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 2000); });
+  gulp.watch(paths.stylesVendorPrepend).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 2000); });
+  gulp.watch(paths.images).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 2000); });
+  gulp.watch(paths.index).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 1500); });
+  gulp.watch(paths.templates).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 1500); });
 });
 
 gulp.task('serve', function(next) {
