@@ -89,7 +89,7 @@ class PipesApp
       $('body').addClass 'no-frame'
 
     # Need to wait until apiToken & oAuthQuery & wid(optional) & dateFormats(optional) before really doing anything
-    initializeApp = _.after 4, =>
+    initializeApp = _.after 6, =>
       @router = new pipes.AppRouter()
       Backbone.history.start()
 
@@ -99,7 +99,9 @@ class PipesApp
     @windowApi.once 'initialize', =>
       @windowApi.query 'oAuthQuery'
       @windowApi.query 'wid'
+      @windowApi.query 'premiumWorkspace'
       @windowApi.query 'apiToken'
+      @windowApi.query 'baseUrl'
       @windowApi.query 'dateFormats'
 
     @windowApi.once 'oAuthQuery', (@oAuthQuery) =>
@@ -113,6 +115,12 @@ class PipesApp
       initializeApp()
 
     @windowApi.once 'wid', (@wid) =>
+      initializeApp()
+
+    @windowApi.once 'premiumWorkspace', (@premiumWorkspace) =>
+      initializeApp()
+
+    @windowApi.once 'baseUrl', (@baseUrl) =>
       initializeApp()
 
     @windowApi.once 'dateFormats', ({dateFormat, timeFormat, dow}) =>

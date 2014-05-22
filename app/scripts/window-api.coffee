@@ -26,8 +26,14 @@ class pipes.WindowApi
           wid = prompt("Standalone mode: Enter workspace id", $.cookie 'standalone.wid')
           $.cookie 'standalone.wid', wid or ''
           setTimeout (=>@trigger 'wid', +wid), 0
+        when 'premiumWorkspace'
+          premium = prompt("Standalone mode: Is workspace premium (1/0)?", $.cookie 'standalone.premium')
+          $.cookie 'standalone.premiumWorkspace', premium or ''
+          setTimeout (=>@trigger 'premiumWorkspace', +premium), 0
         when 'dateFormats'
           setTimeout (=>@trigger 'dateFormats', dateFormats: 'MM/DD/YYYY', timeFormat: 'H:mm', dow: 0), 0
+        when 'baseUrl'
+          setTimeout (=>@trigger 'baseUrl', '/'), 0
 
   initialize: ->
     # Fetch document url from the top window and trigger all url-related events
@@ -66,9 +72,15 @@ class pipes.WindowApi
           when 'notify.wid'
             wid = +params or null
             @trigger 'wid', wid
+          when 'notify.premiumWorkspace'
+            premium = !!params
+            @trigger 'premiumWorkspace', premium
           when 'notify.dateFormats'
             [dateFormat, timeFormat, dow] = params.split(',')
             @trigger 'dateFormats',
               dateFormat: dateFormat
               timeFormat: timeFormat
               dow: dow
+          when 'notify.baseUrl'
+            baseUrl = params
+            @trigger 'baseUrl', baseUrl

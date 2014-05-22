@@ -7,9 +7,9 @@ class pipes.views.PipeItemView extends Backbone.View
 
   events:
     'click .button.sync': 'startSync'
+    'click .button.cancel': 'clickCancel'
     'click .log': 'clickLog'
     'click .close-log': 'clickCloseLog'
-    'click .cancel': 'clickCancel'
 
   initialize: ->
     @listenTo @model, 'change:pipe_status change:configured change:authorized change:automatic', @refreshStatus
@@ -79,9 +79,11 @@ class pipes.views.PipeItemView extends Backbone.View
       @stepper.endCurrentStep()
 
   render: =>
+    @$el.toggleClass 'premium', @model.get('premium') and not pipes.premiumWorkspace
     @$el.html @template
       model: @model
       status: @metaView.getStatusObject()
+      baseUrl: pipes.baseUrl
     @cogView.setElement @$('.cog-box')
     @cogView.render()
     @metaView.setElement @$('.meta')
