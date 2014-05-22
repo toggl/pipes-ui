@@ -53,13 +53,15 @@ class PipesApp
       state = oAuthQuery.match(/state=([^?&]+)/)?[1]
       code = oAuthQuery.match(/code=([^?&]+)/)?[1]
       return null if not state or not code # User canceled or otherwise normal panic
-      state = state.split(':') # [wid,] stepId
-      wid: +state[0], stepId: state[1], code: code
+      state = state.split(':') # [workspaceId,] stepId
+      workspaceId: +state[0], stepId: state[1], code: code
     createState: (oAuthStep) ->
-      return (if pipes.wid then "#{pipes.wid}:" else "") + oAuthStep.id
+      return (if pipes.workspaceId then "#{pipes.workspaceId}:" else "") + oAuthStep.id
 
   apiToken: null
-  wid: null # Only required when run through toggl
+  workspaceId: null # Only required when run through toggl and for oauth
+  workspacePremium: true # By default, show all
+  baseUrl: '/'
 
   apiUrl: (url) ->
     "#{window.PIPES_API_HOST}/api/v1#{url}"
@@ -88,7 +90,7 @@ class PipesApp
     if window.self == window.top
       $('body').addClass 'no-frame'
 
-    # Need to wait until apiToken & oAuthQuery & wid(optional) & dateFormats(optional) before really doing anything
+    # Need to wait until apiToken & oAuthQuery & workspaceId(optional) & dateFormats(optional) before really doing anything
     initializeApp = _.after 6, =>
       @router = new pipes.AppRouter()
       Backbone.history.start()
@@ -98,8 +100,8 @@ class PipesApp
 
     @windowApi.once 'initialize', =>
       @windowApi.query 'oAuthQuery'
-      @windowApi.query 'wid'
-      @windowApi.query 'premiumWorkspace'
+      @windowApi.query 'workspaceId'
+      @windowApi.query 'workspacePremium'
       @windowApi.query 'apiToken'
       @windowApi.query 'baseUrl'
       @windowApi.query 'dateFormats'
@@ -114,10 +116,10 @@ class PipesApp
     @windowApi.once 'apiToken', (@apiToken) =>
       initializeApp()
 
-    @windowApi.once 'wid', (@wid) =>
+    @windowApi.once 'workspaceId', (@workspaceId) =>
       initializeApp()
 
-    @windowApi.once 'premiumWorkspace', (@premiumWorkspace) =>
+    @windowApi.once 'workspacePremium', (@workspacePremium) =>
       initializeApp()
 
     @windowApi.once 'baseUrl', (@baseUrl) =>

@@ -2,7 +2,7 @@ class pipes.WindowApi
   ###
   Api for talking with the cross-origin parent frame (toggl.com)
   or the current window through a unified API.
-  Toggl automatically posts 'initialize', upon which this immediately requests the document url wid, and api token.
+  Toggl automatically posts 'initialize', upon which this immediately requests the document url workspaceId, api token and others.
   ###
   _.extend @prototype, Backbone.Events
 
@@ -22,14 +22,14 @@ class pipes.WindowApi
           apiToken = prompt("Standalone mode: Enter workspace api token", $.cookie 'standalone.apiToken')
           $.cookie 'standalone.apiToken', apiToken or ''
           setTimeout (=>@trigger 'apiToken', apiToken), 0
-        when 'wid'
-          wid = prompt("Standalone mode: Enter workspace id", $.cookie 'standalone.wid')
-          $.cookie 'standalone.wid', wid or ''
-          setTimeout (=>@trigger 'wid', +wid), 0
-        when 'premiumWorkspace'
+        when 'workspaceId'
+          workspaceId = prompt("Standalone mode: Enter workspace id", $.cookie 'standalone.workspaceId')
+          $.cookie 'standalone.workspaceId', workspaceId or ''
+          setTimeout (=>@trigger 'workspaceId', +workspaceId), 0
+        when 'workspacePremium'
           premium = prompt("Standalone mode: Is workspace premium (1/0)?", $.cookie 'standalone.premium')
-          $.cookie 'standalone.premiumWorkspace', premium or ''
-          setTimeout (=>@trigger 'premiumWorkspace', +premium), 0
+          $.cookie 'standalone.workspacePremium', premium or ''
+          setTimeout (=>@trigger 'workspacePremium', +premium), 0
         when 'dateFormats'
           setTimeout (=>@trigger 'dateFormats', dateFormats: 'MM/DD/YYYY', timeFormat: 'H:mm', dow: 0), 0
         when 'baseUrl'
@@ -69,12 +69,12 @@ class pipes.WindowApi
           when 'notify.apiToken'
             apiToken = params
             @trigger 'apiToken', apiToken
-          when 'notify.wid'
-            wid = +params or null
-            @trigger 'wid', wid
-          when 'notify.premiumWorkspace'
+          when 'notify.workspaceId'
+            workspaceId = +params or null
+            @trigger 'workspaceId', workspaceId
+          when 'notify.workspacePremium'
             premium = !!params
-            @trigger 'premiumWorkspace', premium
+            @trigger 'workspacePremium', premium
           when 'notify.dateFormats'
             [dateFormat, timeFormat, dow] = params.split(',')
             @trigger 'dateFormats',

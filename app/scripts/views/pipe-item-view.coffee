@@ -79,7 +79,7 @@ class pipes.views.PipeItemView extends Backbone.View
       @stepper.endCurrentStep()
 
   render: =>
-    @$el.toggleClass 'premium', @model.get('premium') and not pipes.premiumWorkspace
+    @$el.toggleClass('premium', !!@model.get('premium') and not pipes.workspacePremium)
     @$el.html @template
       model: @model
       status: @metaView.getStatusObject()
