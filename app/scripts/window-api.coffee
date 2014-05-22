@@ -73,7 +73,7 @@ class pipes.WindowApi
             workspaceId = +params or null
             @trigger 'workspaceId', workspaceId
           when 'notify.workspacePremium'
-            premium = !!params
+            premium = params == 'true'
             @trigger 'workspacePremium', premium
           when 'notify.dateFormats'
             [dateFormat, timeFormat, dow] = params.split(',')
