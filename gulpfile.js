@@ -14,6 +14,7 @@ var gulp = require('gulp'),
     preprocess = require('gulp-preprocess'),
     bowerFiles = require("gulp-bower-files"),
     flatten = require('gulp-flatten'),
+    watch = require('gulp-watch'),
     livereload = require('gulp-livereload'),
     print = require('gulp-print'),
     filter = require('gulp-filter'),
@@ -199,7 +200,13 @@ gulp.task('watch', ['build'], function () {
 gulp.task('livereload', function () {
   // Trigger browser refresh when smth changes in build/
   var server = livereload(35710);
-  gulp.watch(paths.build + '**').on('change', function(file) { server.changed(file.path); });
+  gulp.watch(paths.scripts).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 500); });
+  gulp.watch(paths.styles).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 1000); });
+  gulp.watch(paths.stylesVendor).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 1000); });
+  gulp.watch(paths.stylesVendorPrepend).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 1000); });
+  gulp.watch(paths.images).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 1000); });
+  gulp.watch(paths.index).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 500); });
+  gulp.watch(paths.templates).on('change', function(file) { setTimeout(function() { server.changed(file.path); }, 500); });
 });
 
 gulp.task('serve', function(next) {
