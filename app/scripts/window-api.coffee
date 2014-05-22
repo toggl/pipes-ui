@@ -29,7 +29,7 @@ class pipes.WindowApi
         when 'workspacePremium'
           premium = prompt("Standalone mode: Is workspace premium (1/0)?", $.cookie 'standalone.premium')
           $.cookie 'standalone.workspacePremium', premium or ''
-          setTimeout (=>@trigger 'workspacePremium', +premium), 0
+          setTimeout (=>@trigger 'workspacePremium', premium != '0'), 0
         when 'dateFormats'
           setTimeout (=>@trigger 'dateFormats', dateFormats: 'MM/DD/YYYY', timeFormat: 'H:mm', dow: 0), 0
         when 'baseUrl'
