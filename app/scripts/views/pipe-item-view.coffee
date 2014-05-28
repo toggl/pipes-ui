@@ -112,15 +112,11 @@ class pipes.views.PipeItemView extends Backbone.View
 
   teardown: =>
     # Tear down the saved configuration (mostly account_id), setup is handled via steps
-    @ajaxStart -> $.ajax
-      type: 'DELETE'
-      url: "#{@model.url()}/setup"
-      success: => @ajaxEnd ->
-        @model.set
-          configured: false
-          automatic: false
-      error: (response) => @ajaxEnd ->
-        @model.setStatus 'error', "Error: #{response.responseText}"
+    @ajaxStart ->
+      @model.deleteConfiguration
+        success: @ajaxEnd
+        error: => @ajaxEnd ->
+          @setStatus 'error', "Error: #{response.responseText}"
 
   enableAuto: =>
     @setAuto true

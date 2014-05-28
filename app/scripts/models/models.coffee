@@ -64,6 +64,16 @@ class pipes.models.Pipe extends Backbone.Model
     d = @getLastSync()
     if d then d.calendar() else null
 
+  deleteConfiguration: (options = {}) ->
+    $.ajax
+      type: 'DELETE'
+      url: "#{@url()}/setup"
+      success: =>
+        @set {configured: false, automatic: false}, {silent: !!options.silent}
+        options.success?.apply(window, arguments)
+      error: (response) =>
+        options.error?.apply(window, arguments)
+
 class pipes.models.PipeCollection extends Backbone.Collection
   model: pipes.models.Pipe
   integration: null
