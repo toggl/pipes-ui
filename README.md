@@ -47,7 +47,11 @@ Sample `local_config.json`
     "production": {
       "host": "my-production-server-host",
       "root": "/project/root/folder/",
-      "apiHost": "https://my-production-pipes-api-host.com"
+      "apiHost": "https://my-production-pipes-api-host.com",
+      "googleAnalytics": {
+        "trackingCode": "UA-1111111-22",
+        "domain": "example.com"
+      }
     }
   }
 }
