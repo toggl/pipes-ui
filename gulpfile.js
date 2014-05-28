@@ -172,7 +172,10 @@ gulp.task('build-templates', function() {
 });
 
 gulp.task('build-index', ['build-scripts', 'build-styles', 'build-templates'], function() {
-  var apiHost = ((localConfig || {targets:{}}).targets[env] || {}).apiHost || '';
+  var targetConfig = ((localConfig || {targets:{}}).targets[env] || {});
+  var apiHost = targetConfig.apiHost || '';
+  var gaCode = (targetConfig.googleAnalytics || {}).trackingCode || '';
+  var gaDomain = (targetConfig.googleAnalytics || {}).domain || '';
   return gulp.src([
       paths.build + '**/*vendor*.{css,js}',
       paths.build + '**/*templates*.js',
@@ -182,7 +185,7 @@ gulp.task('build-index', ['build-scripts', 'build-styles', 'build-templates'], f
       addRootSlash: true,
       ignorePath: paths.build
     }))
-    .pipe(preprocess({context: {ENV: env, API_HOST: apiHost}}))
+    .pipe(preprocess({context: {ENV: env, API_HOST: apiHost, GA_CODE: gaCode, GA_DOMAIN: gaDomain}}))
     .pipe(env == 'development' ? gutil.noop() : minifyHTML())
     .pipe(gulp.dest(paths.build));
 });
