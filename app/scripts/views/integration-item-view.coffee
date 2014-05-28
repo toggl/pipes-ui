@@ -23,7 +23,6 @@ class pipes.views.IntegrationItemView extends Backbone.View
     @pipesList = new (@pipesListViewClass())(collection: @model.getPipes()) if not @pipesList
     @pipesList.setElement(@$('.pipes-list'))
     @pipesList.render()
-    @$el.foundation()
     this
 
   deauthorize: =>

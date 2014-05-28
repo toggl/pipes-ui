@@ -42,6 +42,8 @@ class PipesApp
   steps: {}
   router: null
 
+  foundation: _.throttle (=> $(document).foundation()), 500, leading: false
+
   # The following is a hack for oauth-type stuff. Step Ids are parsed from document url and if
   # one is found, it is put here so that when a Stepper that contains this step is initialized,
   # it uses this info to initialize itself into a non-default state. Oh the inhumanity!
