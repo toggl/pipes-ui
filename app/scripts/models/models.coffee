@@ -11,6 +11,16 @@ class pipes.models.Integration extends Backbone.Model
   setPipes: (@pipes) ->
   getPipes: -> @pipes
 
+  deleteAuthorization: (options = {}) ->
+    $.ajax
+      type: 'DELETE'
+      url: @authorizationsUrl()
+      success: =>
+        @set {authorized: false}, {silent: !!options.silent}
+        options.success?.apply(window, arguments)
+      error: (response) =>
+        options.error?.apply(window, arguments)
+
 class pipes.models.IntegrationCollection extends Backbone.Collection
 
   model: pipes.models.Integration

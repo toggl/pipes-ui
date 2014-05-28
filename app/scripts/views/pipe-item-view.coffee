@@ -12,9 +12,9 @@ class pipes.views.PipeItemView extends Backbone.View
     'click .close-log': 'clickCloseLog'
 
   initialize: ->
-    @listenTo @model, 'change:pipe_status change:configured change:authorized change:automatic', @refreshStatus
+    @listenTo @model, 'change:pipe_status change:configured change:automatic', @refreshStatus
+    @listenTo @model.collection.integration, 'change:authorized', @refreshStatus
     @cogView = new pipes.views.CogView
-      el: @$('.cog-box')
       items: [
         {
           name: 'teardown'
