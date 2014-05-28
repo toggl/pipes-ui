@@ -88,7 +88,6 @@ class pipes.views.PipeItemView extends Backbone.View
     @cogView.render()
     @metaView.setElement @$('.meta')
     @metaView.render()
-    @$el.foundation()
     @refreshSyncState()
     @refreshLoading()
     this
