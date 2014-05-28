@@ -134,13 +134,19 @@
           }
         }
       }
-      .authorized, .configured {
+      .authorized, .configured, .unauthorized {
         color: $green;
         font-size: $base-font-size * 0.9;
         margin-left: 15px;
         opacity: .9;
         .dot {
           background: $green;
+        }
+      }
+      .unauthorized {
+        color: $red;
+        .dot {
+          background: $red;
         }
       }
     }

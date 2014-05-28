@@ -17,14 +17,18 @@
 
 </span>
 
-<% if(model.get('configured')) { %>
-  <span class="configured right">
-    <i class="dot"></i> Configured
-  </span>
-<% } %>
-
 <% if(model.collection.integration.get('authorized')) { %>
   <span class="authorized right">
     <i class="dot"></i> Authorized
+  </span>
+<% } else if(model.get('configured')) { %>
+  <span class="unauthorized right">
+    <i class="fa fa-warning"></i> Unauthorized
+  </span>
+<% } %>
+
+<% if(model.get('configured')) { %>
+  <span class="configured right">
+    <i class="dot"></i> Configured
   </span>
 <% } %>
