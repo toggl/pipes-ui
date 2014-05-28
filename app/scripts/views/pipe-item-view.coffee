@@ -153,13 +153,13 @@ class pipes.views.PipeItemView extends Backbone.View
     @overrideStatus null
     @stepper.reset()
 
-  ajaxStart: (fn = null, context = null) ->
+  ajaxStart: (fn = null, context = null) =>
     # Shows UI as 'loading' and optionally runs the callback 'fn' bound to 'context'
     @loading = true
     @refreshLoading()
     fn.call context or this if fn?
 
-  ajaxEnd: (fn = null, context) ->
+  ajaxEnd: (fn = null, context) =>
     # Ends UI 'loading' and optionally runs the callback 'fn' bound to 'context'
     @loading = false
     @refreshLoading()
