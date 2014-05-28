@@ -202,6 +202,11 @@
   }
 }
 
+// HACK, remove when https://github.com/zurb/foundation/issues/4619 happens
+.integration-cog .f-dropdown {
+  margin-left: -118px;
+}
+
 .hide {
   display: none;
 }
