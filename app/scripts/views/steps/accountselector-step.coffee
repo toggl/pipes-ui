@@ -32,7 +32,7 @@ class pipes.steps.AccountSelectorStep extends pipes.steps.DataPollStep
   displayList: (accounts) ->
     @getContainer().html @listTemplate accounts: accounts
     @getContainer().on 'click.account-selection', '.button.select-account', (e) =>
-      @getContainer().find('.button.select-account').attr 'disabled', true
+      $(e.currentTarget).attr 'disabled', true
       @selectAccount $(e.currentTarget).data('id')
 
   selectAccount: (@accountId) ->

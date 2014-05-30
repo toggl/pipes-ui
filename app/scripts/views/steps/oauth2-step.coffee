@@ -1,6 +1,6 @@
-class pipes.steps.OAuthStep extends pipes.steps.Step
+class pipes.steps.OAuth2Step extends pipes.steps.Step
   ###
-  OAuth step. Uses integration.auth_url.
+  OAuth2 step. Uses integration.auth_url.
   Constructs a 'state' param for the oauth url, redirects the browser to the url.
   After a successful authentication, the state parameter is used to restore the oauth process state.
   (see Stepper)
@@ -13,12 +13,12 @@ class pipes.steps.OAuthStep extends pipes.steps.Step
   constructor: (options = {}) ->
     super(options)
     integration = options.pipe.collection.integration
-    @id = "#{options.pipe.collection.integration.id}.#{options.pipe.id}.oauth"
-    @tokenUrl = integration.get('auth_url').replace('__STATE__', pipes.oauth.createState(@))
+    @id = "#{integration.id}.#{options.pipe.id}.oauth2"
+    @tokenUrl = integration.get('auth_url').replace('__STATE__', pipes.oauth2.createState(@))
     @authorizeUrl = integration.authorizationsUrl()
     @skip = -> integration.get('authorized')
 
-  initializeState: (@code) ->
+  initializeState: ({@code}) ->
 
   onRun: ->
     unless @code
@@ -32,10 +32,8 @@ class pipes.steps.OAuthStep extends pipes.steps.Step
         data: JSON.stringify(code: @code)
         contentType: 'application/json'
         success: => @ajaxEnd ->
-          return if not @active # Oops, someone canceled this action
           @view.model.collection.integration.set authorized: true
           @end()
         error: (response) => @ajaxEnd ->
-          return if not @active # Oops, someone canceled this action
           @view.model.collection.integration.set authorized: false
           @trigger 'error', this, response
