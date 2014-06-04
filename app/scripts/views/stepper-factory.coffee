@@ -119,9 +119,6 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
             steps: [
               new pipes.steps.IdleState(default: true)
               new pipes.steps.OAuth1Step(pipe: pipe)
-              new pipes.steps.AccountSelectorStep(
-                skip: -> pipe.get 'configured'
-              )
               new pipes.steps.DataSubmitStep(
                 skip: -> pipe.get 'configured'
                 url: "#{pipe.url()}/setup"
