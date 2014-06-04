@@ -113,6 +113,28 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
                 requestMap: {'ids': 'selectedUsers'} # Mapping 'query string param name': 'key in sharedData'
               )
             ]
+        when 'projects', 'tasks'
+          return new pipes.steps.Stepper
+            view: pipeView
+            steps: [
+              new pipes.steps.IdleState(default: true)
+              new pipes.steps.OAuth1Step(pipe: pipe)
+              new pipes.steps.AccountSelectorStep(
+                skip: -> pipe.get 'configured'
+              )
+              new pipes.steps.DataSubmitStep(
+                skip: -> pipe.get 'configured'
+                url: "#{pipe.url()}/setup"
+                requestMap: {'account_name': 'account_name'}
+                successCallback: (response, step) ->
+                  pipe.set
+                    configured: true
+                    account_name: step.sharedData.account_name
+              )
+              new pipes.steps.DataSubmitStep(
+                url: "#{pipe.url()}/run"
+              )
+            ]
     else
       throw "Integration #{integration.id} doesn't have any pipes defined"
 
