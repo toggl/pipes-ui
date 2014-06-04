@@ -24,10 +24,11 @@ class pipes.steps.OAuth1Step extends pipes.steps.Step
 
   initializeState: ({@oauth_verifier, @oauth_token, @account_name}) ->
     console.log('initializeState', '@oauth_verifier:', @oauth_verifier, '@oauth_token:', @oauth_token)
+    @sharedData.account_name = @account_name
 
   fetchAuthUrl: (accountName, options = {}) ->
     @account_name = accountName = encodeURIComponent accountName
-    callbackUrl = encodeURIComponent "#{pipes.baseUrl}#/pipes-oauth/?state=#{pipes.oauth1.createState(@)}"
+    callbackUrl = encodeURIComponent "#{pipes.baseUrl}pipes-oauth/?state=#{pipes.oauth1.createState(@)}"
     @ajaxStart -> $.ajax
       type: 'GET'
       url: "#{@authUrlUrl}?account_name=#{accountName}&callback_url=#{callbackUrl}"

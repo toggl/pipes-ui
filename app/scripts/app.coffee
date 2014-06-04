@@ -141,7 +141,6 @@ class PipesApp
       @windowApi.query 'dateFormats'
 
     @windowApi.once 'oAuthQuery', (@oAuthQuery) =>
-      console.log('got', '@oAuthQuery:', @oAuthQuery)
       # Try to parse oauth data from oauth query params
       state = @oauth.parseState oAuthQuery
       if state
