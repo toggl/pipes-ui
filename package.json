@@ -7,6 +7,9 @@
     "type": "git",
     "url": ""
   },
+  "scripts": {
+    "postinstall": "bower install"
+  },
   "dependencies": {},
   "devDependencies": {
     "event-stream": "~3.1.0",
