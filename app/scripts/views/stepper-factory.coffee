@@ -113,7 +113,7 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
                 requestMap: {'ids': 'selectedUsers'} # Mapping 'query string param name': 'key in sharedData'
               )
             ]
-        when 'projects', 'tasks'
+        when 'projects', 'tasks', 'timeentries'
           return new pipes.steps.Stepper
             view: pipeView
             steps: [
