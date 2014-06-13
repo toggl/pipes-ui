@@ -49,7 +49,7 @@ class PipesApp
   # it uses this info to initialize itself into a non-default state. Oh the inhumanity!
   pipeStates: {}
 
-  oauth:
+  oauth: # TODO: Refactor oauth stuff
     parseState: (oAuthQuery) ->
       oAuthQuery = "" + oAuthQuery
       # Using step id to differentiate between oauth versions hurray
@@ -58,7 +58,7 @@ class PipesApp
       else if oAuthQuery.indexOf('oauth1') > -1
         return pipes.oauth1.parseState(oAuthQuery)
 
-  oauth2:
+  oauth2: # TODO: Refactor oauth stuff
     parseState: (oAuthQuery) ->
       return null if not oAuthQuery
       state = oAuthQuery.match(/state=([^?&]+)/)?[1]
@@ -73,17 +73,14 @@ class PipesApp
       # (parent frame) knows which view to reopen.
       return (if pipes.workspaceId then "#{pipes.workspaceId}:" else "") + oAuthStep.id
 
-  oauth1:
+  oauth1: # TODO: Refactor oauth stuff
     parseState: (oAuthQuery) ->
-      console.log('oauth1 parseState', 'oAuthQuery:', oAuthQuery)
       return null if not oAuthQuery
       state = oAuthQuery.match(/state=([^?&]+)/)?[1]
       oauth_verifier = oAuthQuery.match(/oauth_verifier=([^?&]+)/)?[1]
       oauth_token = oAuthQuery.match(/oauth_token=([^?&]+)/)?[1]
-      console.log('parsed data', state, oauth_verifier, oauth_token)
       return null if not state or not oauth_verifier or not oauth_token # User canceled or otherwise normal panic
       state = state.split(':') # workspaceId, stepId, account_name
-      console.log('state', state)
       workspaceId: +state[0]
       stepId: state[1]
       oauth_verifier: oauth_verifier
