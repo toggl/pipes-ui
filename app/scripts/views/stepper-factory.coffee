@@ -132,6 +132,8 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
                 url: "#{pipe.url()}/run"
               )
             ]
+        else
+          throw "Integration #{integration.id} doesn't have logic for pipe #{pipe.id}"
     else
       throw "Integration #{integration.id} doesn't have any pipes defined"
 
