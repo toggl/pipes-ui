@@ -131,12 +131,12 @@ class PipesApp
     @windowApi.initialize()
 
     @windowApi.once 'initialize', =>
-      @windowApi.query 'oAuthQuery'
-      @windowApi.query 'workspaceId'
-      @windowApi.query 'workspacePremium'
-      @windowApi.query 'apiToken'
-      @windowApi.query 'baseUrl'
-      @windowApi.query 'dateFormats'
+      @windowApi.sendMessage 'get.oAuthQuery'
+      @windowApi.sendMessage 'get.workspaceId'
+      @windowApi.sendMessage 'get.workspacePremium'
+      @windowApi.sendMessage 'get.apiToken'
+      @windowApi.sendMessage 'get.baseUrl'
+      @windowApi.sendMessage 'get.dateFormats'
 
     @windowApi.once 'oAuthQuery', (@oAuthQuery) =>
       # Try to parse oauth data from oauth query params

@@ -27,7 +27,6 @@ class pipes.steps.OAuth1Step extends pipes.steps.Step
     @skip = -> integration.get('authorized')
 
   initializeState: ({@oauth_verifier, @oauth_token, @account_name}) ->
-    console.log('initializeState', '@oauth_verifier:', @oauth_verifier, '@oauth_token:', @oauth_token)
     @sharedData.account_name = @account_name
 
   fetchAuthUrl: (accountName, options = {}) ->
@@ -57,6 +56,7 @@ class pipes.steps.OAuth1Step extends pipes.steps.Step
             pipes.redirect response.auth_url
     else
       # Woot, 2nd step of oauth process, we have recovered state
+      @view.once 'show', => pipes.windowApi.sendMessage("scrollTo:#{@view.$el.offset().top}")
       @ajaxStart -> $.ajax
         type: 'POST'
         url: @authorizeUrl

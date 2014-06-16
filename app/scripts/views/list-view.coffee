@@ -21,6 +21,9 @@ class pipes.views.ListView extends Backbone.View
 
   render: ->
     @refreshChildViews()
-    @$el.append @childViews[m.id or m.cid].render().$el for m in @collection.models
+    for m in @collection.models
+      childView = @childViews[m.id or m.cid]
+      @$el.append childView.render().$el
+      childView.trigger 'show'
     v.setElement(v.el) for k,v of @childViews
     this
