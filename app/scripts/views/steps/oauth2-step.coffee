@@ -26,7 +26,7 @@ class pipes.steps.OAuth2Step extends pipes.steps.Step
       pipes.redirect @tokenUrl
     else
       # Woot, 2nd step of oauth process, we have recovered state
-      @view.once 'show', => pipes.windowApi.sendMessage("scrollTo:#{@view.$el.offset().top}")
+      setTimeout (=> pipes.windowApi.sendMessage("scrollTo:#{@view.$el.offset().top}")), 500
       @ajaxStart -> $.ajax
         type: 'POST'
         url: @authorizeUrl
