@@ -13,10 +13,14 @@ class pipes.steps.OAuth1Step extends pipes.steps.Step
 
   authorizeUrl: null
   code: null
+  title: "Please enter your account name:"
+  inputSuffix: ""
 
   constructor: (options = {}) ->
     super(options)
     integration = options.pipe.collection.integration
+    @title = options.title if options.title
+    @inputSuffix = options.inputSuffix if options.inputSuffix
     @id = "#{integration.id}.#{options.pipe.id}.oauth1"
     @authUrlUrl = integration.authUrlUrl()
     @authorizeUrl = integration.authorizationsUrl()
@@ -46,7 +50,7 @@ class pipes.steps.OAuth1Step extends pipes.steps.Step
     unless @oauth_token # TODO: other params instead of 'code'
       # 1st step
       # TODO: template
-      @getContainer().html @inputTemplate()
+      @getContainer().html @inputTemplate {@title, @inputSuffix}
       @getContainer().on 'click.oauth1', '.button.submit', (e) =>
         $(e.currentTarget).attr 'disabled', true
         @fetchAuthUrl @getContainer().find('input.account-name').val(),

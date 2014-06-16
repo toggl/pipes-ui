@@ -88,7 +88,11 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
             view: pipeView
             steps: [
               new pipes.steps.IdleState(default: true)
-              new pipes.steps.OAuth1Step(pipe: pipe)
+              new pipes.steps.OAuth1Step(
+                pipe: pipe
+                title: "Please enter your Freshbooks account name:"
+                inputSuffix: ".freshbooks.com"
+              )
               new pipes.steps.DataSubmitStep(
                 skip: -> pipe.get 'configured'
                 url: "#{pipe.url()}/setup"
@@ -113,16 +117,48 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
                 requestMap: {'ids': 'selectedUsers'} # Mapping 'query string param name': 'key in sharedData'
               )
             ]
-        when 'projects', 'tasks', 'timeentries'
+        when 'projects', 'tasks'
           return new pipes.steps.Stepper
             view: pipeView
             steps: [
               new pipes.steps.IdleState(default: true)
-              new pipes.steps.OAuth1Step(pipe: pipe)
+              new pipes.steps.OAuth1Step(
+                pipe: pipe
+                title: "Please enter your Freshbooks account name:"
+                inputSuffix: ".freshbooks.com"
+              )
               new pipes.steps.DataSubmitStep(
                 skip: -> pipe.get 'configured'
                 url: "#{pipe.url()}/setup"
                 requestMap: {'account_name': 'account_name'}
+                successCallback: (response, step) ->
+                  pipe.set
+                    configured: true
+                    account_name: step.sharedData.account_name
+              )
+              new pipes.steps.DataSubmitStep(
+                url: "#{pipe.url()}/run"
+              )
+            ]
+        when 'timeentries'
+          return new pipes.steps.Stepper
+            view: pipeView
+            steps: [
+              new pipes.steps.IdleState(default: true)
+              new pipes.steps.OAuth1Step(
+                pipe: pipe
+                title: "Please enter your Freshbooks account name:"
+                inputSuffix: ".freshbooks.com"
+              )
+              new pipes.steps.DatePickerStep(
+                title: "Export time entries starting from:"
+                outKey: 'start_date'
+                skip: -> pipe.get 'configured'
+              )
+              new pipes.steps.DataSubmitStep(
+                skip: -> pipe.get 'configured'
+                url: "#{pipe.url()}/setup"
+                requestMap: {'account_name': 'account_name', 'start_date': 'start_date'}
                 successCallback: (response, step) ->
                   pipe.set
                     configured: true
