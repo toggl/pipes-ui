@@ -146,15 +146,15 @@ gulp.task "build-styles-external", ["_getVendorPreScss"], ->
     bowerFiles().pipe(filter("**/*.{scss,css}")),
     gulp.src(paths.stylesVendor)
   )
-  .pipe scssFilter
-  .pipe insert.prepend(vendorPreScss)
-  .pipe sass()
-  .on "error", (err) -> logError(err)
-  .pipe scssFilter.restore()
-  .pipe (if env is "development" then gutil.noop() else minifyCSS())
-  .pipe concat("vendor.css")
-  .pipe (if env is "development" then gutil.noop() else rev())
-  .pipe gulp.dest(paths.build + "styles/")
+    .pipe scssFilter
+    .pipe insert.prepend(vendorPreScss)
+    .pipe sass()
+    .on "error", (err) -> logError(err)
+    .pipe scssFilter.restore()
+    .pipe (if env is "development" then gutil.noop() else minifyCSS())
+    .pipe concat("vendor.css")
+    .pipe (if env is "development" then gutil.noop() else rev())
+    .pipe gulp.dest(paths.build + "styles/")
 
 gulp.task "build-styles", ["build-styles-internal", "build-styles-external"]
 
@@ -176,21 +176,22 @@ gulp.task "build-index", ["build-scripts", "build-styles", "build-templates"], -
   gaCode = targetConfig.googleAnalytics?.trackingCode or ""
   gaDomain = targetConfig.googleAnalytics?.domain or ""
   gulp.src([
-    paths.build + "**/*vendor*.{css,js}"
-    paths.build + "**/*templates*.js"
-    paths.build + "**/*app*.{css,js}"
-  ]).pipe inject(paths.index,
-    addRootSlash: true
-    ignorePath: paths.build
-  )
-  .pipe preprocess(context:
-    ENV: env
-    API_HOST: apiHost
-    GA_CODE: gaCode
-    GA_DOMAIN: gaDomain
-  )
-  .pipe (if env is "development" then gutil.noop() else minifyHTML())
-  .pipe gulp.dest(paths.build)
+    "#{paths.build}**/*vendor*.{css,js}"
+    "#{paths.build}**/*templates*.js"
+    "#{paths.build}**/*app*.{css,js}"
+  ])
+    .pipe inject(paths.index,
+      addRootSlash: true
+      ignorePath: paths.build
+    )
+    .pipe preprocess(context:
+      ENV: env
+      API_HOST: apiHost
+      GA_CODE: gaCode
+      GA_DOMAIN: gaDomain
+    )
+    .pipe (if env is "development" then gutil.noop() else minifyHTML())
+    .pipe gulp.dest(paths.build)
 
 gulp.task "watch", ["build"], ->
   # Watch for changes in files and rebuild them to build/
