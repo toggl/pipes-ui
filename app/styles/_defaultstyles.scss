@@ -52,3 +52,8 @@ select:not(.default) {
     @include box-shadow(rgba(128, 128, 128, 0.2) 0 1px 3px);
   }
 }
+
+label {
+  font-size: 14px;
+  font-weight: $semibold;
+}

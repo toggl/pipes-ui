@@ -41,6 +41,7 @@ class PipesApp
   views: {}
   steps: {}
   router: null
+  dateSettings: null
 
   foundation: _.throttle (=> $(document).foundation()), 500, leading: false
 
@@ -156,8 +157,9 @@ class PipesApp
     @windowApi.once 'baseUrl', (@baseUrl) =>
       initializeApp()
 
-    @windowApi.once 'dateFormats', ({dateFormat, timeFormat, dow}) =>
-      configureMoment(dateFormat, timeFormat, dow)
+    @windowApi.once 'dateFormats', (settings) =>
+      @dateSettings = settings
+      configureMoment(settings.dateFormat, settings.timeFormat, settings.dow)
       initializeApp()
 
 

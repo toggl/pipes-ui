@@ -4,12 +4,14 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600,700&subset=cyrillic,latin,latin-ext);
 
 @import 'globals';
+@import 'flexbox';
 @import 'colors';
 @import 'util';
 
 @import 'alerts';
 @import 'components';
 @import 'defaultstyles';
+@import 'datepicker';
 
 // =============
 // Global layout
@@ -211,6 +213,7 @@
 }
 
 .oauth1-account-selector {
+  margin: 20px 0;
   .input-suffix {
     padding: 1rem .6rem 1.1rem;
     font-size: $base-font-size * 1.2;
@@ -218,6 +221,10 @@
     color: $gray-dark;
     line-height: normal;
   }
+}
+
+.datepicker-step {
+  margin: 20px 0;
 }
 
 // HACK, remove when https://github.com/zurb/foundation/issues/4619 happens
