@@ -70,11 +70,13 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
     rows = @getContainer().find('tbody>tr')
     rows.filter(':visible').hide()
 
-    rows = (id: $(row).data('id'), el: $(row) for row in rows)
+    rows = (id: +$(row).data('id'), el: $(row) for row in rows)
 
     filteredIds = _.pluck(_.filter(objects, (obj) ->
       true in ( ('' + obj[col]).toLowerCase().indexOf(word) != -1 or not word for col in filteredColumns)
     ), 'foreign_id')
+
+    filteredIds = (+id for id in filteredIds) # Force cast
 
     filteredRows = _.filter rows, (row) -> row.id in filteredIds
 

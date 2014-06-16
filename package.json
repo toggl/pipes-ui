@@ -7,6 +7,9 @@
     "type": "git",
     "url": ""
   },
+  "scripts": {
+    "postinstall": "bower install"
+  },
   "dependencies": {},
   "devDependencies": {
     "coffee-script": "~1.7.1",

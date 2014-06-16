@@ -9,7 +9,9 @@
     "font-awesome": "~4.0.3",
     "momentjs": "~2.5.1",
     "foundation": "foundation#master",
-    "iframe-resizer": "~2.4.6"
+    "iframe-resizer": "~2.4.6",
+    "DatePicker": "https://github.com/soswow/DatePicker.git",
+    "jquery-ui": "~1.10.4"
   },
   "devDependencies": {},
   "overrides": {
@@ -38,6 +40,16 @@
         "scss/foundation.scss"
       ],
       "_comment": "We want to configure foundation and compile manually: use scss instead of css"
+    },
+    "DatePicker": {
+      "main": [
+        "js/datepicker.js"
+      ]
+    },
+    "jquery-ui": {
+      "main": [
+        "ui/jquery.ui.position.js"
+      ]
     }
   }
 }

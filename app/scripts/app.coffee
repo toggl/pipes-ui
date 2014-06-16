@@ -19,7 +19,7 @@ $(document.body).on 'click', '.button.checkbox:not(.dropdown)', (e) ->
     $(e.currentTarget).children('span.checkbox').click()
 
 $(document).ajaxSend (e, xhr, options) ->
-  xhr.setRequestHeader 'Authorization', 'Basic ' + btoa(pipes.apiToken + ':x') # TODO: cross-browser base64 encoding!
+  xhr.setRequestHeader 'Authorization', 'Basic ' + btoa(pipes.apiToken + ':x')
 
 configureMoment = (dateFormat = 'L', timeFormat = 'LT', dow = 1) ->
   moment.lang 'en',
@@ -41,6 +41,7 @@ class PipesApp
   views: {}
   steps: {}
   router: null
+  dateSettings: null
 
   foundation: _.throttle (=> $(document).foundation()), 500, leading: false
 
@@ -49,16 +50,45 @@ class PipesApp
   # it uses this info to initialize itself into a non-default state. Oh the inhumanity!
   pipeStates: {}
 
-  oauth:
+  oauth: # TODO: Refactor oauth stuff
+    parseState: (oAuthQuery) ->
+      oAuthQuery = "" + oAuthQuery
+      # Using step id to differentiate between oauth versions hurray
+      if oAuthQuery.indexOf('oauth2') > -1
+        return pipes.oauth2.parseState(oAuthQuery)
+      else if oAuthQuery.indexOf('oauth1') > -1
+        return pipes.oauth1.parseState(oAuthQuery)
+
+  oauth2: # TODO: Refactor oauth stuff
     parseState: (oAuthQuery) ->
       return null if not oAuthQuery
       state = oAuthQuery.match(/state=([^?&]+)/)?[1]
       code = oAuthQuery.match(/code=([^?&]+)/)?[1]
       return null if not state or not code # User canceled or otherwise normal panic
-      state = state.split(':') # [workspaceId,] stepId
-      workspaceId: +state[0], stepId: state[1], code: code
+      state = state.split(':') # workspaceId, stepId
+      workspaceId: +state[0]
+      stepId: state[1]
+      code: code
     createState: (oAuthStep) ->
+      # Create a string, by which we can recover state. Need to preped workspace id, so that toggl
+      # (parent frame) knows which view to reopen.
       return (if pipes.workspaceId then "#{pipes.workspaceId}:" else "") + oAuthStep.id
+
+  oauth1: # TODO: Refactor oauth stuff
+    parseState: (oAuthQuery) ->
+      return null if not oAuthQuery
+      state = oAuthQuery.match(/state=([^?&]+)/)?[1]
+      oauth_verifier = oAuthQuery.match(/oauth_verifier=([^?&]+)/)?[1]
+      oauth_token = oAuthQuery.match(/oauth_token=([^?&]+)/)?[1]
+      return null if not state or not oauth_verifier or not oauth_token # User canceled or otherwise normal panic
+      state = state.split(':') # workspaceId, stepId, account_name
+      workspaceId: +state[0]
+      stepId: state[1]
+      oauth_verifier: oauth_verifier
+      oauth_token: oauth_token
+      account_name: state[2]
+    createState: (oAuthStep) ->
+      return (if pipes.workspaceId then "#{pipes.workspaceId}:" else "") + oAuthStep.id + ':' + oAuthStep.account_name
 
   apiToken: null
   workspaceId: null # Only required when run through toggl and for oauth
@@ -101,18 +131,18 @@ class PipesApp
     @windowApi.initialize()
 
     @windowApi.once 'initialize', =>
-      @windowApi.query 'oAuthQuery'
-      @windowApi.query 'workspaceId'
-      @windowApi.query 'workspacePremium'
-      @windowApi.query 'apiToken'
-      @windowApi.query 'baseUrl'
-      @windowApi.query 'dateFormats'
+      @windowApi.sendMessage 'get.oAuthQuery'
+      @windowApi.sendMessage 'get.workspaceId'
+      @windowApi.sendMessage 'get.workspacePremium'
+      @windowApi.sendMessage 'get.apiToken'
+      @windowApi.sendMessage 'get.baseUrl'
+      @windowApi.sendMessage 'get.dateFormats'
 
     @windowApi.once 'oAuthQuery', (@oAuthQuery) =>
       # Try to parse oauth data from oauth query params
       state = @oauth.parseState oAuthQuery
       if state
-        @pipeStates[state.stepId] = state.code
+        @pipeStates[state.stepId] = state
       initializeApp()
 
     @windowApi.once 'apiToken', (@apiToken) =>
@@ -127,8 +157,9 @@ class PipesApp
     @windowApi.once 'baseUrl', (@baseUrl) =>
       initializeApp()
 
-    @windowApi.once 'dateFormats', ({dateFormat, timeFormat, dow}) =>
-      configureMoment(dateFormat, timeFormat, dow)
+    @windowApi.once 'dateFormats', (settings) =>
+      @dateSettings = settings
+      configureMoment(settings.dateFormat, settings.timeFormat, settings.dow)
       initializeApp()
 
 

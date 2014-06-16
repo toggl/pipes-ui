@@ -8,6 +8,9 @@ class pipes.models.Integration extends Backbone.Model
   authorizationsUrl: ->
     pipes.apiUrl("/integrations/#{@id}/authorizations")
 
+  authUrlUrl: ->
+    pipes.apiUrl("/integrations/#{@id}/auth_url")
+
   setPipes: (@pipes) ->
   getPipes: -> @pipes
 

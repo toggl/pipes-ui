@@ -37,7 +37,7 @@ select:not(.default) {
   margin: 0;
   width: 100%;
   border: none;
-  padding: 10px 18px 11px;
+  padding: 1rem 1.8rem 1.1rem;
   background-color: white;
   font-size: $base-font-size * 1.2;
   font-family: "Open Sans", Arial, sans-serif;
@@ -51,4 +51,9 @@ select:not(.default) {
     background: white;
     @include box-shadow(rgba(128, 128, 128, 0.2) 0 1px 3px);
   }
+}
+
+label {
+  font-size: 14px;
+  font-weight: $semibold;
 }

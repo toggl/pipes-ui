@@ -90,6 +90,7 @@ class pipes.views.PipeItemView extends Backbone.View
     @metaView.render()
     @refreshSyncState()
     @refreshLoading()
+    @trigger 'render'
     this
 
   refreshSyncState: ->

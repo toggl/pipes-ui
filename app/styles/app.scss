@@ -4,12 +4,14 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600,700&subset=cyrillic,latin,latin-ext);
 
 @import 'globals';
+@import 'flexbox';
 @import 'colors';
 @import 'util';
 
 @import 'alerts';
 @import 'components';
 @import 'defaultstyles';
+@import 'datepicker';
 
 // =============
 // Global layout
@@ -157,28 +159,6 @@
         vertical-align: middle;
       }
     }
-    .account-selection {
-      td, th {
-        padding-left: 20px;
-        padding-right: 20px;
-      }
-    }
-    .manual-picker {
-      .filter {
-        margin-bottom: 10px;
-      }
-      .table-container {
-        max-height: 300px;
-        overflow-x: hidden;
-        overflow-y: auto;
-        border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
-        margin-bottom: 20px;
-        table {
-          margin: 0;
-        }
-      }
-    }
     .log-container {
       position: relative;
       display: none;
@@ -206,6 +186,45 @@
       }
     }
   }
+}
+
+.account-selector {
+  td, th {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.manual-picker {
+  .filter {
+    margin-bottom: 10px;
+  }
+  .table-container {
+    max-height: 300px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+    table {
+      margin: 0;
+    }
+  }
+}
+
+.oauth1-account-selector {
+  margin: 20px 0;
+  .input-suffix {
+    padding: 1rem .6rem 1.1rem;
+    font-size: $base-font-size * 1.2;
+    font-weight: $semibold;
+    color: $gray-dark;
+    line-height: normal;
+  }
+}
+
+.datepicker-step {
+  margin: 20px 0;
 }
 
 // HACK, remove when https://github.com/zurb/foundation/issues/4619 happens
