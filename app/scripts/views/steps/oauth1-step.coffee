@@ -47,9 +47,8 @@ class pipes.steps.OAuth1Step extends pipes.steps.Step
         @trigger 'error', this, xhr.responseText
 
   onRun: ->
-    unless @oauth_token # TODO: other params instead of 'code'
+    unless @oauth_token
       # 1st step
-      # TODO: template
       @getContainer().html @inputTemplate {@title, @inputSuffix}
       @getContainer().on 'click.oauth1', '.button.submit', (e) =>
         $(e.currentTarget).attr 'disabled', true
