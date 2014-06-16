@@ -209,6 +209,10 @@
     table {
       margin: 0;
     }
+    tr.empty td {
+      color: #aaa;
+      font-style: italic;
+    }
   }
 }
 

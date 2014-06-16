@@ -58,16 +58,17 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
       @getContainer().find('tbody input:checkbox:checked').length == 0
 
   refreshMainCheckbox: ->
-    @getContainer().find('thead input:checkbox').prop('checked',
-      @getContainer().find('tbody tr:visible input:checkbox:not(:checked)').length == 0)
-      .trigger 'change', [manualPickerIgnore: true]
+    all = @getContainer().find('tbody tr:visible input:checkbox')
+    checked = all.filter(':checked')
+    @getContainer().find('thead input:checkbox').prop('checked', all.length != 0 and checked.length == all.length)
+      .trigger('change', [manualPickerIgnore: true])
 
   filterObjects: =>
     word = @getContainer().find('input.filter').val().toLowerCase()
     objects = @sharedData[@inKey]
     filteredColumns = (col.key for col in @columns when !!col.filter)
 
-    rows = @getContainer().find('tbody>tr')
+    rows = @getContainer().find('tbody>tr:not(.empty)')
     rows.filter(':visible').hide()
 
     rows = (id: +$(row).data('id'), el: $(row) for row in rows)
@@ -81,6 +82,9 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
     filteredRows = _.filter rows, (row) -> row.id in filteredIds
 
     row.el.show() for row in filteredRows
+
+    @getContainer().find('tbody>tr.empty').toggle(filteredRows.length == 0)
+
     @refreshMainCheckbox()
 
   clickSubmit: (e) =>

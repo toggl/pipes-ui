@@ -1,4 +1,4 @@
-<p class="title bigger-text"><%= title %></p>
+<label class="space-after"><%= title %></label>
 <div class="manual-picker">
   <div class="filter">
     <input type="text" name="filter" placeholder="Filter objects" class="filter" />
@@ -34,6 +34,10 @@
             <% } %>
           </tr>
         <% } %>
+        <tr class="empty" style="display: none">
+          <td></td>
+          <td colspan="<%- columns.length %>">No results found...</td>
+        </tr>
       </tbody>
     </table>
   </div>
