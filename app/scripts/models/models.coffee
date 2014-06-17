@@ -20,6 +20,8 @@ class pipes.models.Integration extends Backbone.Model
       url: @authorizationsUrl()
       success: =>
         @set {authorized: false}, {silent: !!options.silent}
+        @getPipes().each (pipe) ->
+          pipe.set {configured: false}, {silent: !!options.silent}
         options.success?.apply(window, arguments)
       error: (response) =>
         options.error?.apply(window, arguments)
