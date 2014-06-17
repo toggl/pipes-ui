@@ -1,6 +1,6 @@
 pipes.stepperFactory = (integration, pipe, pipeView) ->
   switch integration.id
-    when 'basecamp'
+    when 'basecamp', 'teamweek', 'asana'
       switch pipe.id
         when 'users'
           return new pipes.steps.Stepper
@@ -57,7 +57,7 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
                 url: "#{pipe.url()}/run"
               )
             ]
-        when 'todolists', 'todos'
+        when 'todolists', 'todos', 'tasks'
           return new pipes.steps.Stepper
             view: pipeView
             steps: [
