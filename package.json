@@ -2,7 +2,7 @@
   "name": "toggl-pipes-ui",
   "description": "UI for the toggl-pipes integrations handling project",
   "author": "Toggl",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "repository": {
     "type": "git",
     "url": ""
