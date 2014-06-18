@@ -126,11 +126,10 @@ class pipes.views.PipeItemView extends Backbone.View
 
   setAuto: (enabled) ->
     @ajaxStart -> $.ajax
-      type: 'POST'
+      type: 'PUT'
       url: "#{@model.url()}/setup"
       contentType: 'application/json'
       data: JSON.stringify(
-        account_id: @model.get('account_id')
         automatic: enabled
       )
       success: => @ajaxEnd ->

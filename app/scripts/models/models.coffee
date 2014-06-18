@@ -21,7 +21,7 @@ class pipes.models.Integration extends Backbone.Model
       success: =>
         @set {authorized: false}, {silent: !!options.silent}
         @getPipes().each (pipe) ->
-          pipe.set {configured: false}, {silent: !!options.silent}
+          pipe.set {configured: false, automatic: false}, {silent: !!options.silent} # automatic: false is hack !
         options.success?.apply(window, arguments)
       error: (response) =>
         options.error?.apply(window, arguments)
