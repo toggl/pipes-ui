@@ -48,7 +48,7 @@ class PipesApp
   # The following is a hack for oauth-type stuff. Step Ids are parsed from document url and if
   # one is found, it is put here so that when a Stepper that contains this step is initialized,
   # it uses this info to initialize itself into a non-default state. Oh the inhumanity!
-  pipeStates: {}
+  stepStates: {}
 
   oauth: # TODO: Refactor oauth stuff
     parseState: (oAuthQuery) ->
@@ -142,7 +142,7 @@ class PipesApp
       # Try to parse oauth data from oauth query params
       state = @oauth.parseState oAuthQuery
       if state
-        @pipeStates[state.stepId] = state
+        @stepStates[state.stepId] = state
       initializeApp()
 
     @windowApi.once 'apiToken', (@apiToken) =>

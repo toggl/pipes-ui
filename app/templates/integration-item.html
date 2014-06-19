@@ -8,6 +8,10 @@
       <%- model.get('name') %>
     <% } %>
 
+    <% if(showPipeTitles) { %>
+      <span class="pipes-info"><%- pipeTitles %></span>
+    <% } %>
+
     <div class="cog-box right integration-cog"></div>
 
     <% if(model.get('link')) { %>
@@ -15,6 +19,9 @@
     <% } %>
 
   </h1>
+
+  <div class="integration-configuration">
+  </div>
 
   <div class="pipes-list">
   </div>

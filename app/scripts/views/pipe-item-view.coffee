@@ -13,7 +13,6 @@ class pipes.views.PipeItemView extends Backbone.View
 
   initialize: ->
     @listenTo @model, 'change:pipe_status change:configured change:automatic', @refreshStatus
-    @listenTo @model.collection.integration, 'change:authorized', @refreshStatus
     @cogView = new pipes.views.CogView
       items: [
         {

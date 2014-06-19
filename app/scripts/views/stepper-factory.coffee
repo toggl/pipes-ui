@@ -7,7 +7,7 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
             view: pipeView
             steps: [
               new pipes.steps.IdleState(default: true)
-              new pipes.steps.OAuth2Step(pipe: pipe)
+              # new pipes.steps.OAuth2Step(pipe: pipe)
               new pipes.steps.AccountSelectorStep(
                 skip: -> pipe.get 'configured'
               )
@@ -40,7 +40,7 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
             view: pipeView
             steps: [
               new pipes.steps.IdleState(default: true)
-              new pipes.steps.OAuth2Step(pipe: pipe)
+              # new pipes.steps.OAuth2Step(pipe: pipe)
               new pipes.steps.AccountSelectorStep(
                 skip: -> pipe.get 'configured'
               )
@@ -62,7 +62,7 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
             view: pipeView
             steps: [
               new pipes.steps.IdleState(default: true)
-              new pipes.steps.OAuth2Step(pipe: pipe)
+              # new pipes.steps.OAuth2Step(pipe: pipe)
               new pipes.steps.AccountSelectorStep(
                 skip: -> pipe.get 'configured'
               )
@@ -88,11 +88,11 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
             view: pipeView
             steps: [
               new pipes.steps.IdleState(default: true)
-              new pipes.steps.OAuth1Step(
-                pipe: pipe
-                title: "Please enter your Freshbooks account name:"
-                inputSuffix: ".freshbooks.com"
-              )
+              # new pipes.steps.OAuth1Step(
+              #   pipe: pipe
+              #   title: "Please enter your Freshbooks account name:"
+              #   inputSuffix: ".freshbooks.com"
+              # )
               new pipes.steps.DataSubmitStep(
                 skip: -> pipe.get 'configured'
                 url: "#{pipe.url()}/setup"
@@ -122,11 +122,11 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
             view: pipeView
             steps: [
               new pipes.steps.IdleState(default: true)
-              new pipes.steps.OAuth1Step(
-                pipe: pipe
-                title: "Please enter your Freshbooks account name:"
-                inputSuffix: ".freshbooks.com"
-              )
+              # new pipes.steps.OAuth1Step(
+              #   pipe: pipe
+              #   title: "Please enter your Freshbooks account name:"
+              #   inputSuffix: ".freshbooks.com"
+              # )
               new pipes.steps.DataSubmitStep(
                 skip: -> pipe.get 'configured'
                 url: "#{pipe.url()}/setup"
@@ -145,11 +145,11 @@ pipes.stepperFactory = (integration, pipe, pipeView) ->
             view: pipeView
             steps: [
               new pipes.steps.IdleState(default: true)
-              new pipes.steps.OAuth1Step(
-                pipe: pipe
-                title: "Please enter your Freshbooks account name:"
-                inputSuffix: ".freshbooks.com"
-              )
+              # new pipes.steps.OAuth1Step(
+              #   pipe: pipe
+              #   title: "Please enter your Freshbooks account name:"
+              #   inputSuffix: ".freshbooks.com"
+              # )
               new pipes.steps.DatePickerStep(
                 title: "Export time entries starting from:"
                 outKey: 'start_date'

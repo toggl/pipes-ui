@@ -18,13 +18,13 @@ class pipes.steps.OAuth1Step extends pipes.steps.Step
 
   constructor: (options = {}) ->
     super(options)
-    integration = options.pipe.collection.integration
+    @integration = options.integration
     @title = options.title if options.title
     @inputSuffix = options.inputSuffix if options.inputSuffix
-    @id = "#{integration.id}.#{options.pipe.id}.oauth1"
-    @authUrlUrl = integration.authUrlUrl()
-    @authorizeUrl = integration.authorizationsUrl()
-    @skip = -> integration.get('authorized')
+    @id = options.id or "#{@integration.id}.oauth1"
+    @authUrlUrl = @integration.authUrlUrl()
+    @authorizeUrl = @integration.authorizationsUrl()
+    @skip = -> @integration.get('authorized')
 
   initializeState: ({@oauth_verifier, @oauth_token, @account_name}) ->
     @sharedData.account_name = @account_name
@@ -66,10 +66,10 @@ class pipes.steps.OAuth1Step extends pipes.steps.Step
           account_name: @account_name
         contentType: 'application/json'
         success: => @ajaxEnd ->
-          @view.model.collection.integration.set authorized: true
+          @integration.set authorized: true
           @end()
         error: (response) => @ajaxEnd ->
-          @view.model.collection.integration.set authorized: false
+          @integration.set authorized: false
           @trigger 'error', this, response.responseText
 
   onEnd: ->

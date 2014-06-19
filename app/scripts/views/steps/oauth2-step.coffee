@@ -12,11 +12,11 @@ class pipes.steps.OAuth2Step extends pipes.steps.Step
 
   constructor: (options = {}) ->
     super(options)
-    integration = options.pipe.collection.integration
-    @id = "#{integration.id}.#{options.pipe.id}.oauth2"
-    @tokenUrl = integration.get('auth_url').replace('__STATE__', pipes.oauth2.createState(@))
-    @authorizeUrl = integration.authorizationsUrl()
-    @skip = -> integration.get('authorized')
+    @integration = options.integration
+    @id = options.id or "#{@integration.id}.oauth2"
+    @tokenUrl = @integration.get('auth_url').replace('__STATE__', pipes.oauth2.createState(@))
+    @authorizeUrl = @integration.authorizationsUrl()
+    @skip = -> @integration.get('authorized')
 
   initializeState: ({@code}) ->
 
@@ -33,8 +33,8 @@ class pipes.steps.OAuth2Step extends pipes.steps.Step
         data: JSON.stringify(code: @code)
         contentType: 'application/json'
         success: => @ajaxEnd ->
-          @view.model.collection.integration.set authorized: true
+          @integration.set authorized: true
           @end()
         error: (response) => @ajaxEnd ->
-          @view.model.collection.integration.set authorized: false
+          @integration.set authorized: false
           @trigger 'error', this, response

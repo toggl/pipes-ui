@@ -13,13 +13,13 @@ class pipes.steps.Stepper
   constructor: ({@view, @steps}) ->
     @sharedData = {}
     for step in @steps
-      step.initialize(view: @view, sharedData: @sharedData, state: pipes.pipeStates[step.id])
+      step.initialize(view: @view, sharedData: @sharedData, state: pipes.stepStates[step.id])
       @listenTo step, 'error', @onStepError
       @listenTo step, 'ajaxStart', => @trigger 'ajaxStart', step
       @listenTo step, 'ajaxEnd', => @trigger 'ajaxEnd', step
 
   run: ->
-    initialStep = _.findIndex @steps, (step) -> step.id of pipes.pipeStates
+    initialStep = _.findIndex @steps, (step) -> step.id of pipes.stepStates
     initialStep = 0 if initialStep == -1
     @startStep initialStep
 

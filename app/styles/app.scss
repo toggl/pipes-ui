@@ -23,168 +23,178 @@
 }
 
 .integrations-list {
-  .integration {
-    margin-bottom: 20px;
-    .more-info {
-      display: inline-block;
+}
+.integration {
+  margin-bottom: 20px;
+  .pipes-info, .more-info {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: $base * 1.2;
+    font-weight: $semibold;
+    margin-left: 20px;
+  }
+}
+.pipe, .integration-configuration {
+  position: relative;
+  overflow: hidden;
+  &.default-step {
+    .button.cancel {
+      display: none;
+    }
+  }
+  &:not(.default-step) {
+    .cog-box {
+      display: none !important;
+    }
+  }
+  .large-container, .premium-overlay {
+    padding: 25px 30px;
+  }
+  .loading, .broken {
+    display: none;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #FFF;
+    z-index: 1;
+    .fa {
+      position: absolute;
+      font-size: 116px;
+      top: 20px;
+      opacity: .1;
+      left: 34px;
+    }
+  }
+  &.loading>.loading {
+    display: block;
+  }
+  .loading {
+    opacity: 0.6;
+  }
+  .broken {
+    opacity: 0.7;
+    .fa {
+      opacity: .2;
+    }
+  }
+  .button.setup, .button.sync, .button.cancel {
+    margin-left: 20px;
+    margin-bottom: 0;
+    .fa {
+      font-size: 18px;
       vertical-align: middle;
-      font-size: $base * 1.2;
-      font-weight: $semibold;
-      margin-left: 20px;
     }
-    .pipe {
-      position: relative;
-      margin-top: 10px;
-      overflow: hidden;
-      .large-container, .premium-overlay {
-        padding: 25px 30px;
-      }
-      .loading, .broken {
-        display: none;
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: #FFF;
-        z-index: 1;
-        .fa {
-          position: absolute;
-          font-size: 116px;
-          top: 20px;
-          opacity: .1;
-          left: 34px;
-        }
-      }
-      &.loading>.loading {
-        display: block;
-      }
-      .loading {
-        opacity: 0.6;
-      }
-      .broken {
-        opacity: 0.7;
-        .fa {
-          opacity: .2;
-        }
-      }
-      &.default-step {
-        .button.cancel {
-          display: none;
-        }
-      }
-      &:not(.default-step) {
-        .cog-box {
-          display: none !important;
-        }
-      }
-      &.premium {
-        .meta {
-          display: none;
-        }
-        p.description {
-          margin-bottom: 0;
-        }
-        .premium-overlay {
-          display: block;
-        }
-        .button.sync, .button.cancel {
-          display: none;
-        }
-      }
-      .premium-overlay {
-        display: none;
-        position: absolute;
-        z-index: 1;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(250,250,250,.6);
-      }
-    }
+  }
+}
+
+.pipe {
+  &.row { margin-top: 10px; }
+  &.premium {
     .meta {
-      clear: both;
-      color: $gray;
-      margin-bottom: 0px;
-      .last-sync {
-        color: $gray-dark;
-      }
-      .status {
+      display: none;
+    }
+    p.description {
+      margin-bottom: 0;
+    }
+    .premium-overlay {
+      display: block;
+    }
+    .button.sync, .button.cancel {
+      display: none;
+    }
+  }
+  .premium-overlay {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(250,250,250,.6);
+  }
+  .meta {
+    clear: both;
+    color: $gray;
+    margin-bottom: 0px;
+    .last-sync {
+      color: $gray-dark;
+    }
+    .status {
+      margin-left: 10px;
+      a {
         margin-left: 10px;
-        a {
-          margin-left: 10px;
-        }
-        &.error {
-          display: inline;
-          background: none;
-          color: $red;
-          padding: 0;
-          font-style: normal;
-          font-size: inherit;
-          .dot {
-            background: $red;
-          }
-        }
-        &.success {
-          color: $green;
-          .dot {
-            background: $green;
-          }
-        }
-        &.running {
-          color: $orange;
-          .dot {
-            background: $orange;
-          }
-        }
       }
-      .authorized, .configured, .unauthorized {
-        color: $green;
-        font-size: $base-font-size * 0.9;
-        margin-left: 15px;
-        opacity: .9;
-        .dot {
-          background: $green;
-        }
-      }
-      .unauthorized {
+      &.error {
+        display: inline;
+        background: none;
         color: $red;
+        padding: 0;
+        font-style: normal;
+        font-size: inherit;
         .dot {
           background: $red;
         }
       }
-    }
-    .button.sync {
-      margin-left: 20px;
-      .fa {
-        font-size: 18px;
-        vertical-align: middle;
+      &.success {
+        color: $green;
+        .dot {
+          background: $green;
+        }
+      }
+      &.running {
+        color: $orange;
+        .dot {
+          background: $orange;
+        }
       }
     }
-    .log-container {
-      position: relative;
-      display: none;
-      font-size: 11px;
-      color: #555;
-      margin: 0px -10px 20px;
-      background: #fafafa;
-      border: 1px dashed #ddd;
+    .configured {
+      color: $green;
+      margin-left: 15px;
+      opacity: .9;
+      .dot {
+        background: $green;
+      }
+    }
+    .unauthorized {
+      color: $red;
+      .dot {
+        background: $red;
+      }
+    }
+  }
+  .log-container {
+    position: relative;
+    display: none;
+    font-size: 11px;
+    color: #555;
+    margin: 0px -10px 20px;
+    background: #fafafa;
+    border: 1px dashed #ddd;
+    padding: 10px;
+    pre {
+    }
+    a.close-log {
+      display: block;
+      position: absolute;
+      top: 0px;
+      right: 0px;
       padding: 10px;
-      pre {
+      color: #999;
+      .fa {
+        margin-right: 5px;
       }
-      a.close-log {
-        display: block;
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        padding: 10px;
-        color: #999;
-        .fa {
-          margin-right: 5px;
-        }
-        &:hover, &:focus  {
-          color: #666;
-        }
+      &:hover, &:focus  {
+        color: #666;
       }
     }
+  }
+}
+
+.integration-configuration {
+  p {
+    margin: 13px 0;
+    font-size: 1.1rem;
   }
 }
 
