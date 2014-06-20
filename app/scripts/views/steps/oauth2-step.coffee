@@ -37,4 +37,4 @@ class pipes.steps.OAuth2Step extends pipes.steps.Step
           @end()
         error: (response) => @ajaxEnd ->
           @integration.set authorized: false
-          @trigger 'error', this, response
+          @trigger 'error', this, response.responseText

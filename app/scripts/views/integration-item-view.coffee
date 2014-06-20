@@ -44,6 +44,8 @@ class IntegrationConfigurationView extends Backbone.View
     'click .button.setup': 'clickEnable'
     'click .button.cancel': 'clickCancel'
 
+  error: null
+
   initialize: ->
     @stepper = pipes.integrationStepperFactory(@model, this)
     @listenTo @stepper, 'step', @onStepChange
@@ -51,16 +53,16 @@ class IntegrationConfigurationView extends Backbone.View
     @listenTo @stepper, 'ajaxStart', => @ajaxStart()
     @listenTo @stepper, 'ajaxEnd', => @ajaxEnd()
     @stepper.run()
-    @setRunning() if not @stepper.current.default
 
   render: ->
-    @$el.html @template model: @model
+    @$el.html @template
+     model: @model
+     error: @error
     @refreshSetupState()
 
   clickEnable: (e) =>
     e.preventDefault()
     if @stepper.current.default
-      @setRunning()
       @stepper.endCurrentStep()
 
   clickCancel: (e) =>
@@ -77,15 +79,12 @@ class IntegrationConfigurationView extends Backbone.View
       .attr 'disabled', not @stepper.current.default
       .children('.button-label').text if @stepper.current.default then "Enable" else "In progress..."
 
-
   onStepChange: (step, i, steps) =>
     @refreshSetupState()
 
   onStepError: (step, message) =>
-    # @overrideStatus 'error', "Error: #{message or 'Unknown error'}"
-
-  setRunning: ->
-    # @overrideStatus 'running', 'In progress'
+    @error = "Error: #{message or 'Unknown error'}"
+    @render()
 
   refreshLoading: ->
     @$el.toggleClass('spinning-container', @loading).toggleClass('loading', @loading)

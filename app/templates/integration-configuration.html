@@ -28,6 +28,14 @@
     <div class="step-container"> <!-- service configuration step contents (oauth and whatever) -->
     </div>
 
+    <% if (error) { %>
+      <p class="meta">
+        <span class="status error">
+          <%- error %>
+        </span>
+      </p>
+    <% } %>
+
   </div>
 
 </div>
