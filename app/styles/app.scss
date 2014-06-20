@@ -120,6 +120,7 @@
         }
       }
     }
+  }
 }
 
 .pipe {
@@ -148,19 +149,18 @@
     bottom: 0;
     background: rgba(250,250,250,.6);
   }
-    .configured {
-      color: $green;
-      margin-left: 15px;
-      opacity: .9;
-      .dot {
-        background: $green;
-      }
+  .configured {
+    color: $green;
+    margin-left: 15px;
+    opacity: .9;
+    .dot {
+      background: $green;
     }
-    .unauthorized {
-      color: $red;
-      .dot {
-        background: $red;
-      }
+  }
+  .unauthorized {
+    color: $red;
+    .dot {
+      background: $red;
     }
   }
   .log-container {
