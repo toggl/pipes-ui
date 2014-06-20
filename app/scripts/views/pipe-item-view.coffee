@@ -40,7 +40,7 @@ class pipes.views.PipeItemView extends Backbone.View
     @metaView = new pipes.views.PipeItemMetaView
       el: @$('.meta')
       model: @model
-    @stepper = pipes.stepperFactory(@model.collection.integration, @model, this)
+    @stepper = pipes.pipeStepperFactory(@model.collection.integration, @model, this)
     @listenTo @stepper, 'step', @onStepChange
     @listenTo @stepper, 'error', @onStepError
     @listenTo @stepper, 'beforeEnd', @onStepperBeforeEnd

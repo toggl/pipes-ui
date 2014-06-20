@@ -1,4 +1,4 @@
-pipes.stepperFactory = (integration, pipe, pipeView) ->
+pipes.pipeStepperFactory = (integration, pipe, pipeView) ->
   switch integration.id
     when 'basecamp', 'teamweek', 'asana'
       switch pipe.id
