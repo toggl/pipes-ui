@@ -5,6 +5,7 @@ class pipes.views.IntegrationItemView extends Backbone.View
 
   initialize: ->
     @listenTo @model, 'change', @render
+    @listenTo @model, 'change:authorized', @authorizedChanged
     @cogView = new pipes.views.CogView
       items: [
         {
@@ -15,6 +16,10 @@ class pipes.views.IntegrationItemView extends Backbone.View
             not @model.get('authorized')
         }
       ]
+
+  authorizedChanged: (model, authorized) =>
+    # Hackish way to scroll down when coming back from oauth
+    setTimeout (=> pipes.windowApi.sendMessage("scrollTo:#{@$el.offset().top}")), 500 if authorized
 
   render: ->
     @$el.html @template
