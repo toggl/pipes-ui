@@ -17,6 +17,10 @@
 // Global layout
 // =============
 
+html, body {
+  height: auto;
+}
+
 .no-frame #wrap {
   width: 1152px;
   margin: 20px auto;
