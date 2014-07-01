@@ -13,6 +13,9 @@ div.datepicker {
 }
 .datepickerContainer {
   position: absolute;
+  >table {
+    width: 100%;
+  }
 }
 /* Hide border divs by default */
 .datepickerBorderT,
@@ -169,6 +172,7 @@ div.datepicker table.datepickerViewDays,
 div.datepicker table.datepickerViewMonths,
 div.datepicker table.datepickerViewYears {
   background-color: white;
+  width: 100%;
 }
 /* Day mode calendar body */
 table.datepickerViewDays tbody.datepickerMonths,
