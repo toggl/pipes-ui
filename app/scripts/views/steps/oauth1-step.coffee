@@ -50,6 +50,7 @@ class pipes.steps.OAuth1Step extends pipes.steps.Step
       # 1st step
       @getContainer().html @inputTemplate {@title, @inputSuffix}
       @getContainer().on 'click.oauth1', '.button.submit', (e) =>
+        e.preventDefault()
         $(e.currentTarget).attr 'disabled', true
         @fetchAuthUrl @getContainer().find('input.account-name').val(),
           success: (response) ->
