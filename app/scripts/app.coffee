@@ -122,45 +122,25 @@ class PipesApp
     if window.self == window.top
       $('body').addClass 'no-frame'
 
-    # Need to wait until apiToken & oAuthQuery & workspaceId(optional) & dateFormats(optional) before really doing anything
-    initializeApp = _.after 6, =>
+    initializeApp = (options) =>
+
+      @apiToken = options.apiToken
+      @workspaceId = options.workspaceId
+      @workspacePremium = options.workspacePremium
+      @baseUrl = options.baseUrl
+      @dateSettings = options.date
+      configureMoment(options.date.dateFormat, options.date.timeFormat, options.date.dow)
+      state = @oauth.parseState options.oAuthQuery
+      if state
+        @stepStates[state.stepId] = state
+
       @router = new pipes.AppRouter()
       Backbone.history.start()
 
     @windowApi = new pipes.WindowApi()
     @windowApi.initialize()
 
-    @windowApi.once 'initialize', =>
-      @windowApi.sendMessage 'get.oAuthQuery'
-      @windowApi.sendMessage 'get.workspaceId'
-      @windowApi.sendMessage 'get.workspacePremium'
-      @windowApi.sendMessage 'get.apiToken'
-      @windowApi.sendMessage 'get.baseUrl'
-      @windowApi.sendMessage 'get.dateFormats'
-
-    @windowApi.once 'oAuthQuery', (@oAuthQuery) =>
-      # Try to parse oauth data from oauth query params
-      state = @oauth.parseState oAuthQuery
-      if state
-        @stepStates[state.stepId] = state
-      initializeApp()
-
-    @windowApi.once 'apiToken', (@apiToken) =>
-      initializeApp()
-
-    @windowApi.once 'workspaceId', (@workspaceId) =>
-      initializeApp()
-
-    @windowApi.once 'workspacePremium', (@workspacePremium) =>
-      initializeApp()
-
-    @windowApi.once 'baseUrl', (@baseUrl) =>
-      initializeApp()
-
-    @windowApi.once 'dateFormats', (settings) =>
-      @dateSettings = settings
-      configureMoment(settings.dateFormat, settings.timeFormat, settings.dow)
-      initializeApp()
+    @windowApi.once 'initialize', initializeApp # Init call from parent frame
 
 
 window.pipes = new PipesApp()

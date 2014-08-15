@@ -57,30 +57,4 @@ class pipes.WindowApi
       @initialized = true
       @parentOrigin = e.originalEvent.origin
       @parentSource = e.originalEvent.source
-      @trigger 'initialize'
-      return
-
-    return if not @initialized
-
-    switch msg[1]
-      when'notify.oAuthQuery'
-        oAuthQuery = params
-        @trigger 'oAuthQuery', oAuthQuery
-      when 'notify.apiToken'
-        apiToken = params
-        @trigger 'apiToken', apiToken
-      when 'notify.workspaceId'
-        workspaceId = +params or null
-        @trigger 'workspaceId', workspaceId
-      when 'notify.workspacePremium'
-        premium = params == 'true'
-        @trigger 'workspacePremium', premium
-      when 'notify.dateFormats'
-        [dateFormat, timeFormat, dow] = params.split(',')
-        @trigger 'dateFormats',
-          dateFormat: dateFormat
-          timeFormat: timeFormat
-          dow: dow
-      when 'notify.baseUrl'
-        baseUrl = params
-        @trigger 'baseUrl', baseUrl
+      @trigger 'initialize', JSON.parse(params)
