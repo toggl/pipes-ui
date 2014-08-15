@@ -1,6 +1,6 @@
 pipes.pipeStepperFactory = (integration, pipe, pipeView) ->
   switch integration.id
-    when 'basecamp', 'teamweek', 'asana'
+    when 'basecamp', 'teamweek', 'asana', 'github'
       switch pipe.id
         when 'users'
           return new pipes.steps.Stepper

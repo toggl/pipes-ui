@@ -1,6 +1,6 @@
 pipes.integrationStepperFactory = (integration, configurationView) ->
   switch integration.get('id')
-    when 'basecamp', 'teamweek', 'asana'
+    when 'basecamp', 'teamweek', 'asana', 'github'
       return new pipes.steps.Stepper
         view: configurationView
         steps: [
