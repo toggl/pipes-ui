@@ -118,7 +118,7 @@ class PipesApp
   actions:
     index: ->
 
-      $('#content').html templates['index.html']()
+      $('#content').toggleClass('obm20', pipes.obm20).html templates['index.html']()
 
       if not pipes.integrationsListView
         pipes.models.integrations.fetch()
@@ -142,6 +142,7 @@ class PipesApp
       @enabledPipes = options.enabledPipes or []
       @enabledIntegrations = _.uniq _.map(@enabledPipes or [], (id) -> id.split('.')[0])
       @stepStates = options.stepStates or {}
+      @obm20 = !!options.obm20 # Nude version
       configureMoment(options.date.dateFormat, options.date.timeFormat, options.date.dow)
       state = @oauth.parseState options.oAuthQuery
       if state

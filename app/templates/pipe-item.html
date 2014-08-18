@@ -12,7 +12,7 @@
 
 <div class="small-24 columns large-container light">
 
-  <div class="left small-16 columns">
+  <div class="left small-16 columns description-container">
     <p class="name bigger-text space-after">
       <%- model.get('name') %>
       <span class="pill-box automatic green <% if(!model.get('automatic')) { %>hide<% } %>"><span>Automatic</span></span>
@@ -22,7 +22,7 @@
     </p>
   </div>
 
-  <div class="right small-8 columns">
+  <div class="right small-8 columns controls-container">
     <button class="button green-bg wide right sync"><i class="fa fa-refresh"></i><span class="button-label">Sync now</span></button>
     <div class="cog-box right"></div>
     <button class="button white-bg wide right cancel"><i class="fa fa-times"></i><span class="button-label">Cancel</span></button>
