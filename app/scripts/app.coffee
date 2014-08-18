@@ -106,6 +106,13 @@ class PipesApp
 
   windowApi: null
 
+  commands:
+    startAuthorization: (integrationId) ->
+      pipes.integrationsListView.childViews[integrationId]?.configurationView.startAuthorization()
+    startSync: (pipeId) ->
+      [integrationId, pipeId] = pipeId.split('.')
+      pipes.integrationsListView.childViews[integrationId]?.pipesListView.childViews[pipeId]?.startSync()
+
   actions:
     index: ->
 
@@ -129,6 +136,9 @@ class PipesApp
       @workspacePremium = options.workspacePremium
       @baseUrl = options.baseUrl
       @dateSettings = options.date
+      @enabledPipes = options.enabledPipes or []
+      @enabledIntegrations = _.uniq _.map(@enabledPipes or [], (id) -> id.split('.')[0])
+      @stepStates = options.stepStates or {}
       configureMoment(options.date.dateFormat, options.date.timeFormat, options.date.dow)
       state = @oauth.parseState options.oAuthQuery
       if state

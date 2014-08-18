@@ -22,7 +22,7 @@ class pipes.steps.Stepper
     # Initialize step state ( + delete state from stepStates), run first step with state or first step in array
     initialStep = 0
     for step,i  in @steps
-      if pipes.stepStates[step.id]
+      if step.id of pipes.stepStates
         step.initializeState(pipes.stepStates[step.id])
         initialStep = i if not initialStep
         delete pipes.stepStates[step.id]

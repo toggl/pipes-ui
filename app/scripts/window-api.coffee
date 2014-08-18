@@ -19,7 +19,8 @@ class pipes.WindowApi
       # Wait for initialization by parent before doing anything
       $(window).on 'message', @onMessage
 
-  sendMessage: (message) ->
+  sendMessage: (message, args) ->
+    message = "#{message}:#{JSON.stringify(args)}"
     throw "Please initialize WindowApi before using it!" if not @initialized
     if @parentSource
       # If we have parent frame, try to interact with it
@@ -51,10 +52,15 @@ class pipes.WindowApi
     return if msg.length < 2 or msg[0] != 'TogglPipes'
 
     msg = [msg[0]].concat _.flatten msg[1...].join('.').split(':') # ["TogglPipes", ...<:-separated strings>]
-    params = msg[2...].join(':')
+    message = msg[1]
+    args = JSON.parse(msg[2...].join(':'))
 
-    if msg[1] == 'initialize'
+    if message == 'initialize'
       @initialized = true
       @parentOrigin = e.originalEvent.origin
       @parentSource = e.originalEvent.source
-      @trigger 'initialize', JSON.parse(params)
+      @trigger 'initialize', args
+    else if message == 'startAuthorization'
+      pipes.commands.startAuthorization(args.integrationId)
+    else if message == 'startSync'
+      pipes.commands.startSync(args.pipeId)

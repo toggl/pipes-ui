@@ -13,6 +13,7 @@ class pipes.views.PipeItemView extends Backbone.View
 
   initialize: ->
     @listenTo @model, 'change:pipe_status change:configured change:automatic', @refreshStatus
+    @listenTo @model, 'change:pipe_status', @onStatusChanged
     @cogView = new pipes.views.CogView
       items: [
         {
@@ -99,6 +100,15 @@ class pipes.views.PipeItemView extends Backbone.View
     @$('.button.sync')
       .attr 'disabled', not @stepper.current.default
       .children('.button-label').text if @stepper.current.default and @model.getStatus() != 'running' then "Sync now" else "In progress..."
+
+  onStatusChanged: (model, value, options) ->
+    if model.previous('pipe_status')?.status == 'running'
+      if model.getStatus() == 'success'
+        pipes.windowApi.sendMessage 'syncComplete', {pipe: model.id}
+      else if model.getStatus() == 'error'
+        pipes.windowApi.sendMessage 'syncError', {pipe: model.id, error: model.getStatusMessage()}
+    else if model.getStatus() == 'running' and model.previous('pipe_status')?.status != 'running'
+      pipes.windowApi.sendMessage 'syncStart', {pipe: model.id}
 
   refreshStatus: ->
     @metaView.render()

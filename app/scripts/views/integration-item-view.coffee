@@ -18,8 +18,12 @@ class pipes.views.IntegrationItemView extends Backbone.View
       ]
 
   authorizedChanged: (model, authorized) =>
+    if authorized
+      pipes.windowApi.sendMessage 'authorized', {integration: model.id}
+    else
+      pipes.windowApi.sendMessage 'deauthorized', {integration: model.id}
     # Hackish way to scroll down when coming back from oauth
-    setTimeout (=> pipes.windowApi.sendMessage("scrollTo:#{@$el.offset().top}")), 500 if authorized
+    setTimeout (=> pipes.windowApi.sendMessage("scrollTo", {offset: @$el.offset().top})), 500 if authorized
 
   render: ->
     @$el.html @template

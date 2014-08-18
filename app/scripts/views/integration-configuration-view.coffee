@@ -23,13 +23,15 @@ class pipes.IntegrationConfigurationView extends Backbone.View
 
   clickEnable: (e) =>
     e.preventDefault()
-    if @stepper.current.default
-      @stepper.endCurrentStep()
+    @startAuthorization()
 
   clickCancel: (e) =>
     e.preventDefault()
     @stepper.reset()
 
+  startAuthorization: =>
+    if @stepper.current.default
+      @stepper.endCurrentStep()
 
   refreshSetupState: ->
     # Allow setup button & cog only in default step
