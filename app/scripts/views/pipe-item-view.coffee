@@ -13,7 +13,6 @@ class pipes.views.PipeItemView extends Backbone.View
 
   initialize: ->
     @listenTo @model, 'change:pipe_status change:configured change:automatic', @refreshStatus
-    @listenTo @model, 'change:pipe_status', @onStatusChanged
     @cogView = new pipes.views.CogView
       items: [
         {
@@ -49,6 +48,7 @@ class pipes.views.PipeItemView extends Backbone.View
     @listenTo @stepper, 'ajaxEnd', => @ajaxEnd()
     @stepper.run()
     @setRunning() if not @stepper.current.default
+    @_previousStatus = @getRealModelStatus()
 
   onStepChange: (step, i, steps) =>
     @refreshSyncState()
@@ -101,20 +101,28 @@ class pipes.views.PipeItemView extends Backbone.View
       .attr 'disabled', not @stepper.current.default
       .children('.button-label').text if @stepper.current.default and @model.getStatus() != 'running' then "Sync now" else "In progress..."
 
-  onStatusChanged: (model, value, options) ->
-    if model.previous('pipe_status')?.status == 'running'
-      if model.getStatus() == 'success'
-        pipes.windowApi.sendMessage 'syncComplete', {pipe: model.id}
-      else if model.getStatus() == 'error'
-        pipes.windowApi.sendMessage 'syncError', {pipe: model.id, error: model.getStatusMessage()}
-    else if model.getStatus() == 'running' and model.previous('pipe_status')?.status != 'running'
-      pipes.windowApi.sendMessage 'syncStart', {pipe: model.id}
+  onStatusChanged: ->
+    # Hackish way to trigger sync events when status changes. Need to clean this up somehow when more time
+    currentStatus = @getRealModelStatus()
+    console.log('A1071!!!!!!!!', currentStatus, @_previousStatus)
+    if @_previousStatus.status == 'running'
+      if currentStatus.status == 'success'
+        pipes.windowApi.sendMessage 'syncComplete', {pipe: @model.id, message: currentStatus.message}
+      else if currentStatus.status == 'error'
+        pipes.windowApi.sendMessage 'syncError', {pipe: @model.id, message: currentStatus.message}
+    else if currentStatus.status == 'running' and @_previousStatus.status != 'running'
+      pipes.windowApi.sendMessage 'syncStart', {pipe: @model.id}
+    @_previousStatus = currentStatus
+
+  getRealModelStatus: ->
+    @metaView.statusOverride or {status: @model.getStatus(), message: @model.getStatusMessage()}
 
   refreshStatus: ->
     @metaView.render()
     @refreshSyncState()
     @cogView.render()
     @$('.automatic').toggleClass 'hide', !@model.get('automatic')
+    @onStatusChanged()
 
   refreshLoading: ->
     @$el.toggleClass('spinning-container', @loading).toggleClass('loading', @loading)
