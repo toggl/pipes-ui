@@ -104,7 +104,6 @@ class pipes.views.PipeItemView extends Backbone.View
   onStatusChanged: ->
     # Hackish way to trigger sync events when status changes. Need to clean this up somehow when more time
     currentStatus = @getRealModelStatus()
-    console.log('A1071!!!!!!!!', currentStatus, @_previousStatus)
     if @_previousStatus.status == 'running'
       if currentStatus.status == 'success'
         pipes.windowApi.sendMessage 'syncComplete', {pipe: @model.id, message: currentStatus.message}
