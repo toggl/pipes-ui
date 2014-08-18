@@ -112,6 +112,8 @@ class PipesApp
     startSync: (pipeId) ->
       [integrationId, pipeId] = pipeId.split('.')
       pipes.integrationsListView.childViews[integrationId]?.pipesListView.childViews[pipeId]?.startSync()
+    isAuthorized: (integrationId) ->
+      pipes.models.integrations.get(integrationId)?.get('authorized')
 
   actions:
     index: ->

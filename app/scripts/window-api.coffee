@@ -60,6 +60,11 @@ class pipes.WindowApi
       @parentOrigin = e.originalEvent.origin
       @parentSource = e.originalEvent.source
       @trigger 'initialize', args
+    else if message == 'isAuthorized'
+      @sendMessage 'isAuthorized', {
+        integrationId: args.integrationId,
+        authorized: pipes.commands.isAuthorized(args.integrationId)
+      }
     else if message == 'startAuthorization'
       pipes.commands.startAuthorization(args.integrationId)
     else if message == 'startSync'
