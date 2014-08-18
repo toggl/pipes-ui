@@ -123,6 +123,7 @@ class PipesApp
         pipes.integrationsListView = new pipes.views.IntegrationsListView
           el: $('.integrations-list')
           collection: pipes.models.integrations
+        pipes.integrationsListView.once 'render', -> pipes.windowApi.sendMessage 'initialized'
 
   initialize: ->
 

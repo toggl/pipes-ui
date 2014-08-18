@@ -20,7 +20,7 @@ class pipes.WindowApi
       $(window).on 'message', @onMessage
 
   sendMessage: (message, args) ->
-    message = "#{message}:#{JSON.stringify(args)}"
+    message = "#{message}:#{JSON.stringify(args or {})}"
     throw "Please initialize WindowApi before using it!" if not @initialized
     if @parentSource
       # If we have parent frame, try to interact with it

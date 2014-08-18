@@ -28,4 +28,5 @@ class pipes.views.ListView extends Backbone.View
       continue if not childView
       @$el.append childView.render().$el
     v.setElement(v.el) for k,v of @childViews
+    @trigger 'render'
     this
