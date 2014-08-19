@@ -298,6 +298,14 @@ span.checkbox {
     }
   }
 }
+.checkbox-label {
+  display: inline-block;
+  vertical-align: top;
+  .disclaimer {
+    font-size: 11px;
+    color: #ee4444;
+  }
+}
 
 .popdown {
   position: absolute;

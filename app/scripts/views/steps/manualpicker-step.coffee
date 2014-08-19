@@ -9,12 +9,14 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
   outKey: 'selectedObjects'
   columns: null
   title: "Select objects to import"
+  customOptions: null
 
   constructor: (options = {}) ->
     super(options)
     @inKey = options.inKey
     @outKey = options.outKey
     @columns = options.columns
+    @customOptions = options.customOptions or []
     @title = options.title if options.title
 
   onRun: ->
@@ -25,10 +27,12 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
 
   render: ->
     container = @getContainer()
-    container.html @template
-      columns: @columns
+    container.html @template {
       objects: @sharedData[@inKey]
-      title: @title
+      @columns
+      @title
+      @customOptions
+    }
     container.off '.manual-picker'
     container.on 'change.manual-picker', 'thead input:checkbox', @clickMainCheckbox
     container.on 'change.manual-picker', 'tbody input:checkbox', @clickCheckbox
@@ -89,8 +93,13 @@ class pipes.steps.ManualPickerStep extends pipes.steps.Step
 
   clickSubmit: (e) =>
     @submitItems(+$(el).data('id') for el in @getContainer().find('tbody input:checked'))
+    @submitCustomOptions($(el).attr('name') for el in @getContainer().find('.custom-options input:checked'))
+    @end()
 
   submitItems: (ids) ->
     @sharedData[@outKey] = ids
-    @end()
+
+  submitCustomOptions: (checkedKeys) ->
+    for option in @customOptions
+      @sharedData[option.key] = option.key in checkedKeys
 

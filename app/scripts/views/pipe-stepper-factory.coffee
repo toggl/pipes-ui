@@ -28,10 +28,11 @@ pipes.pipeStepperFactory = (integration, pipe, pipeView) ->
                 inKey: 'users'
                 outKey: 'selectedUsers'
                 columns: [{key: 'name', label: "Name", filter: true}, {key: 'email', label: "E-mail", filter: true}]
+                customOptions: [{key: 'sendInvites', checked: true, label: "Email invitations to these users.<br /> <span class='disclaimer'>(NB! Your monthly fee may change)</span>"}]
               )
               new pipes.steps.DataSubmitStep(
                 url: "#{pipe.url()}/run"
-                requestMap: {'ids': 'selectedUsers'} # Mapping 'query string param name': 'key in sharedData'
+                requestMap: {'ids': 'selectedUsers', 'send_invites': 'sendInvites'} # Mapping 'query string param name': 'key in sharedData'
               )
             ]
         when 'projects'
@@ -103,10 +104,11 @@ pipes.pipeStepperFactory = (integration, pipe, pipeView) ->
                 inKey: 'users'
                 outKey: 'selectedUsers'
                 columns: [{key: 'name', label: "Name", filter: true}, {key: 'email', label: "E-mail", filter: true}]
+                customOptions: [{key: 'sendInvites', checked: true, label: "Email invitations to these users.<br /> <span class='disclaimer'>(NB! Your monthly fee may change)</span>"}]
               )
               new pipes.steps.DataSubmitStep(
                 url: "#{pipe.url()}/run"
-                requestMap: {'ids': 'selectedUsers'} # Mapping 'query string param name': 'key in sharedData'
+                requestMap: {'ids': 'selectedUsers', 'send_invites': 'sendInvites'} # Mapping 'query string param name': 'key in sharedData'
               )
             ]
         when 'projects', 'tasks'

@@ -41,5 +41,14 @@
       </tbody>
     </table>
   </div>
+  <div class="custom-options left">
+    <% for(var i = 0; i < customOptions.length ; i++) { %>
+      <label class="checkbox" for="cb-<%- customOptions[i].key %>">
+        <input type="checkbox" id="cb-<%- customOptions[i].key %>" name="<%- customOptions[i].key %>" class="custom checkbox"<% if(customOptions[i].checked) { %> checked="checked"<% } %> />
+        <span class="checkbox<% if(customOptions[i].checked) { %> checked<% } %>"></span>
+        <span class="checkbox-label"><%= customOptions[i].label %></span>
+      </label>
+    <% } %>
+  </div>
   <button class="button submit right">Next &raquo;</button>
 </div>

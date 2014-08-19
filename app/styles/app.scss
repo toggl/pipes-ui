@@ -240,6 +240,14 @@ html, body {
       font-style: italic;
     }
   }
+  .custom-options {
+    padding: .8rem .5rem;
+    .checkbox {
+      margin: 0 .75rem 0;
+      font-size: $base * 1.1;
+      color: #444;
+    }
+  }
 }
 
 .oauth1-account-selector {
