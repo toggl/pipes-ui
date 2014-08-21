@@ -44,6 +44,11 @@ class pipes.models.IntegrationCollection extends Backbone.Collection
       models.push iModel
     models
 
+  comparator: (a, b) ->
+    return -1 if a.get('authorized') and not b.get('authorized')
+    return 1 if b.get('authorized') and not a.get('authorized')
+    return 0 if a.get('authorized') == b.get('authorized')
+
 
 class pipes.models.Pipe extends Backbone.Model
 
