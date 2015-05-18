@@ -71,7 +71,7 @@ paths =
 
 localConfig = null
 try
-  localConfig = require("./local_config.json")
+  localConfig = require("./local_config")
 catch err
   localConfig = null
   gutil.log cl.yellow("Warning: You need a local_config.json to be able to deploy or specify api host")

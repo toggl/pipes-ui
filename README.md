@@ -30,13 +30,13 @@ Bump the project version number. Bumps patch version by default. Also creates a 
 NB! Bumping creates a commit, you need to `git push` it manually!
 
 `gulp deploy -e <target> [-b major|minor|patch]`
-Builds & deployes the app to the target server via ssh & rsync. The project root can be configured in local_config.json and the app is deployed under <project-root>/current and the previous version is backed up to <project-root>/previous.
+Builds & deployes the app to the target server via ssh & rsync. The project root can be configured in `local_config` and the app is deployed under <project-root>/current and the previous version is backed up to <project-root>/previous.
 Optionally bumps the version before deployment if the -b option is present.
 
-### local_config.json
+### local_config
 
-You need a `local_config.json` file to be able to talk to the API and/or deploy.
-Sample `local_config.json`
+You need a `local_config` package to be able to talk to the API and/or deploy.
+Sample `local_config/index.json`
 
 ```json
 {
