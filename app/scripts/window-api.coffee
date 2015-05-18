@@ -14,7 +14,22 @@ class pipes.WindowApi
     if window.self == window.top
       # No parent frame: let's just call it 'initialized'
       @initialized = true
-      setTimeout (=>@trigger 'initialize'), 0
+      setTimeout (=>
+        data =
+          oAuthQuery: window.location.search
+          baseUrl: 'http://localhost:7001/'
+          date:
+            dateFormat: 'MM/DD/YYYY'
+            timeFormat: 'H:mm'
+            dow: 0
+        data.apiToken = prompt("Standalone mode: Enter workspace api token", $.cookie 'standalone.apiToken')
+        $.cookie 'standalone.apiToken', data.apiToken or ''
+        data.workspaceId = prompt("Standalone mode: Enter workspace id", $.cookie 'standalone.workspaceId')
+        $.cookie 'standalone.workspaceId', data.workspaceId or ''
+        data.workspacePremium = prompt("Standalone mode: Is workspace premium (1/0)?", $.cookie 'standalone.premium')
+        $.cookie 'standalone.premium', data.workspacePremium or ''
+        @trigger 'initialize', data
+      ), 0
     else
       # Wait for initialization by parent before doing anything
       $(window).on 'message', @onMessage
@@ -23,29 +38,9 @@ class pipes.WindowApi
     message = "#{message}:#{JSON.stringify(args or {})}"
     throw "Please initialize WindowApi before using it!" if not @initialized
     if @parentSource
-      # If we have parent frame, try to interact with it
       @parentSource.postMessage("TogglPipes.#{message}", @parentOrigin)
     else
-      # If no parent frame, fake it with some default data
-      switch message
-        when 'get.oAuthQuery'
-          setTimeout (=>@trigger 'oAuthQuery', window.location.search), 0
-        when 'get.apiToken'
-          apiToken = prompt("Standalone mode: Enter workspace api token", $.cookie 'standalone.apiToken')
-          $.cookie 'standalone.apiToken', apiToken or ''
-          setTimeout (=>@trigger 'apiToken', apiToken), 0
-        when 'get.workspaceId'
-          workspaceId = prompt("Standalone mode: Enter workspace id", $.cookie 'standalone.workspaceId')
-          $.cookie 'standalone.workspaceId', workspaceId or ''
-          setTimeout (=>@trigger 'workspaceId', +workspaceId), 0
-        when 'get.workspacePremium'
-          premium = prompt("Standalone mode: Is workspace premium (1/0)?", $.cookie 'standalone.premium')
-          $.cookie 'standalone.workspacePremium', premium or ''
-          setTimeout (=>@trigger 'workspacePremium', premium != '0'), 0
-        when 'get.dateFormats'
-          setTimeout (=>@trigger 'dateFormats', dateFormats: 'MM/DD/YYYY', timeFormat: 'H:mm', dow: 0), 0
-        when 'get.baseUrl'
-          setTimeout (=>@trigger 'baseUrl', '/'), 0
+      console.warn("WindowApi.sendMessage #{message} ignored, args:", args)
 
   onMessage: (e) =>
     msg = e.originalEvent.data.split('.')
