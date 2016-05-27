@@ -296,14 +296,17 @@ gulp.task "deploy", ["build"], ->
     host: targetConfig.host
     port: targetConfig.port or 22
 
+  if targetConfig.user
+    sshConfig.host = targetConfig.user + '@' + sshConfig.host
+
   bumpVersion(gutil.env.b) if gutil.env.b
 
   deployStart = Date.now()
 
   gulp.src("")
     .pipe shell([
-      "ssh " + targetConfig.host + " \"cd " + targetConfig.root + "; mkdir -p current; rm -rf previous; cp -r current previous\""
-      "rsync --checksum --archive --compress --delete --safe-links build/ " + ((if targetConfig.user then targetConfig.user + "@" else "")) + targetConfig.host + ":" + targetConfig.root + "current/"
+      "ssh " + sshConfig.host + " -p " + sshConfig.port + " \"cd " + targetConfig.root + "; mkdir -p current; rm -rf previous; cp -r current previous\""
+      "rsync --checksum --archive --compress --delete --safe-links -e \"ssh -p " + sshConfig.port + "\" build/ " + sshConfig.host + ":" + targetConfig.root + "current/"
     ])
     .pipe tap ->
       time = Date.now() - deployStart
