@@ -127,9 +127,11 @@ gulp.task "build-scripts", ["build-scripts-internal", "build-scripts-external"]
 
 
 gulp.task "build-styles-internal", ->
+  fs = require('fs')
   gulp.src(paths.styles)
     .pipe compass(
-      project: "."
+      config_file: 'config.rb'
+      project: __dirname
       sass: "app/styles/"
       css: ".tmp/styles/"
       style: (if env is "development" then "expanded" else "compressed")
