@@ -41,7 +41,7 @@
     "html-entities": "~1.0.10",
     "node-notifier": "~1.2.1",
     "node-static": "~0.7.3",
-    "request": "~2.34.0",
+    "request": ">=2.68.0",
     "gulp-minify-css": "~0.3.4",
     "gulp-minify-html": "~0.1.3"
   }
