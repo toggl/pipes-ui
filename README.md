@@ -1,50 +1,62 @@
 # Toggl Pipes UI
 
-User Interface for the Toggl Pipes project. Currently in development.
+User Interface for the Toggl Pipes project. It's DEPRECATED now, but still used in production.
+It uses [pipes-api](https://github.com/toggl/pipes-api) as a Backend.
+
+It has written with [CoffeeScript 1.7](https://coffeescript.org/).
+It uses [jQuery (ajax)](https://api.jquery.com/jquery.ajax/) to communicate with backend.
+It also uses [Compass 1.0.3](https://rubygems.org/gems/compass/versions/1.0.3) SASS/CSS framework and [Foundation 5](https://get.foundation/sites/docs-v5/) as a UI framework.
+UI components has built with [lodash templates](https://lodash.com/docs#template) and [backbone.js](https://backbonejs.org/).
 
 ## Contributing
 
-Dependencies: 
+Dependencies:
+
  - [Ruby 2.6.3](https://www.ruby-lang.org/en/)
- - [Bundler 1.17.2](https://bundler.io/)
+    - [Bundler 1.17.2](https://bundler.io/)
+        - [Compass 1.0.3](https://rubygems.org/gems/compass/versions/1.0.3)
  - [NVM v0.35.3](https://github.com/nvm-sh/nvm)
- - [NodeJS 0.10.33](https://nodejs.org/en/)
- - [Compass 1.0.3](https://rubygems.org/gems/compass/versions/1.0.3)
+    - [NodeJS 0.10.33](https://nodejs.org/en/)
+        - [Bower 1.8](https://bower.io/)
  
-After installing dependencies, you can install the required npm & bower packages:
+After installing dependencies, you can install the required `npm` & `bower` packages:
 
 ## Prepare development environment
 
-- Run `nvm install` inside the project directory. It setup needed `node` and `npm` versions.
-- Install [Compass 1.0.3](https://rubygems.org/gems/compass/versions/1.0.3) with Bundler `bundle install`
-- Run `npm install` (it also will run `bower install`)
+- Install Ruby and Bundler.
+- Run `bundle install`. It will install `Compass`.
+- Run `nvm install`. It will install needed `node` and `npm` versions.
+- Run `npm install` (it also will run `bower install` automatically).
+
+After steps above you can use `gulp` for building and running the project.
 
 ### Gulp commands
 
-ATTENTION: USE LOCALLY INSTALLED DEPENDENCIES FROM `./node_modules/.bin/gulp`
+**WARNING: USE LOCALLY INSTALLED DEPENDENCIES FROM: `./node_modules/.bin`**
 
-`./node_modules/.bin/gulp`
-Runs the development server on port 7001 and watches for file changes.
+- `./node_modules/.bin/gulp` Runs the development server on port 7001 and watches for file changes.
+- `./node_modules/.bin/gulp build [-e target]` Makes a clean build for the specified target (minifies, etc if target != development)
+- `./node_modules/.bin/gulp clean` Removes build/ dir
 
-`./node_modules/.bin/gulp build [-e target]`
-Makes a clean build for the specified target (minifies, etc if target != development)
+```bash
+./node_modules/.bin/gulp bump[:patch]
+./node_modules/.bin/gulp bump:minor
+./node_modules/.bin/gulp bump:major
+```
 
-`./node_modules/.bin/gulp clean`
-Removes build/ dir
-
-`./node_modules/.bin/gulp bump[:patch]`
-`./node_modules/.bin/gulp bump:minor`
-`./node_modules/.bin/gulp bump:major`
 Bump the project version number. Bumps patch version by default. Also creates a tag if type is minor or major.
 NB! Bumping creates a commit, you need to `git push` it manually!
 
-`./node_modules/.bin/gulp deploy -e <target> [-b major|minor|patch]`
+```bash
+./node_modules/.bin/gulp deploy -e <target> [-b major|minor|patch]
+```
+
 Builds & deploys the app to the target server via ssh & rsync. The project root can be configured in `local_config` and the app is deployed under <project-root>/current and the previous version is backed up to <project-root>/previous.
 Optionally bumps the version before deployment if the -b option is present.
 
 ### local_config
 
-You need a `local_config` package to be able to talk to the API and/or deploy. (Togglers: see readme in pipes-ui-conf in gitosis)
+You need a `local_config` package to be able to talk to the API and/or deploy. (Togglers: see README.md in [pipes-ui-conf](https://github.com/toggl/pipes-ui-conf))
 Sample `local_config/index.json`
 
 ```json
