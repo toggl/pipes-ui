@@ -27,4 +27,4 @@ Thumbs.db
 build/
 bower_components/
 node_modules/
-local_config
+local_config/
