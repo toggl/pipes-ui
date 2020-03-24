@@ -10,6 +10,9 @@
   "scripts": {
     "postinstall": "bower install"
   },
+  "engines": {
+    "node": "~0.10.33"
+  },
   "dependencies": {},
   "devDependencies": {
     "coffee-script": "1.7.0",

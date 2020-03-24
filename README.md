@@ -12,12 +12,10 @@ UI components has built with [lodash templates](https://lodash.com/docs#template
 
 Dependencies:
 
- - [Ruby 2.6.3](https://www.ruby-lang.org/en/)
-    - [Bundler 1.17.2](https://bundler.io/)
-        - [Compass 1.0.3](https://rubygems.org/gems/compass/versions/1.0.3)
- - [NVM v0.35.3](https://github.com/nvm-sh/nvm)
-    - [NodeJS 0.10.33](https://nodejs.org/en/)
-        - [Bower 1.8](https://bower.io/)
+ - [Ruby](https://www.ruby-lang.org/en/)
+    - [Bundler](https://bundler.io/)
+ - [NVM](https://github.com/nvm-sh/nvm)
+    - [NodeJS](https://nodejs.org/en/)
  
 After installing dependencies, you can install the required `npm` & `bower` packages:
 
@@ -28,13 +26,10 @@ After installing dependencies, you can install the required `npm` & `bower` pack
 - Run `nvm install`. It will install needed `node` and `npm` versions.
 - Run `npm install` (it also will run `bower install` automatically).
 
-After steps above you can use `gulp` for building and running the project.
+After steps above you can use locally installed `./node_modules/.bin/gulp ` for building and running the project.
 
 ### Gulp commands
 
-**WARNING: USE LOCALLY INSTALLED DEPENDENCIES FROM: `./node_modules/.bin`**
-
-- `./node_modules/.bin/gulp` Runs the development server on port 7001 and watches for file changes.
 - `./node_modules/.bin/gulp build [-e target]` Makes a clean build for the specified target (minifies, etc if target != development)
 - `./node_modules/.bin/gulp clean` Removes build/ dir
 
