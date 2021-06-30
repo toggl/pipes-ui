@@ -38,6 +38,18 @@ html, body {
     margin-left: 20px;
   }
 }
+.integration-deprecated {
+  display: inline-block;
+  margin: 1em 0;
+  padding: .5em;
+  line-height: 1em;
+  background-color: #f4d2dd;
+  border: 1px solid #ec90ae;
+  border-radius:.5em;
+}
+.integration-deprecated-notice {
+  font-weight: bolder;
+}
 .pipe, .integration-configuration {
   position: relative;
   overflow: hidden;
