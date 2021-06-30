@@ -1,5 +1,9 @@
 <div class="small-24 columns large-container dark">
 
+    <% if(model.get('deprecated')) { %>
+      <div class="integration-deprecated"><span class="integration-deprecated-notice">Notice:</span> <%- model.get('name') %> is a deprecated integration that will stop being supported eventually. If you remove the authorization, the integration won't be available anymore.</div>
+    <% } %>
+
   <h1 class="space-after container-title">
 
     <% if(model.get('image')) { %>
