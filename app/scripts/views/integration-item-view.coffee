@@ -20,6 +20,8 @@ class pipes.views.IntegrationItemView extends Backbone.View
   authorizedChanged: (model, authorized) =>
     if authorized
       pipes.windowApi.sendMessage 'authorized', {integration: model.id}
+    else if @model.get('deprecated')
+      this.remove()
     else
       pipes.windowApi.sendMessage 'deauthorized', {integration: model.id}
     # Hackish way to scroll down when coming back from oauth
