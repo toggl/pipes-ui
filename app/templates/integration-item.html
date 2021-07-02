@@ -1,8 +1,5 @@
 <div class="small-24 columns large-container dark">
 
-    <% if(model.get('deprecated')) { %>
-      <div class="integration-deprecated"><span class="integration-deprecated-notice">Notice:</span> <%- model.get('name') %> is a deprecated integration that will stop being supported eventually. If you remove the authorization, the integration won't be available anymore.</div>
-    <% } %>
 
   <h1 class="space-after container-title">
 
@@ -23,6 +20,28 @@
     <% } %>
 
   </h1>
+
+      <% if(model.get('deprecated')) { %>
+        <div class="integration-deprecated">
+          <div>
+            <svg width="14px" height="14px" viewBox="0 0 14 14">
+              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g transform="translate(-253.000000, -273.000000)" fill="#E32817">
+                  <g transform="translate(240.000000, 260.000000)">
+                    <path
+                      d="M20,13 C23.8659932,13 27,16.1340068 27,20 C27,23.8659932 23.8659932,27 20,27 C16.1340068,27 13,23.8659932 13,20 C13,16.1340068 16.1340068,13 20,13 Z M20,19 L19.8826674,19.0067264 C19.3827202,19.0644804 19,19.4870704 19,19.9998075 L19,19.9998075 L19,23.0001925 C19,23.5562834 19.4477153,24 20,24 L20,24 L20.1173326,23.9932736 C20.6172798,23.9355196 21,23.5129296 21,23.0001925 L21,23.0001925 L21,19.9998075 C21,19.4437166 20.5522847,19 20,19 L20,19 Z M20,16 C19.4477153,16 19,16.4477153 19,17 C19,17.5522847 19.4477153,18 20,18 C20.5522847,18 21,17.5522847 21,17 C21,16.4477153 20.5522847,16 20,16 Z"
+                      transform="translate(20.000000, 20.000000) rotate(-180.000000) translate(-20.000000, -20.000000) "></path>
+                  </g>
+                </g>
+              </g>
+            </svg>
+            <strong>This integration will be discontinued</strong>
+          </div>
+          <%- model.get('name') %> is a deprecated integration that Toggl Track will eventually stop
+            supporting. Once you delete the authorization, the integration will no longer be available.
+            <a target="_blank" href="https://support.toggl.com/en/articles/2220424-about-integrations-via-toggl-track-pipes/">Learn more</a>
+        </div>
+        <% } %>
 
   <div class="integration-configuration">
   </div>
