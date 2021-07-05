@@ -26,6 +26,7 @@ $green-dark: rgb(55, 170, 0);
 $yellow: rgb(255, 251, 205);
 $blue: rgb(44, 193, 230);
 $orange: rgb(196, 136, 10);
+$pink: #e57cd8;
 
 .red-text { color: $red; &:hover {color: $red; } }
 .green-text { color: $green; &:hover {color: $green; } }
@@ -43,6 +44,7 @@ $orange: rgb(196, 136, 10);
 .blue-bg { background-color: $blue; }
 .gray-bg { background-color: $gray; }
 .white-bg { background-color: $white; }
+.pink-bg { background-color: $pink; }
 
 $text-color: $black;
 $bg-color: #f5f5f5;
