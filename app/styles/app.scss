@@ -26,8 +26,6 @@ html, body {
   margin: 20px auto;
 }
 
-.integrations-list {
-}
 .integration {
   margin-bottom: 20px;
   .pipes-info, .more-info {
@@ -38,6 +36,33 @@ html, body {
     margin-left: 20px;
   }
 }
+
+.integration-deprecated {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+
+  font-size: 14px;
+  line-height: 21px;
+
+  background-color: #FBE5E4;
+  color: #C71100;
+
+  border: 1px solid #F7A199;
+  border-radius: 4px;
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+}
+
 .pipe, .integration-configuration {
   position: relative;
   overflow: hidden;

@@ -23,6 +23,8 @@ class pipes.models.Integration extends Backbone.Model
         @getPipes().each (pipe) ->
           pipe.set {configured: false, automatic: false}, {silent: !!options.silent} # automatic: false is hack !
         options.success?.apply(window, arguments)
+        if @get('deprecated')
+          @destroy()
       error: (response) =>
         options.error?.apply(window, arguments)
 
